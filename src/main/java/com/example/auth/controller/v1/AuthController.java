@@ -29,10 +29,10 @@ public class AuthController {
         User user = authService.login(login.getId());
 
         if (user == null) {
-            response = new Response(false, AuthCode.AU002);
+            response = new Response(AuthCode.AU002);
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         } else {
-            response = new Response(true, AuthCode.AU001, user);
+            response = new Response(AuthCode.AU001, user);
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);

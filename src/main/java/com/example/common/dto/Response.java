@@ -5,19 +5,16 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class Response {
-    boolean success;
     String code;
     String message;
     Object data;
 
-    public Response(boolean success, AuthCode authCode) {
-        this.success = success;
+    public Response(AuthCode authCode) {
         this.code = authCode.name();
         this.message = authCode.getMessage();
     }
 
-    public Response(boolean success, AuthCode authCode, Object data) {
-        this.success = success;
+    public Response(AuthCode authCode, Object data) {
         this.code = authCode.name();
         this.message = authCode.getMessage();
         this.data = data;
