@@ -1,8 +1,7 @@
 package com.example.auth.service;
 
-import com.example.auth.dto.Login;
-import com.example.auth.dto.User;
+import com.example.auth.model.User;
 
 public interface AuthService {
-    User login(Login login);
+    User login(String id);
 }

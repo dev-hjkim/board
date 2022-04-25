@@ -1,8 +1,7 @@
 package com.example.auth.service.impl.v1;
 
-import com.example.auth.dto.Login;
-import com.example.auth.dto.User;
-import com.example.auth.mapper.AuthMapper;
+import com.example.auth.model.User;
+import com.example.auth.repository.AuthRepository;
 import com.example.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +10,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final AuthMapper authMapper;
+    private final AuthRepository authRepository;
 
     @Override
-    public User login(Login login) {
-        return authMapper.login(login);
+    public User login(String id) {
+        return authRepository.login(id);
     }
 }

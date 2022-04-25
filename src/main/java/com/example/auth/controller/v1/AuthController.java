@@ -1,11 +1,12 @@
 package com.example.auth.controller.v1;
 
-import com.example.auth.dto.Login;
-import com.example.auth.dto.User;
+import com.example.auth.model.User;
 import com.example.auth.service.AuthService;
 import com.example.common.code.AuthCode;
 import com.example.common.dto.Response;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class AuthController {
     public ResponseEntity<Object> Login(@RequestBody Login login) {
         Response response;
 
-        User user = authService.login(login);
+        User user = authService.login(login.getId());
 
         if (user == null) {
             response = new Response(false, AuthCode.AU002);
@@ -35,5 +36,12 @@ public class AuthController {
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Getter
+    @Setter
+    public class Login {
+        String id;
+        String password;
     }
 }
