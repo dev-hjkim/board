@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.auth.mapper.AuthMapper">
+<mapper namespace="com.example.auth.repository.AuthRepository">
     <select id="login" parameterType="com.example.auth.dto.Login" resultType="com.example.auth.dto.User">
         select id, password, name, access_token as accessToken, refresh_token as refreshToken
           from user
