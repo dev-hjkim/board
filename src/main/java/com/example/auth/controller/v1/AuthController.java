@@ -2,8 +2,8 @@ package com.example.auth.controller.v1;
 
 import com.example.auth.model.User;
 import com.example.auth.service.AuthService;
-import com.example.common.dto.ResponseType;
-import com.example.common.dto.Response;
+import com.example.common.dto.ResultType;
+import com.example.common.dto.Result;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -22,25 +25,27 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(value="/login")
-    public ResponseEntity<Object> Login(@RequestBody Login login) {
-        Response response;
+    public ResponseEntity<Object> Login(@Valid @RequestBody Login login) {
+        Result result;
 
         User user = authService.login(login.getId());
 
         if (user == null) {
-            response = new Response(ResponseType.UNKNOWN_USER);
-            return new ResponseEntity<>(response, response.getHttpCode());
+            result = new Result(ResultType.UNKNOWN_USER);
+            return new ResponseEntity<>(result, result.getHttpCode());
         } else {
-            response = new Response(ResponseType.OK, user);
+            result = new Result(ResultType.OK, user);
         }
 
-        return new ResponseEntity<>(response, response.getHttpCode());
+        return new ResponseEntity<>(result, result.getHttpCode());
     }
 
     @Getter
     @Setter
-    public class Login {
+    public static class Login {
+        @NotEmpty
         String id;
+        @NotEmpty
         String password;
     }
 }
