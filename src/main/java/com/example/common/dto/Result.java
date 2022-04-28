@@ -4,19 +4,19 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @NoArgsConstructor
-public class Response {
+public class Result {
     String code;
     String message;
     Object data;
 
-    public Response(ResponseType responseType) {
-        this.code = responseType.getCode();
-        this.message = responseType.getMessage();
+    public Result(ResultType resultType) {
+        this.code = resultType.getCode();
+        this.message = resultType.getMessage();
     }
 
-    public Response(ResponseType responseType, Object data) {
-        this.code = responseType.getCode();
-        this.message = responseType.getMessage();
+    public Result(ResultType resultType, Object data) {
+        this.code = resultType.getCode();
+        this.message = resultType.getMessage();
         this.data = data;
     }
 

@@ -1,6 +1,6 @@
 package com.example.common.dto;
 
-public enum ResponseType {
+public enum ResultType {
     OK("200000", "OK"),
 
     NO_CONTENT("204001", "No content"),
@@ -21,7 +21,7 @@ public enum ResponseType {
     private final String code;
     private final String message;
 
-    ResponseType(String code, String message) {
+    ResultType(String code, String message) {
         this.code = code;
         this.message = message;
     }
