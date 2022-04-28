@@ -2,14 +2,13 @@ package com.example.auth.controller.v1;
 
 import com.example.auth.model.User;
 import com.example.auth.service.AuthService;
-import com.example.common.code.AuthCode;
+import com.example.common.dto.ResponseType;
 import com.example.common.dto.Response;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,13 +28,13 @@ public class AuthController {
         User user = authService.login(login.getId());
 
         if (user == null) {
-            response = new Response(AuthCode.AU002);
-            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+            response = new Response(ResponseType.UNKNOWN_USER);
+            return new ResponseEntity<>(response, response.getHttpCode());
         } else {
-            response = new Response(AuthCode.AU001, user);
+            response = new Response(ResponseType.OK, user);
         }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, response.getHttpCode());
     }
 
     @Getter
