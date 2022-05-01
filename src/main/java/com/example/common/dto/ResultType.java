@@ -16,7 +16,12 @@ public enum ResultType {
     REFRESH_TOKEN_REQUIRED("401005", "Refresh token required"),
     EXPIRED_REFRESH_TOKEN("401006", "Expired refresh token"),
 
-    PAGE_NOT_FOUND("404001", "Page not found");
+    PAGE_NOT_FOUND("404001", "Page not found"),
+
+    METHOD_NOT_ALLOWED("405001", "Http method is not allowed"),
+
+    DATA_ALREADY_EXIST("500001", "Data already exist"),
+    NOT_ALLOWED_OPERATION("500002", "Not allowed operation");
 
     private final String code;
     private final String message;
