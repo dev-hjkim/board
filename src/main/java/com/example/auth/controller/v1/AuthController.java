@@ -4,7 +4,7 @@ import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
 import com.example.common.dto.ResultType;
 import com.example.common.dto.Result;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -54,6 +54,7 @@ public class AuthController {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class Login {
         @NotEmpty
         String id;
@@ -63,6 +64,7 @@ public class AuthController {
 
     @Getter
     @Setter
+    @AllArgsConstructor
     public static class User {
         @NotEmpty
         String id;
