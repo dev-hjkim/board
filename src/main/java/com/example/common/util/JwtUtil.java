@@ -38,10 +38,10 @@ public class JwtUtil {
         long expirationTime;
         if ("ACCESS".equals(type)) {
             // 테스트용(30분)
-            expirationTime = Long.parseLong(expiration) * 500;
+            expirationTime = Long.parseLong(expiration) * 1000;
         } else {
             // 테스트용(1시간)
-            expirationTime = Long.parseLong(expiration) * 1000;
+            expirationTime = Long.parseLong(expiration) * 1000 * 2;
         }
         final Date expirationDate = new Date(createdDate.getTime() + expirationTime);
 

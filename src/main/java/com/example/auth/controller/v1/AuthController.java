@@ -1,6 +1,6 @@
 package com.example.auth.controller.v1;
 
-import com.example.auth.model.User;
+import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
 import com.example.common.dto.ResultType;
 import com.example.common.dto.Result;
@@ -12,32 +12,47 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 @RestController
+@RequestMapping(value = "/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthService authService;
 
-    @PostMapping(value="/login")
-    public ResponseEntity<Object> Login(@Valid @RequestBody Login login) {
+
+    @PostMapping(value="/signin")
+    public ResponseEntity<Object> signin(@Valid @RequestBody User user) {
         Result result;
 
-        User user = authService.login(login.getId());
+        Member member = new Member(user.getId(),
+                                user.getPassword(),
+                                user.getName());
+        Member registered = authService.signin(member);
+        result = new Result(ResultType.OK, registered);
+        return new ResponseEntity<>(result, result.parseHttpCode());
+    }
 
-        if (user == null) {
+    @PostMapping(value="/login")
+    public ResponseEntity<Object> login(@Valid @RequestBody Login login) {
+        Result result;
+
+        Member member = authService.login(login.getId());
+
+        if (member == null) {
             result = new Result(ResultType.UNKNOWN_USER);
-            return new ResponseEntity<>(result, result.getHttpCode());
-        } else {
-            result = new Result(ResultType.OK, user);
+            return new ResponseEntity<>(result, result.parseHttpCode());
         }
 
-        return new ResponseEntity<>(result, result.getHttpCode());
+        result = new Result(ResultType.OK, member);
+
+        return new ResponseEntity<>(result, result.parseHttpCode());
     }
 
     @Getter
@@ -47,5 +62,16 @@ public class AuthController {
         String id;
         @NotEmpty
         String password;
+    }
+
+    @Getter
+    @Setter
+    public static class User {
+        @NotEmpty
+        String id;
+        @NotEmpty
+        String password;
+        @NotEmpty
+        String name;
     }
 }

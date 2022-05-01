@@ -1,8 +1,10 @@
 package com.example.common.dto;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@Getter
 @NoArgsConstructor
 public class Result {
     String code;
@@ -20,7 +22,7 @@ public class Result {
         this.data = data;
     }
 
-    public HttpStatus getHttpCode() {
+    public HttpStatus parseHttpCode() {
         return HttpStatus.valueOf(Integer.parseInt(this.code.substring(0, 3)));
     }
 }

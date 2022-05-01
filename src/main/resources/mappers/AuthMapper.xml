@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.auth.repository.AuthRepository">
-    <select id="login" parameterType="String" resultType="com.example.auth.model.User">
-        select id, password, name, access_token as accessToken, refresh_token as refreshToken
-          from user
-         where id = #{id}
+    <insert id="signin" parameterType="com.example.auth.model.Member">
+        insert into member(id, pwd, name, reg_dtm, mod_dtm)
+            values(#{id}, #{pwd}, #{name}, now(), now())
+        <selectKey keyProperty="seq,id,pwd,name,regDtm,modDtm"
+                   resultType="com.example.auth.model.Member" order="AFTER">
+            select * FROM member WHERE id = #{id}
+        </selectKey>
+    </insert>
+
+    <select id="login" parameterType="String" resultType="com.example.auth.model.Member">
+        select id, pwd, name
+        from member
+        where id = #{id}
     </select>
 </mapper>
