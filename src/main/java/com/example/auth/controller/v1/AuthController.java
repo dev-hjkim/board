@@ -4,6 +4,7 @@ import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
 import com.example.common.dto.ResultType;
 import com.example.common.dto.Result;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -30,10 +31,7 @@ public class AuthController {
     @PostMapping(value="/signin")
     public ResponseEntity<Object> signin(@Valid @RequestBody User user) {
         Result result;
-
-        Member member = new Member(user.getId(),
-                                user.getPassword(),
-                                user.getName());
+        Member member = new Member(user.getId(), user.getPassword(), user.getName());
         Member registered = authService.signin(member);
         result = new Result(ResultType.OK, registered);
         return new ResponseEntity<>(result, result.parseHttpCode());
@@ -42,15 +40,14 @@ public class AuthController {
     @PostMapping(value="/login")
     public ResponseEntity<Object> login(@Valid @RequestBody Login login) {
         Result result;
+        Member member = new Member(login.getId(), login.getPassword());
+        Member loginOn = authService.login(member);
 
-        Member member = authService.login(login.getId());
-
-        if (member == null) {
+        if (loginOn == null) {
             result = new Result(ResultType.UNKNOWN_USER);
-            return new ResponseEntity<>(result, result.parseHttpCode());
+        } else {
+            result = new Result(ResultType.OK, loginOn);
         }
-
-        result = new Result(ResultType.OK, member);
 
         return new ResponseEntity<>(result, result.parseHttpCode());
     }

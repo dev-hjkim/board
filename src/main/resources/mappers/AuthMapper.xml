@@ -10,9 +10,10 @@
         </selectKey>
     </insert>
 
-    <select id="login" parameterType="String" resultType="com.example.auth.model.Member">
-        select id, pwd, name
+    <select id="login" parameterType="com.example.auth.model.Member" resultType="com.example.auth.model.Member">
+        select seq, id, name
         from member
         where id = #{id}
+          and pwd = #{pwd}
     </select>
 </mapper>

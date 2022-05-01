@@ -11,6 +11,7 @@ import java.util.Date;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Member {
+    @JsonIgnore
     String seq;
     String id;
     @JsonIgnore
@@ -25,5 +26,10 @@ public class Member {
         this.id = id;
         this.pwd = pwd;
         this.name = name;
+    }
+
+    public Member(String id, String pwd) {
+        this.id = id;
+        this.pwd = pwd;
     }
 }
