@@ -4,10 +4,7 @@ import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
 import com.example.common.dto.ResultType;
 import com.example.common.dto.Result;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +51,7 @@ public class AuthController {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     public static class Login {
         @NotEmpty
@@ -64,6 +62,7 @@ public class AuthController {
 
     @Getter
     @Setter
+    @Builder
     @AllArgsConstructor
     public static class User {
         @NotEmpty

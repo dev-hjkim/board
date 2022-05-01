@@ -33,7 +33,13 @@ class AuthControllerTest {
         DateFormat dateFormat = new SimpleDateFormat("ddhhmmss");
         String strNow = dateFormat.format(now);
 
-        String content = objectMapper.writeValueAsString(new AuthController.User("test" + strNow, "0000", "홍길동"));
+        String content = objectMapper.writeValueAsString(
+                AuthController.User.builder()
+                        .id("test" + strNow)
+                        .password("0000")
+                        .name("홍길동")
+                        .build());
+
         mvc.perform(post("/auth/signin")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
@@ -44,7 +50,12 @@ class AuthControllerTest {
 
     @Test
     void login() throws Exception {
-        String content = objectMapper.writeValueAsString(new AuthController.Login("hjkim", "asdf"));
+        String content = objectMapper.writeValueAsString(
+                AuthController.Login.builder()
+                        .id("hjkim")
+                        .password("asdf")
+                        .build());
+
         mvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")

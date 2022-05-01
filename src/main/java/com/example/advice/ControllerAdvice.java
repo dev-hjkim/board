@@ -47,8 +47,8 @@ public class ControllerAdvice {
 
     // DB: 중복 데이터
     @ExceptionHandler({DuplicateKeyException.class})
-    public ResponseEntity<?> handleDBDupError(DuplicateKeyException ex) {
-        log.info("handleDBDupError ex ::: {}", (Object) ex.getStackTrace());
+    public ResponseEntity<?> handleDBDuplicateError(DuplicateKeyException ex) {
+        log.info("handleDBDuplicateError ex ::: {}", (Object) ex.getStackTrace());
 
         Result result = new Result(ResultType.DATA_ALREADY_EXIST);
         return new ResponseEntity<Object>(result, result.parseHttpCode());
@@ -56,8 +56,8 @@ public class ControllerAdvice {
 
     // DB: not-null 항목 안넣은 경우
     @ExceptionHandler({DataIntegrityViolationException.class})
-    public ResponseEntity<?> handleDBNotNullError(DataIntegrityViolationException ex) {
-        log.info("handleDBNotNullError ex ::: {}", (Object) ex.getStackTrace());
+    public ResponseEntity<?> handleDBIntegrityError(DataIntegrityViolationException ex) {
+        log.info("handleDBIntegrityError ex ::: {}", (Object) ex.getStackTrace());
 
         Result result = new Result(ResultType.NOT_ALLOWED_OPERATION);
         return new ResponseEntity<Object>(result, result.parseHttpCode());
