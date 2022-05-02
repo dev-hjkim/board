@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class AuthFilter implements Filter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
