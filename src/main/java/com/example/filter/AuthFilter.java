@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,41 +16,31 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-//@Component
 @RequiredArgsConstructor
-public class AuthFilter implements Filter {
+public class AuthFilter extends OncePerRequestFilter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
-    private static JwtUtil jwtUtil;
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
+    private final JwtUtil jwtUtil;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-        String path = ((HttpServletRequest) request).getRequestURI();
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        String path = request.getRequestURI();
         if (path.startsWith("/v1/auth/")) {
-            chain.doFilter(httpRequest, httpResponse);
+            chain.doFilter(request, response);
         } else {
             // Request Header 에 Authorization 이 존재하지 않을 때
-            if (httpRequest.getHeader("Authorization") == null) {
+            if (request.getHeader("Authorization") == null) {
                 try {
-                    httpResponse = setHttpServletResponse(httpResponse, ResultType.ACCESS_TOKEN_REQUIRED);
+                    response = setHttpServletResponse(response, ResultType.ACCESS_TOKEN_REQUIRED);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             } else {
                 // Request Header 에서 token 문자열 받아오기
-                String token = httpRequest.getHeader("Authorization");
+                String token = request.getHeader("Authorization");
                 if (jwtUtil.isExpired(token)) {
                     try {
-                        httpResponse = setHttpServletResponse(httpResponse, ResultType.EXPIRED_ACCESS_TOKEN);
+                        response = setHttpServletResponse(response, ResultType.EXPIRED_ACCESS_TOKEN);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -58,7 +48,7 @@ public class AuthFilter implements Filter {
 
                 String userSeq = jwtUtil.getUserSeqFromToken(token);
             }
-            chain.doFilter(httpRequest, httpResponse);
+            chain.doFilter(request, response);
         }
     }
 
@@ -74,6 +64,6 @@ public class AuthFilter implements Filter {
 
     @Override
     public void destroy() {
-        Filter.super.destroy();
+        super.destroy();
     }
 }
