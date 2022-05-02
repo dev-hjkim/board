@@ -35,10 +35,9 @@ public class AuthFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String path = ((HttpServletRequest) request).getRequestURI();
-        if (path.startsWith("/auth/")) {
+        if (path.startsWith("/v1/auth/")) {
             chain.doFilter(httpRequest, httpResponse);
         } else {
-
             // Request Header 에 Authorization 이 존재하지 않을 때
             if (httpRequest.getHeader("Authorization") == null) {
                 try {
@@ -46,20 +45,19 @@ public class AuthFilter implements Filter {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            }
-
-            // Request Header 에서 token 문자열 받아오기
-            String token = httpRequest.getHeader("Authorization");
-            if (jwtUtil.isExpired(token)) {
-                try {
-                    httpResponse = setHttpServletResponse(httpResponse, ResultType.EXPIRED_ACCESS_TOKEN);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+            } else {
+                // Request Header 에서 token 문자열 받아오기
+                String token = httpRequest.getHeader("Authorization");
+                if (jwtUtil.isExpired(token)) {
+                    try {
+                        httpResponse = setHttpServletResponse(httpResponse, ResultType.EXPIRED_ACCESS_TOKEN);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
+
+                String userSeq = jwtUtil.getUserSeqFromToken(token);
             }
-
-            String userSeq = jwtUtil.getUserSeqFromToken(token);
-
             chain.doFilter(httpRequest, httpResponse);
         }
     }
@@ -68,8 +66,8 @@ public class AuthFilter implements Filter {
         Result result = new Result(resultType);
         response.setStatus(result.parseHttpCode().value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        response.getOutputStream()
-                .print(new ObjectMapper().writeValueAsString(result));
+        response.getWriter()
+                .write(new ObjectMapper().writeValueAsString(result));
 
         return response;
     }

@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     final Logger logger = LoggerFactory.getLogger(AuthController.class);
