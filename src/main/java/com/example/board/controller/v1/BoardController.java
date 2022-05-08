@@ -18,9 +18,10 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping(value="/")
+    @GetMapping(value="/lists")
     public ResponseEntity<Object> getBoardList(@RequestHeader String userSeq) {
         Result result;
+        System.out.println("getBoardList Method");
         System.out.println(userSeq);
         result = new Result(ResultType.OK, null);
         return new ResponseEntity<>(result, result.parseHttpCode());

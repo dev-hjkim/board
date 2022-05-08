@@ -8,7 +8,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +26,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        AddHeaderWrapper wrapper = new AddHeaderWrapper(request);
         String path = request.getRequestURI();
         if (path.startsWith("/v1/auth/")) {
             chain.doFilter(request, response);
@@ -60,8 +60,8 @@ public class AuthFilter extends OncePerRequestFilter {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.println(userSeq);
-//                chain.doFilter(request, response);
+                wrapper.addHeader("userSeq", userSeq);
+                chain.doFilter(wrapper, response);
             }
         }
     }
