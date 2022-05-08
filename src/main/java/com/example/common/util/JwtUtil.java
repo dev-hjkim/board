@@ -1,6 +1,7 @@
 package com.example.common.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +57,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims getClaimsFromToken(String token) {
+    public Claims getClaimsFromToken(String token) throws Exception {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -64,12 +65,12 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public boolean isExpired(String token) {
+    public boolean isExpired(String token) throws Exception {
         final Date expiration = getClaimsFromToken(token).getExpiration();
         return expiration.before(new Date());
     }
 
-    public String getUserSeqFromToken(String token) {
+    public String getUserSeqFromToken(String token) throws Exception {
         return getClaimsFromToken(token).get("seq", String.class);
     }
 
