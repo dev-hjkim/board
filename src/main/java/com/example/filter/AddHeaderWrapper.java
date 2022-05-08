@@ -9,7 +9,7 @@ public class AddHeaderWrapper extends HttpServletRequestWrapper {
         super(request);
     }
 
-    private Map<String, String> headerMap = new HashMap<String, String>();
+    private final Map<String, String> headerMap = new HashMap<>();
 
     public void addHeader(String name, String value) {
         headerMap.put(name, value);
@@ -27,9 +27,7 @@ public class AddHeaderWrapper extends HttpServletRequestWrapper {
     @Override
     public Enumeration<String> getHeaderNames() {
         List<String> names = Collections.list(super.getHeaderNames());
-        for (String name : headerMap.keySet()) {
-            names.add(name);
-        }
+        names.addAll(headerMap.keySet());
         return Collections.enumeration(names);
     }
 
