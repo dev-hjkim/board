@@ -54,6 +54,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            request.setAttribute("userSeq", userSeq);
             System.out.println(userSeq);
             return true;
         }
