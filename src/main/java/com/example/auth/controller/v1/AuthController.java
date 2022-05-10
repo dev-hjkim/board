@@ -2,8 +2,8 @@ package com.example.auth.controller.v1;
 
 import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
-import com.example.common.dto.ResultType;
 import com.example.common.dto.Result;
+import com.example.common.dto.ResultType;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,7 +3,6 @@ package com.example.interceptor;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.util.JwtUtil;
-import com.example.filter.AddHeaderWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
