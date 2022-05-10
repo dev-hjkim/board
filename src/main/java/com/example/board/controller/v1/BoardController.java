@@ -26,4 +26,12 @@ public class BoardController {
         result = new Result(ResultType.OK, null);
         return new ResponseEntity<>(result, result.parseHttpCode());
     }
+
+    @GetMapping(value="/interceptor/lists")
+    public ResponseEntity<Object> getBoardListWithInterceptor() {
+        Result result;
+        System.out.println("getBoardListWithInterceptor Method");
+        result = new Result(ResultType.OK, null);
+        return new ResponseEntity<>(result, result.parseHttpCode());
+    }
 }
