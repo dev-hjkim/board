@@ -21,7 +21,7 @@ public class ControllerAdvice {
     // method 잘못된 경우
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public ResponseEntity<?> handleWrongMethod(HttpRequestMethodNotSupportedException ex) {
-        log.info("handleWrongMethod ex ::: {}", (Object) ex.getStackTrace());
+        log.error("handleWrongMethod ex :::", ex);
 
         Result result = new Result(ResultType.METHOD_NOT_ALLOWED);
         return new ResponseEntity<Object>(result, result.parseHttpCode());
@@ -30,7 +30,7 @@ public class ControllerAdvice {
     // 필수 파라미터 아예 없을 때(파라미터 중 아무것도 전달하지 않음)
     @ExceptionHandler({MissingServletRequestParameterException.class})
     public ResponseEntity<?> handleMissingGetReqParam(MissingServletRequestParameterException ex) {
-        log.info("handleMissingGetReqParam ex ::: {}", (Object) ex.getStackTrace());
+        log.error("handleMissingGetReqParam ex :::", ex);
 
         Result result = new Result(ResultType.MISSING_PARAMETER);
         return new ResponseEntity<Object>(result, result.parseHttpCode());
@@ -39,7 +39,7 @@ public class ControllerAdvice {
     // validation 조건 만족하지 못한 경우
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<?> handleMissingPostReqParam(MethodArgumentNotValidException ex) {
-        log.info("handleMissingPostReqParam ex ::: {}", (Object) ex.getStackTrace());
+        log.error("handleMissingPostReqParam ex :::", ex);
 
         Result result = new Result(ResultType.INVALID_PARAMETER);
         return new ResponseEntity<Object>(result, result.parseHttpCode());
@@ -48,7 +48,7 @@ public class ControllerAdvice {
     // DB: 중복 데이터
     @ExceptionHandler({DuplicateKeyException.class})
     public ResponseEntity<?> handleDBDuplicateError(DuplicateKeyException ex) {
-        log.info("handleDBDuplicateError ex ::: {}", (Object) ex.getStackTrace());
+        log.error("handleDBDuplicateError ex :::", ex);
 
         Result result = new Result(ResultType.DATA_ALREADY_EXIST);
         return new ResponseEntity<Object>(result, result.parseHttpCode());
@@ -57,7 +57,7 @@ public class ControllerAdvice {
     // DB: not-null 항목 안넣은 경우
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<?> handleDBIntegrityError(DataIntegrityViolationException ex) {
-        log.info("handleDBIntegrityError ex ::: {}", (Object) ex.getStackTrace());
+        log.error("handleDBIntegrityError ex :::", ex);
 
         Result result = new Result(ResultType.NOT_ALLOWED_OPERATION);
         return new ResponseEntity<Object>(result, result.parseHttpCode());
