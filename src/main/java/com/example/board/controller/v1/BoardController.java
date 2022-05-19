@@ -20,18 +20,18 @@ public class BoardController {
 
     @GetMapping(value="/lists")
     public ResponseEntity<Object> getBoardList(@RequestHeader String userSeq) {
+        logger.debug("getBoardList ::: userSeq {}", userSeq);
+
         Result result;
-        System.out.println("getBoardList Method");
-        System.out.println(userSeq);
         result = new Result(ResultType.OK, null);
         return new ResponseEntity<>(result, result.parseHttpCode());
     }
 
     @GetMapping(value="/interceptor/lists")
     public ResponseEntity<Object> getBoardListWithInterceptor(@RequestAttribute String userSeq) {
+        logger.debug("getBoardListWithInterceptor ::: userSeq {}", userSeq);
+
         Result result;
-        System.out.println("getBoardListWithInterceptor Method");
-        System.out.println(userSeq);
         result = new Result(ResultType.OK, null);
         return new ResponseEntity<>(result, result.parseHttpCode());
     }

@@ -32,20 +32,19 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (token == null || "".equals(token)) {
             setHttpServletResponse(response, ResultType.ACCESS_TOKEN_REQUIRED);
         } else {
-            // TODO :: Exception 정리(JwtUtil 쪽으로?)
             // token 유효성 확인
             try {
                 jwtUtil.isExpired(token);
             } catch (ExpiredJwtException ex) {
-                ex.printStackTrace();
+                logger.error("ExpiredJwtException :: ex", ex);
                 setHttpServletResponse(response, ResultType.EXPIRED_ACCESS_TOKEN);
             } catch (MalformedJwtException ex) {
-                ex.printStackTrace();
+                logger.error("MalformedJwtException :: ex", ex);
                 setHttpServletResponse(response, ResultType.INVALID_TOKEN);
-            } catch (JwtException ex) { // TODO :: 여러 error case를 전부 처리할지? 발생할 것 같은 에러만 처리할지?
-                ex.printStackTrace();
+            } catch (JwtException ex) {
+                logger.error("JwtException :: ex", ex);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                logger.error("Exception :: ex", ex);
             }
 
             String userSeq = null;
@@ -56,7 +55,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
 
             request.setAttribute("userSeq", userSeq);
-            System.out.println(userSeq);
             return true;
         }
         return false;
