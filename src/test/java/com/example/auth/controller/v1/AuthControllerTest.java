@@ -22,11 +22,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthControllerTest {
 
-    @Autowired
     private MockMvc mvc;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    public void setAuthControllerTest(MockMvc mvc, ObjectMapper objectMapper) {
+        this.mvc = mvc;
+        this.objectMapper = objectMapper;
+    }
 
     @Test
     void signin() throws Exception {
@@ -41,7 +44,7 @@ class AuthControllerTest {
                         .name("홍길동")
                         .build());
 
-        mvc.perform(post("/auth/signin")
+        mvc.perform(post("/v1/auth/signin")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(content))
@@ -57,7 +60,7 @@ class AuthControllerTest {
                         .password("asdf")
                         .build());
 
-        mvc.perform(post("/auth/login")
+        mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(content))
