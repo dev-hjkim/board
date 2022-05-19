@@ -1,6 +1,7 @@
 package com.example.auth.controller.v1;
 
-import com.example.auth.model.Member;
+import com.example.auth.dto.Login;
+import com.example.auth.dto.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthControllerTest {
 
-    @Autowired
     private MockMvc mvc;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    public void setAuthControllerTest(MockMvc mvc, ObjectMapper objectMapper) {
+        this.mvc = mvc;
+        this.objectMapper = objectMapper;
+    }
 
     @Test
     void signin() throws Exception {
@@ -34,13 +38,13 @@ class AuthControllerTest {
         String strNow = dateFormat.format(now);
 
         String content = objectMapper.writeValueAsString(
-                AuthController.User.builder()
+                User.builder()
                         .id("test" + strNow)
                         .password("0000")
                         .name("홍길동")
                         .build());
 
-        mvc.perform(post("/auth/signin")
+        mvc.perform(post("/v1/auth/signin")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(content))
@@ -51,12 +55,12 @@ class AuthControllerTest {
     @Test
     void login() throws Exception {
         String content = objectMapper.writeValueAsString(
-                AuthController.Login.builder()
+                Login.builder()
                         .id("hjkim")
                         .password("asdf")
                         .build());
 
-        mvc.perform(post("/auth/login")
+        mvc.perform(post("/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(content))
