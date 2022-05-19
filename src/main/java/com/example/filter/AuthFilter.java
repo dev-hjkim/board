@@ -56,8 +56,8 @@ public class AuthFilter extends OncePerRequestFilter {
                 String userSeq = null;
                 try {
                     userSeq = jwtUtil.getUserSeqFromToken(token);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ex) {
+                    logger.error("Exception :: ex", ex);
                 }
                 wrapper.addHeader("userSeq", userSeq);
                 chain.doFilter(wrapper, response);

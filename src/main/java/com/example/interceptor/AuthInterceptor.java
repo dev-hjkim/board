@@ -50,8 +50,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             String userSeq = null;
             try {
                 userSeq = jwtUtil.getUserSeqFromToken(token);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                logger.error("Exception :: ex", ex);
             }
 
             request.setAttribute("userSeq", userSeq);
