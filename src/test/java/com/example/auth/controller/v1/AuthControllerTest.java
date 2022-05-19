@@ -1,6 +1,7 @@
 package com.example.auth.controller.v1;
 
-import com.example.auth.model.Member;
+import com.example.auth.dto.Login;
+import com.example.auth.dto.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ class AuthControllerTest {
         String strNow = dateFormat.format(now);
 
         String content = objectMapper.writeValueAsString(
-                AuthController.User.builder()
+                User.builder()
                         .id("test" + strNow)
                         .password("0000")
                         .name("홍길동")
@@ -51,7 +52,7 @@ class AuthControllerTest {
     @Test
     void login() throws Exception {
         String content = objectMapper.writeValueAsString(
-                AuthController.Login.builder()
+                Login.builder()
                         .id("hjkim")
                         .password("asdf")
                         .build());

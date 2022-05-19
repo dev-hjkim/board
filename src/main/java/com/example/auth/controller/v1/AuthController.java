@@ -1,5 +1,7 @@
 package com.example.auth.controller.v1;
 
+import com.example.auth.dto.Login;
+import com.example.auth.dto.User;
 import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
 import com.example.common.dto.ResultType;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 
 @RestController
 @RequestMapping(value = "/v1/auth")
@@ -47,29 +48,5 @@ public class AuthController {
         }
 
         return new ResponseEntity<>(result, result.parseHttpCode());
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    @AllArgsConstructor
-    public static class Login {
-        @NotEmpty
-        String id;
-        @NotEmpty
-        String password;
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    @AllArgsConstructor
-    public static class User {
-        @NotEmpty
-        String id;
-        @NotEmpty
-        String password;
-        @NotEmpty
-        String name;
     }
 }
