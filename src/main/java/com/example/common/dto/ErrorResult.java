@@ -9,24 +9,16 @@ import org.springframework.http.HttpStatus;
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Result {
+public class ErrorResult {
     @JsonIgnore
     HttpStatus status;
 
     String code;
     String message;
-    Object data;
 
-    public Result(ResultType resultType) {
+    public ErrorResult(ResultType resultType) {
         this.status = resultType.getStatus();
         this.code = resultType.getCode();
         this.message = resultType.getMessage();
-    }
-
-    public Result(ResultType resultType, Object data) {
-        this.status = resultType.getStatus();
-        this.code = resultType.getCode();
-        this.message = resultType.getMessage();
-        this.data = data;
     }
 }
