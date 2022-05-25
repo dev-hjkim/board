@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @RestControllerAdvice
-public class ControllerAdvice {
+public class ExceptionControllerAdvice {
     final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // method 잘못된 경우
