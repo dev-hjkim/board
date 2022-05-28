@@ -23,10 +23,12 @@ public class ResultControllerAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (body instanceof ErrorResult) {
             ErrorResult errorResult = (ErrorResult) body;
-            return new ResponseEntity<>(errorResult, errorResult.getStatus());
+            response.setStatusCode(errorResult.getStatus());
+            return errorResult;
         }
 
         Result result = (Result) body;
-        return new ResponseEntity<>(result, result.getStatus());
+        response.setStatusCode(result.getStatus());
+        return result;
     }
 }
