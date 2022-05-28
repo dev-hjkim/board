@@ -27,6 +27,8 @@ public class AuthController {
 
     @PostMapping(value="/signin")
     public Result signin(@Valid @RequestBody User user) {
+        logger.info("signin ::: {}", user);
+
         Member member = new Member(user.getId(), user.getPassword(), user.getName());
         Member registered = authService.signin(member);
         return new Result(ResultType.OK, registered);
@@ -34,6 +36,8 @@ public class AuthController {
 
     @PostMapping(value="/login")
     public Result login(@Valid @RequestBody Login login) {
+        logger.info("login ::: {}", login);
+
         Member member = new Member(login.getId(), login.getPassword());
         Member loginOn = authService.login(member);
 
