@@ -68,7 +68,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private void setHttpServletResponse(HttpServletResponse response, ResultType resultType) throws IOException {
         Result result = new Result(resultType);
-        response.setStatus(result.parseHttpCode().value());
+        response.setStatus(result.getStatus().value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
         String content = new ObjectMapper().writeValueAsString(result);
         response.setContentLength(content.length());

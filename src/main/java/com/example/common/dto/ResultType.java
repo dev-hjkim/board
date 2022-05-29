@@ -1,34 +1,42 @@
 package com.example.common.dto;
 
+import org.springframework.http.HttpStatus;
+
 public enum ResultType {
-    OK("200000", "OK"),
+    OK(HttpStatus.OK, "200000", "OK"),
 
-    NO_CONTENT("204001", "No content"),
+    NO_CONTENT(HttpStatus.NO_CONTENT, "204001", "No content"),
 
-    MISSING_PARAMETER("400003", "Missing parameter"),
-    INVALID_PARAMETER("400004", "Invalid parameter"),
-    USER_ALREADY_ENROLLED("400005", "User already enrolled"),
+    MISSING_PARAMETER(HttpStatus.BAD_REQUEST, "400003", "Missing parameter"),
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "400004", "Invalid parameter"),
+    USER_ALREADY_ENROLLED(HttpStatus.BAD_REQUEST, "400005", "User already enrolled"),
 
-    UNKNOWN_USER("401001", "Unknown user"),
-    ACCESS_TOKEN_REQUIRED("401002", "Access token required"),
-    INVALID_TOKEN("401003", "Invalid token"),
-    EXPIRED_ACCESS_TOKEN("401004", "Expired access token"),
-    REFRESH_TOKEN_REQUIRED("401005", "Refresh token required"),
-    EXPIRED_REFRESH_TOKEN("401006", "Expired refresh token"),
+    UNKNOWN_USER(HttpStatus.UNAUTHORIZED, "401001", "Unknown user"),
+    ACCESS_TOKEN_REQUIRED(HttpStatus.UNAUTHORIZED, "401002", "Access token required"),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "401003", "Invalid token"),
+    EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "401004", "Expired access token"),
+    REFRESH_TOKEN_REQUIRED(HttpStatus.UNAUTHORIZED, "401005", "Refresh token required"),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "401006", "Expired refresh token"),
 
-    PAGE_NOT_FOUND("404001", "Page not found"),
+    PAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "404001", "Page not found"),
 
-    METHOD_NOT_ALLOWED("405001", "Http method is not allowed"),
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "405001", "Http method is not allowed"),
 
-    DATA_ALREADY_EXIST("500001", "Data already exist"),
-    NOT_ALLOWED_OPERATION("500002", "Not allowed operation");
+    DATA_ALREADY_EXIST(HttpStatus.INTERNAL_SERVER_ERROR, "500001", "Data already exist"),
+    NOT_ALLOWED_OPERATION(HttpStatus.INTERNAL_SERVER_ERROR, "500002", "Not allowed operation");
 
+    private final HttpStatus status;
     private final String code;
     private final String message;
 
-    ResultType(String code, String message) {
+    ResultType(HttpStatus status, String code, String message) {
+        this.status = status;
         this.code = code;
         this.message = message;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
     }
 
     public String getCode() {

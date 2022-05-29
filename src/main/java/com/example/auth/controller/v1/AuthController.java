@@ -9,7 +9,6 @@ import com.example.common.dto.ResultType;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,26 +26,21 @@ public class AuthController {
 
 
     @PostMapping(value="/signin")
-    public ResponseEntity<Object> signin(@Valid @RequestBody User user) {
-        Result result;
+    public Result signin(@Valid @RequestBody User user) {
         Member member = new Member(user.getId(), user.getPassword(), user.getName());
         Member registered = authService.signin(member);
-        result = new Result(ResultType.OK, registered);
-        return new ResponseEntity<>(result, result.parseHttpCode());
+        return new Result(ResultType.OK, registered);
     }
 
     @PostMapping(value="/login")
-    public ResponseEntity<Object> login(@Valid @RequestBody Login login) {
-        Result result;
+    public Result login(@Valid @RequestBody Login login) {
         Member member = new Member(login.getId(), login.getPassword());
         Member loginOn = authService.login(member);
 
         if (loginOn == null) {
-            result = new Result(ResultType.UNKNOWN_USER);
+            return new Result(ResultType.UNKNOWN_USER);
         } else {
-            result = new Result(ResultType.OK, loginOn);
+            return new Result(ResultType.OK, loginOn);
         }
-
-        return new ResponseEntity<>(result, result.parseHttpCode());
     }
 }
