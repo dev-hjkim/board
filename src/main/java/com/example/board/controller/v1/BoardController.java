@@ -19,15 +19,15 @@ public class BoardController {
 
     @GetMapping(value="/lists")
     public Result getBoardList(@RequestHeader String userSeq) {
-        logger.debug("getBoardList ::: userSeq {}", userSeq);
+        logger.info("getBoardList ::: userSeq {}", userSeq);
 
-        return new Result(ResultType.OK, null);
+        return null;
     }
 
     @GetMapping(value="/interceptor/lists")
     public Result getBoardListWithInterceptor(@RequestAttribute String userSeq) {
-        logger.debug("getBoardListWithInterceptor ::: userSeq {}", userSeq);
+        logger.info("getBoardListWithInterceptor ::: userSeq {}", userSeq);
 
-        return new Result(ResultType.OK, null);
+        return null;
     }
 }

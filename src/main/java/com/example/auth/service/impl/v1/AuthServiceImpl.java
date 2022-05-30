@@ -23,8 +23,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Member login(Member member) {
         Member registered = authRepository.login(member);
-        registered.setAccessToken(jwtUtil.generate(registered.getSeq(),"ACCESS"));
-        registered.setRefreshToken(jwtUtil.generate(registered.getSeq(), "REFRESH"));
+
+        if (registered != null) {
+            registered.setAccessToken(jwtUtil.generate(registered.getSeq(),"ACCESS"));
+            registered.setRefreshToken(jwtUtil.generate(registered.getSeq(), "REFRESH"));
+        }
+
         return registered;
     }
 }

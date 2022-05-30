@@ -4,8 +4,6 @@ import com.example.auth.dto.Login;
 import com.example.auth.dto.User;
 import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
-import com.example.common.dto.Result;
-import com.example.common.dto.ResultType;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,25 +24,18 @@ public class AuthController {
 
 
     @PostMapping(value="/signin")
-    public Result signin(@Valid @RequestBody User user) {
+    public Member signin(@Valid @RequestBody User user) {
         logger.info("signin ::: {}", user);
 
         Member member = new Member(user.getId(), user.getPassword(), user.getName());
-        Member registered = authService.signin(member);
-        return new Result(ResultType.OK, registered);
+        return authService.signin(member);
     }
 
     @PostMapping(value="/login")
-    public Result login(@Valid @RequestBody Login login) {
+    public Member login(@Valid @RequestBody Login login) {
         logger.info("login ::: {}", login);
 
         Member member = new Member(login.getId(), login.getPassword());
-        Member loginOn = authService.login(member);
-
-        if (loginOn == null) {
-            return new Result(ResultType.UNKNOWN_USER);
-        } else {
-            return new Result(ResultType.OK, loginOn);
-        }
+        return authService.login(member);
     }
 }

@@ -23,10 +23,10 @@ public class Result {
         this.message = resultType.getMessage();
     }
 
-    public Result(ResultType resultType, Object data) {
-        this.status = resultType.getStatus();
-        this.code = resultType.getCode();
-        this.message = resultType.getMessage();
+    public Result(Object data) {
+        this.status = HttpStatus.OK;
+        this.code = "200000";
+        this.message = "OK";
         this.data = data;
     }
 }
