@@ -9,6 +9,8 @@ import com.example.common.dto.ResultType;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@RestController
+@Controller
 @RequestMapping(value = "/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
@@ -33,14 +35,15 @@ public class AuthController {
     }
 
     @PostMapping(value="/login")
-    public Result login(@Valid @RequestBody Login login) {
+    public String login(ModelMap model, @Valid @RequestBody Login login) {
         Member member = new Member(login.getId(), login.getPassword());
         Member loginOn = authService.login(member);
 
         if (loginOn == null) {
-            return new Result(ResultType.UNKNOWN_USER);
+            model.addAttribute("result", new Result(ResultType.UNKNOWN_USER));
         } else {
-            return new Result(ResultType.OK, loginOn);
+            model.addAttribute("result", new Result(ResultType.OK, loginOn));
         }
+        return "resultView";
     }
 }
