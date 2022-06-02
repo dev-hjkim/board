@@ -14,6 +14,4 @@ public class User {
     String id;
     @NotEmpty
     String password;
-    @NotEmpty
-    String name;
 }

@@ -27,7 +27,7 @@ public class AuthController {
     public Member signin(@Valid @RequestBody User user) {
         logger.info("signin ::: {}", user);
 
-        Member member = new Member(user.getId(), user.getPassword(), user.getName());
+        Member member = new Member(user.getId(), user.getPassword());
         return authService.signin(member);
     }
 

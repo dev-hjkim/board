@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.auth.repository.AuthRepository">
     <insert id="signin" parameterType="com.example.auth.model.Member">
-        insert into member(id, pwd, name, reg_dtm, mod_dtm)
-            values(#{id}, #{pwd}, #{name}, now(), now())
-        <selectKey keyProperty="seq,id,pwd,name,regDtm,modDtm"
+        insert into tb_member(user_id, password)
+            values(#{userId}, #{password})
+        <selectKey keyProperty="memberNo,userId,password,regDt,updDt"
                    resultType="com.example.auth.model.Member" order="AFTER">
-            select * FROM member WHERE id = #{id}
+            select * FROM tb_member WHERE user_id = #{userId}
         </selectKey>
     </insert>
 
     <select id="login" parameterType="com.example.auth.model.Member" resultType="com.example.auth.model.Member">
-        select seq, id, name
-        from member
-        where id = #{id}
-          and pwd = #{pwd}
+        select member_no, user_id
+        from tb_member
+        where user_id = #{userId}
+          and password = #{password}
     </select>
 </mapper>

@@ -7,6 +7,7 @@ import com.example.common.dto.ResultType;
 import com.example.common.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtil jwtUtil;
 
     @Override
+    @Transactional
     public Member signin(Member member) {
         authRepository.signin(member);
         return member;
@@ -28,8 +30,8 @@ public class AuthServiceImpl implements AuthService {
         if (registered == null) {
             throw new NullPointerException(ResultType.UNKNOWN_USER.getCode());
         }
-        registered.setAccessToken(jwtUtil.generate(registered.getSeq(),"ACCESS"));
-        registered.setRefreshToken(jwtUtil.generate(registered.getSeq(), "REFRESH"));
+        registered.setAccessToken(jwtUtil.generate(registered.getMemberNo(),"ACCESS"));
+        registered.setRefreshToken(jwtUtil.generate(registered.getMemberNo(), "REFRESH"));
 
         return registered;
     }
