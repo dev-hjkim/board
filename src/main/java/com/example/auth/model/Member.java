@@ -18,8 +18,6 @@ public class Member {
     String userId;
     @JsonIgnore
     String password;
-    String accessToken;
-    String refreshToken;
     Date regDt;
     Date updDt;
 

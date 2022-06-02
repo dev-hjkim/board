@@ -32,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping(value="/login")
-    public Member login(@Valid @RequestBody Login login) {
+    public User login(@Valid @RequestBody Login login) {
         logger.info("login ::: {}", login);
 
         Member member = new Member(login.getId(), login.getPassword());
