@@ -23,6 +23,13 @@ public class AuthController {
     private final AuthService authService;
 
 
+    /**
+     * 회원가입
+     *
+     * @author hjkim
+     * @param user-id, password
+     * @return member-userId, regDt, updDt
+     */
     @PostMapping(value="/signin")
     public Member signin(@Valid @RequestBody User user) {
         logger.info("signin ::: {}", user);
@@ -31,6 +38,13 @@ public class AuthController {
         return authService.signin(member);
     }
 
+    /**
+     * 로그인
+     *
+     * @author hjkim
+     * @param login-id, password
+     * @return user-id, accessToken, refreshToken
+     */
     @PostMapping(value="/login")
     public User login(@Valid @RequestBody Login login) {
         logger.info("login ::: {}", login);
