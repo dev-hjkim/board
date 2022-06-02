@@ -2,6 +2,7 @@ package com.example.advice;
 
 import com.example.common.dto.ErrorResult;
 import com.example.common.dto.ResultType;
+import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -55,5 +56,16 @@ public class ExceptionControllerAdvice {
         log.error("handleDBIntegrityError ex :::", ex);
 
         return new ErrorResult(ResultType.NOT_ALLOWED_OPERATION);
+    }
+
+    @ExceptionHandler({NullPointerException.class})
+    public ErrorResult handleNullError(NullPointerException ex) {
+        log.error("handleNullError ex :::", ex);
+
+        if (ex.getMessage().equals(ResultType.UNKNOWN_USER.getCode())) {
+            return new ErrorResult(ResultType.UNKNOWN_USER);
+        } else {
+            return new ErrorResult(ResultType.NO_CONTENT);
+        }
     }
 }
