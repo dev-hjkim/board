@@ -47,8 +47,6 @@ public class AuthFilter extends OncePerRequestFilter {
                 } catch (MalformedJwtException ex) {
                     logger.error("MalformedJwtException :: ex", ex);
                     setHttpServletResponse(response, ResultType.INVALID_TOKEN);
-                } catch (JwtException ex) {
-                    logger.error("JwtException :: ex", ex);
                 } catch (Exception ex) {
                     logger.error("Exception :: ex", ex);
                 }
