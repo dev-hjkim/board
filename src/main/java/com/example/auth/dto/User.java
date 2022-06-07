@@ -1,21 +1,29 @@
 package com.example.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-@Setter
+@ToString
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     @NotEmpty
     String id;
+
     @NotEmpty
     String password;
-    @NotEmpty
-    String name;
+
+    String accessToken;
+    String refreshToken;
+
+    public User(String id, String accessToken, String refreshToken) {
+        this.id = id;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
 }

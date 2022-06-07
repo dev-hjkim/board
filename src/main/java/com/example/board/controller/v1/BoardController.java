@@ -19,15 +19,15 @@ public class BoardController {
 
     @GetMapping(value="/lists")
     public Result getBoardList(@RequestHeader String userSeq) {
-        System.out.println("getBoardList Method");
-        System.out.println(userSeq);
-        return new Result(ResultType.OK, null);
+        logger.info("getBoardList ::: userSeq {}", userSeq);
+
+        return null;
     }
 
     @GetMapping(value="/interceptor/lists")
     public Result getBoardListWithInterceptor(@RequestAttribute String userSeq) {
-        System.out.println("getBoardListWithInterceptor Method");
-        System.out.println(userSeq);
-        return new Result(ResultType.OK, null);
+        logger.info("getBoardListWithInterceptor ::: userSeq {}", userSeq);
+
+        return null;
     }
 }

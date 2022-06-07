@@ -41,7 +41,6 @@ class AuthControllerTest {
                 User.builder()
                         .id("test" + strNow)
                         .password("0000")
-                        .name("홍길동")
                         .build());
 
         mvc.perform(post("/v1/auth/signin")

@@ -37,6 +37,10 @@ dependencies {
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // slf4j logback
+    implementation('org.slf4j:jcl-over-slf4j')
+    implementation('ch.qos.logback:logback-classic')
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

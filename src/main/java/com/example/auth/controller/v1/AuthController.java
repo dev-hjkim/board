@@ -4,13 +4,9 @@ import com.example.auth.dto.Login;
 import com.example.auth.dto.User;
 import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
-import com.example.common.dto.Result;
-import com.example.common.dto.ResultType;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping(value = "/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
@@ -27,23 +23,33 @@ public class AuthController {
     private final AuthService authService;
 
 
+    /**
+     * 회원가입
+     *
+     * @author hjkim
+     * @param user-id, password
+     * @return member-userId, regDt, updDt
+     */
     @PostMapping(value="/signin")
-    public Result signin(@Valid @RequestBody User user) {
-        Member member = new Member(user.getId(), user.getPassword(), user.getName());
-        Member registered = authService.signin(member);
-        return new Result(ResultType.OK, registered);
+    public Member signin(@Valid @RequestBody User user) {
+        logger.info("signin ::: {}", user);
+
+        Member member = new Member(user.getId(), user.getPassword());
+        return authService.signin(member);
     }
 
+    /**
+     * 로그인
+     *
+     * @author hjkim
+     * @param login-id, password
+     * @return user-id, accessToken, refreshToken
+     */
     @PostMapping(value="/login")
-    public String login(ModelMap model, @Valid @RequestBody Login login) {
-        Member member = new Member(login.getId(), login.getPassword());
-        Member loginOn = authService.login(member);
+    public User login(@Valid @RequestBody Login login) {
+        logger.info("login ::: {}", login);
 
-        if (loginOn == null) {
-            model.addAttribute("result", new Result(ResultType.UNKNOWN_USER));
-        } else {
-            model.addAttribute("result", new Result(ResultType.OK, loginOn));
-        }
-        return "resultView";
+        Member member = new Member(login.getId(), login.getPassword());
+        return authService.login(member);
     }
 }
