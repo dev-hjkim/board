@@ -7,10 +7,7 @@ import com.example.auth.service.AuthService;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -51,5 +48,33 @@ public class AuthController {
 
         Member member = new Member(login.getId(), login.getPassword());
         return authService.login(member);
+    }
+
+    /**
+     * 로그아웃
+     *
+     * @author hjkim
+     * @param
+     * @return null
+     */
+    @PostMapping(value="/logout")
+    public Object logout() {
+        logger.info("logout ::: ");
+
+        return null;
+    }
+
+    /**
+     * 토큰갱신
+     *
+     * @author hjkim
+     * @param userSeq
+     * @return user-id, accessToken, refreshToken
+     */
+    @GetMapping(value="/refresh")
+    public User refreshToken(@RequestAttribute String userSeq) {
+        logger.info("refreshToken ::: {}", userSeq);
+
+        return authService.refreshToken(userSeq);
     }
 }

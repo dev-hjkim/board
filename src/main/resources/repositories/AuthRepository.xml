@@ -20,4 +20,10 @@
         where user_id = #{userId}
           and password = #{password}
     </select>
+
+    <select id="findUser" parameterType="String" resultType="com.example.auth.model.Member">
+        select member_no, user_id
+        from tb_member
+        where member_no = #{userSeq}
+    </select>
 </mapper>

@@ -5,7 +5,6 @@ import com.example.common.dto.ResultType;
 import com.example.common.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -58,7 +57,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         return false;
     }
 
-    private void setHttpServletResponse(HttpServletResponse response, ResultType resultType) throws IOException {
+    void setHttpServletResponse(HttpServletResponse response, ResultType resultType) throws IOException {
         Result result = new Result(resultType);
         response.setStatus(result.getStatus().value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");

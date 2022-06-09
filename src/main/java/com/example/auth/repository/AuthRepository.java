@@ -8,4 +8,5 @@ public interface AuthRepository {
     boolean isDuplicated(String userId);
     void signin(Member member);
     Member login(Member member);
+    Member findUser(String userSeq);
 }
