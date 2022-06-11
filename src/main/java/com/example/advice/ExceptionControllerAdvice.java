@@ -2,10 +2,11 @@ package com.example.advice;
 
 import com.example.common.dto.ErrorResult;
 import com.example.common.dto.ResultType;
+import com.example.common.exception.ExpiredTokenException;
+import com.example.common.exception.TokenRequiredException;
+import com.example.common.exception.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import org.apache.ibatis.jdbc.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -96,5 +97,29 @@ public class ExceptionControllerAdvice {
         log.error("handleMalformedToken ex :::", ex);
 
         return new ErrorResult(ResultType.INVALID_TOKEN);
+    }
+
+    // token이 누락된 경우
+    @ExceptionHandler({TokenRequiredException.class})
+    public ErrorResult handleTokenRequired(TokenRequiredException ex) {
+        log.error("handleTokenRequired ex :::", ex);
+
+        return new ErrorResult(ex.getResultType());
+    }
+
+    // token이 만료된 경우
+    @ExceptionHandler({ExpiredTokenException.class})
+    public ErrorResult handleExpiredToken(ExpiredTokenException ex) {
+        log.error("handleExpiredToken ex :::", ex);
+        
+        return new ErrorResult(ex.getResultType());
+    }
+
+    // user 조회 결과가 null인 경우
+    @ExceptionHandler({UserNotFoundException.class})
+    public ErrorResult handleUserNotFound(UserNotFoundException ex) {
+        log.error("handleUserNotFound ex :::", ex);
+
+        return new ErrorResult(ResultType.UNKNOWN_USER);
     }
 }

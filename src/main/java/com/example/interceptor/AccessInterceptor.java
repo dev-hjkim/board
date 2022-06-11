@@ -1,8 +1,8 @@
 package com.example.interceptor;
 
-import com.example.common.dto.ResultType;
+import com.example.common.exception.ExpiredTokenException;
+import com.example.common.exception.TokenRequiredException;
 import com.example.common.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @RequiredArgsConstructor
-public class AuthInterceptor implements HandlerInterceptor {
+public class AccessInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final JwtUtil jwtUtil;
@@ -24,13 +24,14 @@ public class AuthInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Authorization");
 
         if (token == null || "".equals(token)) {
-            throw new NullPointerException(ResultType.ACCESS_TOKEN_REQUIRED.getCode());
+            throw new TokenRequiredException("ACCESS");
         }
+
         // token 유효성 확인
         boolean isExpired = jwtUtil.isExpired(token);
 
         if (isExpired) {
-            throw new ExpiredJwtException(null, null, "ACCESS");
+            throw new ExpiredTokenException("ACCESS");
         }
 
         String userSeq = jwtUtil.getUserSeqFromToken(token);
