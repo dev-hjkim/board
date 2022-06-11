@@ -1,8 +1,8 @@
 package com.example.interceptor;
 
-import com.example.common.dto.ResultType;
+import com.example.common.exception.ExpiredTokenException;
+import com.example.common.exception.TokenRequiredException;
 import com.example.common.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,19 +24,20 @@ public class RefreshInterceptor implements HandlerInterceptor {
         String token = request.getHeader("R-Authorization");
 
         if (token == null || "".equals(token)) {
-            throw new NullPointerException(ResultType.REFRESH_TOKEN_REQUIRED.getCode());
-        } else {
-            // token 유효성 확인
-            boolean isExpired = jwtUtil.isExpired(token);
-
-            if (isExpired) {
-                throw new ExpiredJwtException(null, null, "REFRESH");
-            }
-            String userSeq = jwtUtil.getUserSeqFromToken(token);
-            request.setAttribute("userSeq", userSeq);
-
-            logger.info("RefreshInterceptor preHandle method passed.");
-            return true;
+            throw new TokenRequiredException("REFRESH");
         }
+
+        // token 유효성 확인
+        boolean isExpired = jwtUtil.isExpired(token);
+
+        if (isExpired) {
+            throw new ExpiredTokenException("REFRESH");
+        }
+
+        String userSeq = jwtUtil.getUserSeqFromToken(token);
+        request.setAttribute("userSeq", userSeq);
+
+        logger.info("RefreshInterceptor preHandle method passed.");
+        return true;
     }
 }
