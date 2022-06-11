@@ -32,21 +32,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User login(Member member) {
-        Member registered = authRepository.login(member);
-
-        if (registered == null) {
-            throw new NullPointerException(ResultType.UNKNOWN_USER.getCode());
-        }
-
-        return new User(registered.getUserId(),
-                jwtUtil.generate(registered.getMemberNo(),"ACCESS"),
-                jwtUtil.generate(registered.getMemberNo(), "REFRESH"));
-    }
-
-    @Override
-    public User refreshToken(String userSeq) {
-        Member registered = authRepository.findUser(userSeq);
+    public User findUser(Member member) {
+        Member registered = authRepository.findUser(member);
 
         if (registered == null) {
             throw new NullPointerException(ResultType.UNKNOWN_USER.getCode());

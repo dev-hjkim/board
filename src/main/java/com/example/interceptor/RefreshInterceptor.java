@@ -29,7 +29,7 @@ public class RefreshInterceptor implements HandlerInterceptor {
             // token 유효성 확인
             boolean isExpired = jwtUtil.isExpired(token);
 
-            if (!isExpired) {
+            if (isExpired) {
                 throw new ExpiredJwtException(null, null, "REFRESH");
             }
             String userSeq = jwtUtil.getUserSeqFromToken(token);

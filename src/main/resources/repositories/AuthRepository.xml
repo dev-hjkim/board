@@ -14,16 +14,13 @@
         </selectKey>
     </insert>
 
-    <select id="login" parameterType="com.example.auth.model.Member" resultType="com.example.auth.model.Member">
+    <select id="findUser" parameterType="com.example.auth.model.Member" resultType="com.example.auth.model.Member">
         select member_no, user_id
         from tb_member
-        where user_id = #{userId}
-          and password = #{password}
-    </select>
-
-    <select id="findUser" parameterType="String" resultType="com.example.auth.model.Member">
-        select member_no, user_id
-        from tb_member
-        where member_no = #{userSeq}
+        <where>
+            <if test="userId != null">AND user_id = #{userId} </if>
+            <if test="password != null">AND password = #{password} </if>
+            <if test="memberNo != null">AND member_no = #{memberNo} </if>
+        </where>
     </select>
 </mapper>

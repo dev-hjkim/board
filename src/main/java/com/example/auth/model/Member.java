@@ -25,4 +25,8 @@ public class Member {
         this.userId = id;
         this.password = pwd;
     }
+
+    public Member(String memberNo) {
+        this.memberNo = memberNo;
+    }
 }

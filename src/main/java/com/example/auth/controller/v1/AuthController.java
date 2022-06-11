@@ -47,7 +47,7 @@ public class AuthController {
         logger.info("login ::: {}", login);
 
         Member member = new Member(login.getId(), login.getPassword());
-        return authService.login(member);
+        return authService.findUser(member);
     }
 
     /**
@@ -75,6 +75,7 @@ public class AuthController {
     public User refreshToken(@RequestAttribute String userSeq) {
         logger.info("refreshToken ::: {}", userSeq);
 
-        return authService.refreshToken(userSeq);
+        Member member = new Member(userSeq);
+        return authService.findUser(member);
     }
 }
