@@ -14,29 +14,29 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @RequiredArgsConstructor
-public class AuthInterceptor implements HandlerInterceptor {
+public class RefreshInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final JwtUtil jwtUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader("R-Authorization");
 
         if (token == null || "".equals(token)) {
-            throw new NullPointerException(ResultType.ACCESS_TOKEN_REQUIRED.getCode());
+            throw new NullPointerException(ResultType.REFRESH_TOKEN_REQUIRED.getCode());
+        } else {
+            // token 유효성 확인
+            boolean isExpired = jwtUtil.isExpired(token);
+
+            if (!isExpired) {
+                throw new ExpiredJwtException(null, null, "REFRESH");
+            }
+            String userSeq = jwtUtil.getUserSeqFromToken(token);
+            request.setAttribute("userSeq", userSeq);
+
+            logger.info("RefreshInterceptor preHandle method passed.");
+            return true;
         }
-        // token 유효성 확인
-        boolean isExpired = jwtUtil.isExpired(token);
-
-        if (!isExpired) {
-            throw new ExpiredJwtException(null, null, "ACCESS");
-        }
-
-        String userSeq = jwtUtil.getUserSeqFromToken(token);
-        request.setAttribute("userSeq", userSeq);
-
-        logger.info("AuthInterceptor preHandle method passed.");
-        return true;
     }
 }

@@ -56,7 +56,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims getClaimsFromToken(String token) throws Exception {
+    public Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -64,12 +64,12 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public boolean isExpired(String token) throws Exception {
+    public boolean isExpired(String token) {
         final Date expiration = getClaimsFromToken(token).getExpiration();
         return expiration.before(new Date());
     }
 
-    public String getUserSeqFromToken(String token) throws Exception {
+    public String getUserSeqFromToken(String token) {
         return getClaimsFromToken(token).get("seq", String.class);
     }
 
