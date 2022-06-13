@@ -5,16 +5,16 @@
         SELECT EXISTS(SELECT user_id from tb_member WHERE user_id=#{userId})
     </select>
 
-    <insert id="signin" parameterType="com.example.auth.model.Member">
+    <insert id="signin" parameterType="Member">
         insert into tb_member(user_id, password)
             values(#{userId}, #{password})
         <selectKey keyProperty="memberNo,userId,password,regDt,updDt"
-                   resultType="com.example.auth.model.Member" order="AFTER">
+                   resultType="Member" order="AFTER">
             select * FROM tb_member WHERE user_id = #{userId}
         </selectKey>
     </insert>
 
-    <select id="findUser" parameterType="com.example.auth.model.Member" resultType="com.example.auth.model.Member">
+    <select id="findUser" parameterType="Member" resultType="Member">
         select member_no, user_id
         from tb_member
         <where>
