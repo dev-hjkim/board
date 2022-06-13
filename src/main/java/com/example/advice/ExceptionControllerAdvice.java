@@ -62,22 +62,6 @@ public class ExceptionControllerAdvice {
         return new ErrorResult(ResultType.NOT_ALLOWED_OPERATION);
     }
 
-    // NPE
-    @ExceptionHandler({NullPointerException.class})
-    public ErrorResult handleNullError(NullPointerException ex) {
-        log.error("handleNullError ex :::", ex);
-
-        if (ex.getMessage().equals(ResultType.UNKNOWN_USER.getCode())) {
-            return new ErrorResult(ResultType.UNKNOWN_USER);
-        } else if (ex.getMessage().equals(ResultType.ACCESS_TOKEN_REQUIRED.getCode())) {
-            return new ErrorResult(ResultType.ACCESS_TOKEN_REQUIRED);
-        } else if (ex.getMessage().equals(ResultType.REFRESH_TOKEN_REQUIRED.getCode())) {
-            return new ErrorResult(ResultType.REFRESH_TOKEN_REQUIRED);
-        } else {
-            return new ErrorResult(ResultType.NO_CONTENT);
-        }
-    }
-
     // JWT Token이 만료된 경우
     @ExceptionHandler({ExpiredJwtException.class})
     public ErrorResult handleExpiredToken(ExpiredJwtException ex) {
@@ -90,7 +74,6 @@ public class ExceptionControllerAdvice {
         }
     }
 
-    
     // JWT Token이 잘못된 형식이거나 파싱하는 데 에러가 발생하는 경우
     @ExceptionHandler({JwtException.class})
     public ErrorResult handleMalformedToken(JwtException ex) {
