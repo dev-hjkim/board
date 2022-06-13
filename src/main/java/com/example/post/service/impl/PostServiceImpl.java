@@ -1,4 +1,4 @@
-package com.example.post.service.impl.v1;
+package com.example.post.service.impl;
 
 import com.example.post.service.PostService;
 import org.springframework.stereotype.Service;

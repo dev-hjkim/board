@@ -1,4 +1,4 @@
-package com.example.auth.service.impl.v1;
+package com.example.auth.service.impl;
 
 import com.example.auth.dto.User;
 import com.example.auth.model.Member;

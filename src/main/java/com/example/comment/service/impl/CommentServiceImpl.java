@@ -1,4 +1,4 @@
-package com.example.comment.service.impl.v1;
+package com.example.comment.service.impl;
 
 import com.example.comment.service.CommentService;
 import org.springframework.stereotype.Service;
