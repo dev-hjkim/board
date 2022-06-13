@@ -14,24 +14,15 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Member {
     @JsonIgnore
-    String seq;
-    String id;
+    String memberNo;
+    String userId;
     @JsonIgnore
-    String pwd;
-    String name;
-    String accessToken;
-    String refreshToken;
-    Date regDtm;
-    Date modDtm;
-
-    public Member(String id, String pwd, String name) {
-        this.id = id;
-        this.pwd = pwd;
-        this.name = name;
-    }
+    String password;
+    Date regDt;
+    Date updDt;
 
     public Member(String id, String pwd) {
-        this.id = id;
-        this.pwd = pwd;
+        this.userId = id;
+        this.password = pwd;
     }
 }

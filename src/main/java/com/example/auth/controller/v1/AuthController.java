@@ -4,12 +4,9 @@ import com.example.auth.dto.Login;
 import com.example.auth.dto.User;
 import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
-import com.example.common.dto.Result;
-import com.example.common.dto.ResultType;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,27 +23,33 @@ public class AuthController {
     private final AuthService authService;
 
 
+    /**
+     * 회원가입
+     *
+     * @author hjkim
+     * @param user-id, password
+     * @return member-userId, regDt, updDt
+     */
     @PostMapping(value="/signin")
-    public ResponseEntity<Object> signin(@Valid @RequestBody User user) {
-        Result result;
-        Member member = new Member(user.getId(), user.getPassword(), user.getName());
-        Member registered = authService.signin(member);
-        result = new Result(ResultType.OK, registered);
-        return new ResponseEntity<>(result, result.parseHttpCode());
+    public Member signin(@Valid @RequestBody User user) {
+        logger.info("signin ::: {}", user);
+
+        Member member = new Member(user.getId(), user.getPassword());
+        return authService.signin(member);
     }
 
+    /**
+     * 로그인
+     *
+     * @author hjkim
+     * @param login-id, password
+     * @return user-id, accessToken, refreshToken
+     */
     @PostMapping(value="/login")
-    public ResponseEntity<Object> login(@Valid @RequestBody Login login) {
-        Result result;
+    public User login(@Valid @RequestBody Login login) {
+        logger.info("login ::: {}", login);
+
         Member member = new Member(login.getId(), login.getPassword());
-        Member loginOn = authService.login(member);
-
-        if (loginOn == null) {
-            result = new Result(ResultType.UNKNOWN_USER);
-        } else {
-            result = new Result(ResultType.OK, loginOn);
-        }
-
-        return new ResponseEntity<>(result, result.parseHttpCode());
+        return authService.login(member);
     }
 }

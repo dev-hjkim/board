@@ -38,27 +38,24 @@ public class AuthFilter extends OncePerRequestFilter {
             if (token == null || "".equals(token)) {
                 setHttpServletResponse(response, ResultType.ACCESS_TOKEN_REQUIRED);
             } else {
-                // TODO :: Exception 정리(JwtUtil 쪽으로?)
                 // token 유효성 확인
                 try {
                     jwtUtil.isExpired(token);
                 } catch (ExpiredJwtException ex) {
-                    ex.printStackTrace();
+                    logger.error("ExpiredJwtException :: ex", ex);
                     setHttpServletResponse(response, ResultType.EXPIRED_ACCESS_TOKEN);
                 } catch (MalformedJwtException ex) {
-                    ex.printStackTrace();
+                    logger.error("MalformedJwtException :: ex", ex);
                     setHttpServletResponse(response, ResultType.INVALID_TOKEN);
-                } catch (JwtException ex) { // TODO :: 여러 error case를 전부 처리할지? 발생할 것 같은 에러만 처리할지?
-                    ex.printStackTrace();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    logger.error("Exception :: ex", ex);
                 }
 
                 String userSeq = null;
                 try {
                     userSeq = jwtUtil.getUserSeqFromToken(token);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ex) {
+                    logger.error("Exception :: ex", ex);
                 }
                 wrapper.addHeader("userSeq", userSeq);
                 chain.doFilter(wrapper, response);
@@ -68,7 +65,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private void setHttpServletResponse(HttpServletResponse response, ResultType resultType) throws IOException {
         Result result = new Result(resultType);
-        response.setStatus(result.parseHttpCode().value());
+        response.setStatus(result.getStatus().value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
         String content = new ObjectMapper().writeValueAsString(result);
         response.setContentLength(content.length());
