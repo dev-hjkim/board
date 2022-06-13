@@ -2,7 +2,6 @@ package com.example.board.controller.v1;
 
 import com.example.board.service.BoardService;
 import com.example.common.dto.Result;
-import com.example.common.dto.ResultType;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
