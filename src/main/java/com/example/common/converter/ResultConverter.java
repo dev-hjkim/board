@@ -3,6 +3,7 @@ package com.example.common.converter;
 
 import com.example.common.dto.ErrorResult;
 import com.example.common.dto.Result;
+import com.example.common.dto.ResultType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpOutputMessage;
@@ -21,13 +22,14 @@ public class ResultConverter extends MappingJackson2HttpMessageConverter {
 
     @Override
     protected void writeInternal(Object object, Type type, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
-        if (object instanceof ErrorResult) {
-            response.setStatus(((ErrorResult) object).getStatus().value());
-            super.writeInternal(object, type, outputMessage);
+        Result result;
+
+        if (object instanceof ResultType) {
+            result = new ErrorResult((ResultType) object);
         } else {
-            Result result = new Result(object);
-            response.setStatus(result.getStatus().value());
-            super.writeInternal(result, type, outputMessage);
+            result = new Result(object);
         }
+        response.setStatus(result.getStatus().value());
+        super.writeInternal(result, type, outputMessage);
     }
 }
