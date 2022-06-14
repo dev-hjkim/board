@@ -1,6 +1,5 @@
 package com.example.advice;
 
-import com.example.common.dto.ErrorResult;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.ExpiredTokenException;
 import com.example.common.exception.TokenRequiredException;
