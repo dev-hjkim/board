@@ -5,9 +5,9 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-@Setter
 @Builder
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class Login {
     @NotEmpty

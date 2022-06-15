@@ -1,4 +1,4 @@
-package com.example.board.service.impl.v1;
+package com.example.board.service.impl;
 
 import com.example.board.service.BoardService;
 import org.springframework.stereotype.Service;
