@@ -2,7 +2,6 @@ package com.example.board.controller.v1;
 
 import com.example.board.service.BoardService;
 import com.example.common.dto.Result;
-import com.example.common.dto.ResultType;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +16,9 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping(value="/lists")
+    @GetMapping(value="")
     public Result getBoardList(@RequestHeader String userSeq) {
-        logger.info("getBoardList ::: userSeq {}", userSeq);
-
-        return null;
-    }
-
-    @GetMapping(value="/interceptor/lists")
-    public Result getBoardListWithInterceptor(@RequestAttribute String userSeq) {
-        logger.info("getBoardListWithInterceptor ::: userSeq {}", userSeq);
+        logger.info("getBoardList ::: {}", userSeq);
 
         return null;
     }
