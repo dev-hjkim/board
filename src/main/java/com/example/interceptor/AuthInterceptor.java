@@ -3,6 +3,7 @@ package com.example.interceptor;
 import com.example.common.exception.ExpiredTokenException;
 import com.example.common.exception.TokenRequiredException;
 import com.example.common.util.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,11 @@ public class AuthInterceptor {
     public boolean preHandle(HttpServletRequest request, String key, String tokenType) {
         String token = getToken(request, key, tokenType);
 
-        checkExpired(token, tokenType);
+        try {
+            jwtUtil.isExpired(token);
+        } catch (ExpiredJwtException ex) {
+            throw new ExpiredTokenException(tokenType);
+        }
 
         setRequestAttribute(request, token);
 
@@ -29,14 +34,6 @@ public class AuthInterceptor {
             throw new TokenRequiredException(tokenType);
         }
         return token;
-    }
-
-    private void checkExpired(String token, String tokenType) {
-        boolean isExpired = jwtUtil.isExpired(token);
-
-        if (isExpired) {
-            throw new ExpiredTokenException(tokenType);
-        }
     }
 
     private void setRequestAttribute(HttpServletRequest request, String token) {
