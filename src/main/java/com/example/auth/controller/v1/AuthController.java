@@ -25,7 +25,7 @@ public class AuthController {
      *
      * @author hjkim
      * @param user-id, password
-     * @return member-userId, regDt, updDt
+     * @return Member-userId, regDt, updDt
      */
     @PostMapping(value="/signin")
     public Member signin(@Valid @RequestBody User user) {
@@ -40,7 +40,7 @@ public class AuthController {
      *
      * @author hjkim
      * @param login-id, password
-     * @return user-id, accessToken, refreshToken
+     * @return User-id, accessToken, refreshToken
      */
     @PostMapping(value="/login")
     public User login(@Valid @RequestBody Login login) {
@@ -69,7 +69,7 @@ public class AuthController {
      *
      * @author hjkim
      * @param userSeq
-     * @return user-id, accessToken, refreshToken
+     * @return User-id, accessToken, refreshToken
      */
     @GetMapping(value="/refresh")
     public User refreshToken(@RequestAttribute String userSeq) {

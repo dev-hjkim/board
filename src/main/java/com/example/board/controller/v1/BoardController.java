@@ -17,6 +17,13 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    /**
+     * 게시판 목록 조회
+     *
+     * @author hjkim
+     * @param page-pageIndex(nullable), pageSize(nullable)
+     * @return Board-totalCount, totalPage, list
+     */
     @GetMapping(value="")
     public Board getBoardList(Page page) {
         logger.info("getBoardList ::: {}", page);
