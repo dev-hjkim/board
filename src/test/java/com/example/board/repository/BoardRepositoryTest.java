@@ -1,5 +1,6 @@
 package com.example.board.repository;
 
+import com.example.common.dto.Page;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -24,7 +25,7 @@ class BoardRepositoryTest {
     @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
-        List<String> boardList = boardRepository.getBoardList();
+        List<String> boardList = boardRepository.getBoardList(new Page());
         assertThat(boardList.get(0), is("AAA"));
         assertThat(boardList.size(), is(1));
     }

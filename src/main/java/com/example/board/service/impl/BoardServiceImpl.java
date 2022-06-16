@@ -3,6 +3,7 @@ package com.example.board.service.impl;
 import com.example.board.dto.Board;
 import com.example.board.repository.BoardRepository;
 import com.example.board.service.BoardService;
+import com.example.common.dto.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
-    public Board getBoardList() {
-        List<String> boardList = boardRepository.getBoardList();
-        return new Board(boardList);
+    public Board getBoardList(Page page) {
+        List<String> boardList = boardRepository.getBoardList(page);
+        return new Board(page, boardList);
     }
 }

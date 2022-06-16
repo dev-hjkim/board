@@ -2,6 +2,7 @@ package com.example.board.service.impl;
 
 import com.example.board.dto.Board;
 import com.example.board.repository.BoardRepository;
+import com.example.common.dto.Page;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ class BoardServiceImplTest {
     @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
-        Board result = boardService.getBoardList();
+        Board result = boardService.getBoardList(new Page());
 
         assertThat(result.getTotalCount(), is(1));
         assertThat(result.getTotalPage(), is(1));

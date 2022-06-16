@@ -2,6 +2,7 @@ package com.example.board.controller.v1;
 
 import com.example.board.dto.Board;
 import com.example.board.service.BoardService;
+import com.example.common.dto.Page;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping(value="")
-    public Board getBoardList() {
-        logger.info("getBoardList :::");
+    public Board getBoardList(Page page) {
+        logger.info("getBoardList ::: {}", page);
 
-        return boardService.getBoardList();
+        return boardService.getBoardList(page);
     }
 }
