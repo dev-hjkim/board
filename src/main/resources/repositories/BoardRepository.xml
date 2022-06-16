@@ -9,4 +9,9 @@
              ) t
         limit #{startPage}, #{pageSize}
     </select>
+
+    <select id="getTotalList" resultType="int">
+        select count(distinct(board_cd))
+        from tb_board
+    </select>
 </mapper>

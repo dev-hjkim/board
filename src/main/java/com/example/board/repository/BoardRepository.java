@@ -8,4 +8,5 @@ import java.util.List;
 @Mapper
 public interface BoardRepository {
     List<String> getBoardList(Page page);
+    int getTotalList();
 }

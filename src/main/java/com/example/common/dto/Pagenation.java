@@ -16,9 +16,9 @@ public class Pagenation<T> {
     int totalPage;
     List<T> list;
 
-    public Pagenation(Page page, List<T> list) {
-        this.totalCount = list.size();
-        this.totalPage = list.size() / page.getPageSize() + 1;
+    public Pagenation(int pageSize, int totalCount, List<T> list) {
+        this.totalCount = totalCount;
+        this.totalPage = totalCount / pageSize + 1;
         this.list = list;
     }
 }
