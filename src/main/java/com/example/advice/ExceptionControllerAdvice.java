@@ -61,18 +61,6 @@ public class ExceptionControllerAdvice {
         return ResultType.NOT_ALLOWED_OPERATION;
     }
 
-//    // JWT Token이 만료된 경우
-//    @ExceptionHandler({ExpiredJwtException.class})
-//    public ResultType handleExpiredToken(ExpiredJwtException ex) {
-//        log.error("handleExpiredToken ex :::", ex);
-//
-//        if (ex.getMessage().equals("ACCESS")) {
-//            return ResultType.EXPIRED_ACCESS_TOKEN;
-//        } else {
-//            return ResultType.EXPIRED_REFRESH_TOKEN;
-//        }
-//    }
-
     // JWT Token이 잘못된 형식이거나 파싱하는 데 에러가 발생하는 경우
     @ExceptionHandler({JwtException.class})
     public ResultType handleMalformedToken(JwtException ex) {
