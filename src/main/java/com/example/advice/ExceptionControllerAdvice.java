@@ -4,7 +4,6 @@ import com.example.common.dto.ResultType;
 import com.example.common.exception.ExpiredTokenException;
 import com.example.common.exception.TokenRequiredException;
 import com.example.common.exception.UserNotFoundException;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
