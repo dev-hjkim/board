@@ -23,10 +23,16 @@ class BoardRepositoryTest {
     }
 
     @Test
+    @DisplayName("getTotalList :: 정상 케이스")
+    void getTotalList() {
+        int totalCount = boardRepository.getTotalList();
+        assertThat(totalCount, is(12));
+    }
+
+    @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
         List<String> boardList = boardRepository.getBoardList(new Page());
         assertThat(boardList.get(0), is("AAA"));
-        assertThat(boardList.size(), is(1));
     }
 }

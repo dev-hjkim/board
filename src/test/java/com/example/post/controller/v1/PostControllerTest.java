@@ -1,4 +1,4 @@
-package com.example.board.controller.v1;
+package com.example.post.controller.v1;
 
 import com.example.common.util.JwtUtil;
 import org.junit.jupiter.api.DisplayName;
@@ -15,21 +15,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BoardControllerTest {
+class PostControllerTest {
 
     private MockMvc mvc;
     String accessToken;
 
     @Autowired
-    public void setBoardControllerTest(MockMvc mvc, JwtUtil jwtUtil) {
+    public void setPostControllerTest(MockMvc mvc, JwtUtil jwtUtil) {
         this.mvc = mvc;
         this.accessToken = jwtUtil.generate("5", "ACCESS");
     }
 
     @Test
-    @DisplayName("getBoardList :: 정상 케이스")
-    void getBoardList() throws Exception {
-        mvc.perform(get("/v1/board")
+    @DisplayName("getPostList :: 정상 케이스")
+    void getPostList() throws Exception {
+        mvc.perform(get("/v1/board/AAA/posts")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))

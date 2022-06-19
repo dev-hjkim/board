@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.post.repository.PostRepository">
+    <select id="getTotalList" parameterType="String" resultType="int">
+        select count(distinct(board_cd))
+        from tb_board
+        where board_cd = #{boardName}
+    </select>
+
+    <select id="getPostList" parameterType="PostPage" resultType="PostItem">
+        select t.*
+        from (
+            select board.board_no, board.board_cd, board.title, board.member_no,
+                   member.user_id, board.view_cnt, board.reply_cnt,
+                   board.reg_dt, board.upd_dt
+            from tb_board board
+                join tb_member member
+                    on board.member_no = member.member_no
+            where board.board_cd = #{boardName}
+        ) t
+            limit #{startPage}, #{pageSize}
+    </select>
 </mapper>
