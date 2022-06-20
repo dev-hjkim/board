@@ -5,11 +5,12 @@ import com.example.common.exception.TokenRequiredException;
 import com.example.common.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
-public class AuthInterceptor {
+public class AuthInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
 
