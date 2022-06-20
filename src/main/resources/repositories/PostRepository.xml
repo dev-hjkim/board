@@ -8,16 +8,13 @@
     </select>
 
     <select id="getPostList" parameterType="PostPage" resultType="PostItem">
-        select t.*
-        from (
-            select board.board_no, board.board_cd, board.title, board.member_no,
-                   member.user_id, board.view_cnt, board.reply_cnt,
-                   board.reg_dt, board.upd_dt
-            from tb_board board
-                join tb_member member
-                    on board.member_no = member.member_no
-            where board.board_cd = #{boardName}
-        ) t
-            limit #{startPage}, #{pageSize}
+        select board.board_no, board.board_cd, board.title, board.member_no,
+               member.user_id, board.view_cnt, board.reply_cnt,
+               board.reg_dt, board.upd_dt
+        from tb_board board
+                 join tb_member member
+                      on board.member_no = member.member_no
+        where board.board_cd = #{boardName}
+        limit #{startPage}, #{pageSize}
     </select>
 </mapper>
