@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 public class PostPage extends Page {
     @Setter
-    String boardName;
+    private String boardName;
 }

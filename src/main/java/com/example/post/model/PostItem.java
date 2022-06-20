@@ -6,13 +6,13 @@ import java.util.Date;
 
 @Data
 public class PostItem {
-    int boardNo;
-    String boardCd;
-    String title;
-    int memberNo;
-    String userId;
-    int viewCnt;
-    int replyCnt;
-    Date regDt;
-    Date updDt;
+    private int boardNo;
+    private String boardCd;
+    private String title;
+    private int memberNo;
+    private String userId;
+    private int viewCnt;
+    private int replyCnt;
+    private Date regDt;
+    private Date updDt;
 }
