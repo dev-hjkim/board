@@ -1,13 +1,13 @@
 package com.example.post.controller.v1;
 
-import com.example.post.dto.Post;
-import com.example.post.model.PostPage;
+import com.example.post.dto.PostList;
+import com.example.post.model.Post;
+import com.example.post.model.PostRequest;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,14 +23,27 @@ public class PostController {
      * 포스트 목록 조회
      *
      * @author hjkim
-     * @param page-pageIndex(nullable), pageSize(nullable)
-     * @return Post-totalCount, totalPage, list
+     * @param request-pageIndex(nullable), pageSize(nullable)
+     * @return PostList-totalCount, totalPage, list
      */
     @GetMapping(value="/posts")
-    public Post getPostList(@PathVariable String boardName, PostPage page) {
-        logger.info("getPostList ::: {} {}", boardName, page);
-        page.setBoardName(boardName);
+    public PostList getPostList(PostRequest request) {
+        logger.info("getPostList ::: {}", request);
 
-        return postService.getPostList(page);
+        return postService.getPostList(request);
+    }
+
+    /**
+     * 포스트 조회
+     *
+     * @author hjkim
+     * @param request-boardName, postSeq
+     * @return Post
+     */
+    @GetMapping(value="/posts/{postSeq}")
+    public Post getPost(PostRequest request) {
+        logger.info("getPost ::: {}", request);
+
+        return postService.getPost(request);
     }
 }

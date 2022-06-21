@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.post.repository.PostRepository">
     <select id="getTotalList" parameterType="String" resultType="int">
-        select count(distinct(board_cd))
+        select count(board_cd)
         from tb_board
         where board_cd = #{boardName}
     </select>
 
-    <select id="getPostList" parameterType="PostPage" resultType="PostItem">
+    <select id="getPostList" parameterType="PostRequest" resultType="Post">
         select board.board_no, board.board_cd, board.title, board.member_no,
                member.user_id, board.view_cnt, board.reply_cnt,
                board.reg_dt, board.upd_dt
@@ -16,5 +16,16 @@
                       on board.member_no = member.member_no
         where board.board_cd = #{boardName}
         limit #{startPage}, #{pageSize}
+    </select>
+
+    <select id="getPost" parameterType="PostRequest" resultType="Post">
+        select board.board_no, board.title, board.content, board.member_no,
+               member.user_id, board.view_cnt, board.reply_cnt,
+               board.reg_dt, board.upd_dt
+          from tb_board board
+            join tb_member member
+                on board.member_no = member.member_no
+        where board.board_cd = #{boardName}
+          and board.board_no = #{postSeq}
     </select>
 </mapper>

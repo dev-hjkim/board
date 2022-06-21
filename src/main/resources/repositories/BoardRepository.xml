@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.board.repository.BoardRepository">
     <select id="getBoardList" parameterType="Page" resultType="String">
-        select board_cd
+        select distinct(board_cd)
         from tb_board
         limit #{startPage}, #{pageSize}
     </select>

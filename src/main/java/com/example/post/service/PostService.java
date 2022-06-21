@@ -1,8 +1,11 @@
 package com.example.post.service;
 
-import com.example.post.dto.Post;
-import com.example.post.model.PostPage;
+import com.example.post.dto.PostList;
+import com.example.post.model.Post;
+import com.example.post.model.PostRequest;
 
 public interface PostService {
-    Post getPostList(PostPage page);
+    PostList getPostList(PostRequest request);
+
+    Post getPost(PostRequest request);
 }

@@ -1,7 +1,7 @@
 package com.example.post.repository;
 
-import com.example.post.model.PostItem;
-import com.example.post.model.PostPage;
+import com.example.post.model.Post;
+import com.example.post.model.PostRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PostRepositoryTest {
+class PostListRepositoryTest {
 
     private PostRepository postRepository;
 
@@ -29,17 +29,28 @@ class PostRepositoryTest {
     void getTotalList() {
         int totalCount = postRepository.getTotalList("AAA");
 
-        assertThat(totalCount, is(1));
+        assertThat(totalCount, is(2));
     }
 
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        PostPage postPage = new PostPage();
-        postPage.setBoardName("AAA");
+        PostRequest postRequest = new PostRequest();
+        postRequest.setBoardName("AAA");
 
-        List<PostItem> postItemList = postRepository.getPostList(postPage);
-        assertThat(postItemList.get(0).getBoardCd(), is("AAA"));
-        assertThat(postItemList.size(), is(1));
+        List<Post> postList = postRepository.getPostList(postRequest);
+        assertThat(postList.get(0).getBoardCd(), is("AAA"));
+        assertThat(postList.size(), is(2));
+    }
+
+    @Test
+    @DisplayName("getPost :: 정상 케이스")
+    void getPost() {
+        PostRequest postRequest = new PostRequest();
+        postRequest.setBoardName("AAA");
+        postRequest.setPostSeq("13");
+
+        Post post = postRepository.getPost(postRequest);
+        assertThat(post.getTitle(), is("test13"));
     }
 }

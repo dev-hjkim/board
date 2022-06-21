@@ -1,7 +1,8 @@
 package com.example.post.service.impl;
 
-import com.example.post.dto.Post;
-import com.example.post.model.PostPage;
+import com.example.post.dto.PostList;
+import com.example.post.model.Post;
+import com.example.post.model.PostRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import static org.hamcrest.Matchers.is;
 
 
 @SpringBootTest
-class PostServiceImplTest {
+class PostListServiceImplTest {
     private PostServiceImpl postService;
 
     @Autowired
@@ -23,13 +24,25 @@ class PostServiceImplTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        PostPage page = new PostPage();
-        page.setBoardName("AAA");
+        PostRequest postrequest = new PostRequest();
+        postrequest.setBoardName("AAA");
 
-        Post result = postService.getPostList(page);
+        PostList result = postService.getPostList(postrequest);
 
-        assertThat(result.getTotalCount(), is(1));
+        assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
         assertThat(result.getList().get(0).getBoardCd(), is("AAA"));
+    }
+
+    @Test
+    @DisplayName("getPost :: 정상 케이스")
+    void getPost() {
+        PostRequest postrequest = new PostRequest();
+        postrequest.setBoardName("AAA");
+        postrequest.setPostSeq("13");
+
+        Post result = postService.getPost(postrequest);
+
+        assertThat(result.getTitle(), is("test13"));
     }
 }

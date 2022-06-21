@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PostControllerTest {
+class PostListControllerTest {
 
     private MockMvc mvc;
     String accessToken;
@@ -30,6 +30,17 @@ class PostControllerTest {
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() throws Exception {
         mvc.perform(get("/v1/board/AAA/posts")
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("getPost :: 정상 케이스")
+    void getPost() throws Exception {
+        mvc.perform(get("/v1/board/AAA/posts/13")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
