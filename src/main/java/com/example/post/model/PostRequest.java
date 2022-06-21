@@ -1,11 +1,9 @@
 package com.example.post.model;
 
-import com.example.common.dto.Page;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 
-@Data
-public class PostRequest extends Page {
+@AllArgsConstructor
+public class PostRequest {
     private String boardName;
-
     private String postSeq;
 }

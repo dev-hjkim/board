@@ -1,6 +1,7 @@
 package com.example.post.service.impl;
 
 import com.example.post.dto.PostList;
+import com.example.post.model.PostPageRequest;
 import com.example.post.model.PostRequest;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
@@ -17,7 +18,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public PostList getPostList(PostRequest request) {
+    public PostList getPostList(PostPageRequest request) {
         int totalCount = postRepository.getTotalList(request.getBoardName());
         List<Post> postList = postRepository.getPostList(request);
         return new PostList(request.getPageSize(), totalCount, postList);

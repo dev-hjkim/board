@@ -1,7 +1,8 @@
 package com.example.post.repository;
 
-import com.example.post.model.Post;
 import com.example.post.model.PostRequest;
+import com.example.post.model.Post;
+import com.example.post.model.PostPageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -35,10 +36,10 @@ class PostListRepositoryTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setBoardName("AAA");
+        PostPageRequest postPageRequest = new PostPageRequest();
+        postPageRequest.setBoardName("AAA");
 
-        List<Post> postList = postRepository.getPostList(postRequest);
+        List<Post> postList = postRepository.getPostList(postPageRequest);
         assertThat(postList.get(0).getBoardCd(), is("AAA"));
         assertThat(postList.size(), is(2));
     }
@@ -46,9 +47,7 @@ class PostListRepositoryTest {
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setBoardName("AAA");
-        postRequest.setPostSeq("13");
+        PostRequest postRequest = new PostRequest("AAA", "13");
 
         Post post = postRepository.getPost(postRequest);
         assertThat(post.getTitle(), is("test13"));

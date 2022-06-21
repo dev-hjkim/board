@@ -7,7 +7,7 @@
         where board_cd = #{boardName}
     </select>
 
-    <select id="getPostList" parameterType="PostRequest" resultType="Post">
+    <select id="getPostList" parameterType="PostPageRequest" resultType="Post">
         select board.board_no, board.board_cd, board.title, board.member_no,
                member.user_id, board.view_cnt, board.reply_cnt,
                board.reg_dt, board.upd_dt

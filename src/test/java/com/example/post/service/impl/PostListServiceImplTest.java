@@ -1,8 +1,9 @@
 package com.example.post.service.impl;
 
 import com.example.post.dto.PostList;
-import com.example.post.model.Post;
 import com.example.post.model.PostRequest;
+import com.example.post.model.Post;
+import com.example.post.model.PostPageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ class PostListServiceImplTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        PostRequest postrequest = new PostRequest();
+        PostPageRequest postrequest = new PostPageRequest();
         postrequest.setBoardName("AAA");
 
         PostList result = postService.getPostList(postrequest);
@@ -37,9 +38,7 @@ class PostListServiceImplTest {
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        PostRequest postrequest = new PostRequest();
-        postrequest.setBoardName("AAA");
-        postrequest.setPostSeq("13");
+        PostRequest postrequest = new PostRequest("AAA", "13");
 
         Post result = postService.getPost(postrequest);
 
