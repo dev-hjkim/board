@@ -12,4 +12,6 @@ public interface PostService {
     ResultType deletePost(Post post);
 
     Post createPost(Post post);
+
+    Post modifyPost(Post post);
 }

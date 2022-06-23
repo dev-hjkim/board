@@ -1,6 +1,5 @@
 package com.example.post.repository;
 
-import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +16,6 @@ public interface PostRepository {
     void deletePost(Post post);
 
     void insertPost(Post post);
+
+    void updatePost(Post post);
 }

@@ -31,7 +31,7 @@ class PostListServiceImplTest {
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
-        assertThat(result.getList().get(0).getBoardCd(), is("AAA"));
+        assertThat(result.getList().get(0).getBoardCd(), is(post.getBoardCd()));
     }
 
     @Test
@@ -64,6 +64,18 @@ class PostListServiceImplTest {
 
         Post result = postService.createPost(postRequest);
 
-        assertThat(result.getTitle(), is("test14"));
+        assertThat(result.getTitle(), is(postRequest.getTitle()));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("updatePost :: 정상 케이스")
+    void updatePost() {
+        Post postRequest = new Post("AAA", "13", "test13",
+                "test13's modified content", "5");
+
+        Post result = postService.modifyPost(postRequest);
+
+        assertThat(result.getContent(), is(postRequest.getContent()));
     }
 }

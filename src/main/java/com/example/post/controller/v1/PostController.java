@@ -79,7 +79,7 @@ public class PostController {
     }
 
     /**
-     * 포스트 생성
+     * 포스트 수정
      *
      * @author hjkim
      * @param request-boardName, title, content
@@ -94,5 +94,33 @@ public class PostController {
         Post post = new Post(boardName, request.getTitle(),
                 request.getContent(), userSeq);
         return postService.createPost(post);
+    }
+
+    /**
+     * 포스트 수정
+     *
+     * @author hjkim
+     * @param request-boardName, postSeq, title, content
+     * @return Post
+     */
+    @PutMapping(value="/posts/{postSeq}")
+    public Post modifyPost(@RequestAttribute String userSeq,
+                           PostRequest request,
+                           @RequestBody PostRequest body) {
+        logger.info("modifyPost ::: {} {} {}", userSeq, request, body);
+
+        Post post = new Post(request.getBoardName(), request.getPostSeq(), body.getTitle(),
+                body.getContent(), userSeq);
+        Post selectedPost = postService.getPost(post);
+
+        if (selectedPost == null) {
+            throw new DataNotFoundException();
+        }
+
+        if (!selectedPost.getMemberNo().equals(userSeq)) {
+            throw new NoAuthorityException();
+        }
+
+        return postService.modifyPost(post);
     }
 }

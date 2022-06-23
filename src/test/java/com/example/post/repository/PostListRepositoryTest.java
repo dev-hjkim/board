@@ -65,12 +65,23 @@ class PostListRepositoryTest {
 
     @Test
     @Transactional
-    @DisplayName("createPost :: 정상 케이스")
-    void createPost() {
+    @DisplayName("insertPost :: 정상 케이스")
+    void insertPost() {
         Post postRequest = new Post("AAA", "test14",
                 "test14's content", "5");
 
         postRepository.insertPost(postRequest);
         assertThat(postRequest.getTitle(), is("test14"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("updatePost :: 정상 케이스")
+    void updatePost() {
+        Post postRequest = new Post("AAA", "13", "test13",
+                "test13's modified content", "5");
+
+        postRepository.updatePost(postRequest);
+        assertThat(postRequest.getContent(), is("test13's modified content"));
     }
 }

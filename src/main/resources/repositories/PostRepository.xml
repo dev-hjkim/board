@@ -43,4 +43,17 @@
             select * from tb_board where board_no = LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <update id="updatePost" parameterType="Post">
+        update tb_board
+        set title = #{title}
+            , content = #{content}
+            , upd_dt = now()
+        where board_cd = #{boardCd}
+          and board_no = #{boardNo}
+        <selectKey keyProperty="boardNo,boardCd,title,memberNo,content,viewCnt,replyCnt,regDt,updDt"
+                   resultType="Post" order="AFTER">
+            select * from tb_board where board_no = #{boardNo}
+        </selectKey>
+    </update>
 </mapper>

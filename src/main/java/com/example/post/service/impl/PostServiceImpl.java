@@ -2,8 +2,6 @@ package com.example.post.service.impl;
 
 import com.example.common.dto.ResultType;
 import com.example.post.dto.PostList;
-import com.example.post.dto.PostPageRequest;
-import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
 import com.example.post.service.PostService;
@@ -42,6 +40,13 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Post createPost(Post post) {
         postRepository.insertPost(post);
+        return post;
+    }
+
+    @Override
+    @Transactional
+    public Post modifyPost(Post post) {
+        postRepository.updatePost(post);
         return post;
     }
 }

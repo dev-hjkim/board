@@ -84,4 +84,23 @@ class PostListControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    @Transactional
+    @DisplayName("updatePost :: 정상 케이스")
+    void updatePost() throws Exception {
+        PostRequest postRequest = new PostRequest();
+        postRequest.setTitle("test13");
+        postRequest.setContent("test13's modified content");
+
+        String content = objectMapper.writeValueAsString(postRequest);
+
+        mvc.perform(put("/v1/board/AAA/posts/13")
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(content))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
 }

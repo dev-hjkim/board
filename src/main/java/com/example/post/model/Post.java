@@ -41,4 +41,12 @@ public class Post {
         this.content = content;
         this.memberNo = memberNo;
     }
+
+    public Post(String boardCd, String postSeq, String title, String content, String memberNo) {
+        this.boardCd = boardCd;
+        this.boardNo = postSeq;
+        this.title = title;
+        this.content = content;
+        this.memberNo = memberNo;
+    }
 }
