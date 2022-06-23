@@ -1,7 +1,6 @@
 package com.example.post.repository;
 
-import com.example.post.model.PostPageRequest;
-import com.example.post.model.PostRequest;
+import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,9 +10,11 @@ import java.util.List;
 public interface PostRepository {
     int getTotalList(String boardName);
 
-    List<Post> getPostList(PostPageRequest request);
+    List<Post> getPostList(Post request);
 
-    Post getPost(PostRequest request);
+    Post getPost(Post post);
 
-    void deletePost(PostRequest request);
+    void deletePost(Post post);
+
+    void insertPost(Post post);
 }

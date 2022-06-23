@@ -4,9 +4,9 @@ import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.NoAuthorityException;
 import com.example.post.dto.PostList;
-import com.example.post.model.PostRequest;
+import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
-import com.example.post.model.PostPageRequest;
+import com.example.post.dto.PostPageRequest;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -32,7 +32,9 @@ public class PostController {
     public PostList getPostList(PostPageRequest request) {
         logger.info("getPostList ::: {}", request);
 
-        return postService.getPostList(request);
+        Post post = new Post(request.getBoardName(), request.getStartPage(),
+                request.getPageSize());
+        return postService.getPostList(post);
     }
 
     /**
@@ -46,7 +48,8 @@ public class PostController {
     public Post getPost(PostRequest request) {
         logger.info("getPost ::: {}", request);
 
-        return postService.getPost(request);
+        Post post = new Post(request.getBoardName(), request.getPostSeq());
+        return postService.getPost(post);
     }
 
     /**
@@ -54,23 +57,42 @@ public class PostController {
      *
      * @author hjkim
      * @param request-boardName, postSeq
-     * @return Post
+     * @return ResultType
      */
     @DeleteMapping(value="/posts/{postSeq}")
     public ResultType deletePost(@RequestAttribute String userSeq,
                                  PostRequest request) {
-        logger.info("deletePost ::: {}", request);
+        logger.info("deletePost ::: {} {}", userSeq, request);
 
-        Post post = postService.getPost(request);
+        Post post = new Post(request.getBoardName(), request.getPostSeq());
+        Post selectedPost = postService.getPost(post);
 
-        if (post == null) {
+        if (selectedPost == null) {
             throw new DataNotFoundException();
         }
 
-        if (!post.getMemberNo().equals(userSeq)) {
+        if (!selectedPost.getMemberNo().equals(userSeq)) {
             throw new NoAuthorityException();
         }
 
-        return postService.deletePost(request);
+        return postService.deletePost(post);
+    }
+
+    /**
+     * 포스트 생성
+     *
+     * @author hjkim
+     * @param request-boardName, title, content
+     * @return Post
+     */
+    @PostMapping(value="/posts")
+    public Post createPost(@RequestAttribute String userSeq,
+                           @PathVariable String boardName,
+                           @RequestBody PostRequest request) {
+        logger.info("createPost ::: {} {} {}", userSeq, boardName, request);
+
+        Post post = new Post(boardName, request.getTitle(),
+                request.getContent(), userSeq);
+        return postService.createPost(post);
     }
 }

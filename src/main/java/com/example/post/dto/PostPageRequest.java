@@ -1,4 +1,4 @@
-package com.example.post.model;
+package com.example.post.dto;
 
 import com.example.common.dto.Page;
 import lombok.Data;

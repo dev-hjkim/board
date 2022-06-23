@@ -2,9 +2,7 @@ package com.example.post.service.impl;
 
 import com.example.common.dto.ResultType;
 import com.example.post.dto.PostList;
-import com.example.post.model.PostRequest;
 import com.example.post.model.Post;
-import com.example.post.model.PostPageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +25,9 @@ class PostListServiceImplTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        PostPageRequest postRequest = new PostPageRequest();
-        postRequest.setBoardName("AAA");
+        Post post = new Post("AAA", 0, 10);
 
-        PostList result = postService.getPostList(postRequest);
+        PostList result = postService.getPostList(post);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
@@ -40,9 +37,7 @@ class PostListServiceImplTest {
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setBoardName("AAA");
-        postRequest.setPostSeq("13");
+        Post postRequest = new Post("AAA", "13");
 
         Post result = postService.getPost(postRequest);
 
@@ -53,12 +48,22 @@ class PostListServiceImplTest {
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setBoardName("AAA");
-        postRequest.setPostSeq("13");
+        Post postRequest = new Post("AAA", "13");
 
         ResultType resultType = postService.deletePost(postRequest);
 
         assertThat(resultType.getCode(), is("200000"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("createPost :: 정상 케이스")
+    void createPost() {
+        Post postRequest = new Post("AAA", "test14",
+                "test14's content", "5");
+
+        Post result = postService.createPost(postRequest);
+
+        assertThat(result.getTitle(), is("test14"));
     }
 }

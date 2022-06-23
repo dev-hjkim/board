@@ -1,6 +1,8 @@
 package com.example.post.controller.v1;
 
 import com.example.common.util.JwtUtil;
+import com.example.post.dto.PostRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,11 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PostListControllerTest {
 
     private MockMvc mvc;
+    private ObjectMapper objectMapper;
     String accessToken;
 
     @Autowired
-    public void setPostControllerTest(MockMvc mvc, JwtUtil jwtUtil) {
+    public void setPostControllerTest(MockMvc mvc, ObjectMapper objectMapper, JwtUtil jwtUtil) {
         this.mvc = mvc;
+        this.objectMapper = objectMapper;
         this.accessToken = jwtUtil.generate("5", "ACCESS");
     }
 
@@ -61,4 +64,24 @@ class PostListControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
     }
+
+    @Test
+    @Transactional
+    @DisplayName("createPost :: 정상 케이스")
+    void createPost() throws Exception {
+        PostRequest postRequest = new PostRequest();
+        postRequest.setTitle("test14");
+        postRequest.setContent("test14's content");
+
+        String content = objectMapper.writeValueAsString(postRequest);
+
+        mvc.perform(post("/v1/board/AAA/posts")
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(content))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
 }

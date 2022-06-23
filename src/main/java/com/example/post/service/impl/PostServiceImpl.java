@@ -2,8 +2,8 @@ package com.example.post.service.impl;
 
 import com.example.common.dto.ResultType;
 import com.example.post.dto.PostList;
-import com.example.post.model.PostPageRequest;
-import com.example.post.model.PostRequest;
+import com.example.post.dto.PostPageRequest;
+import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
 import com.example.post.service.PostService;
@@ -20,21 +20,28 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public PostList getPostList(PostPageRequest request) {
-        int totalCount = postRepository.getTotalList(request.getBoardName());
-        List<Post> postList = postRepository.getPostList(request);
-        return new PostList(request.getPageSize(), totalCount, postList);
+    public PostList getPostList(Post post) {
+        int totalCount = postRepository.getTotalList(post.getBoardCd());
+        List<Post> postList = postRepository.getPostList(post);
+        return new PostList(post.getPageSize(), totalCount, postList);
     }
 
     @Override
-    public Post getPost(PostRequest request) {
-        return postRepository.getPost(request);
+    public Post getPost(Post post) {
+        return postRepository.getPost(post);
     }
 
     @Override
     @Transactional
-    public ResultType deletePost(PostRequest request) {
-        postRepository.deletePost(request);
+    public ResultType deletePost(Post post) {
+        postRepository.deletePost(post);
         return ResultType.OK;
+    }
+
+    @Override
+    @Transactional
+    public Post createPost(Post post) {
+        postRepository.insertPost(post);
+        return post;
     }
 }
