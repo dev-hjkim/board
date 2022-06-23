@@ -1,9 +1,7 @@
 package com.example.advice;
 
 import com.example.common.dto.ResultType;
-import com.example.common.exception.ExpiredTokenException;
-import com.example.common.exception.TokenRequiredException;
-import com.example.common.exception.UserNotFoundException;
+import com.example.common.exception.*;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,5 +88,21 @@ public class ExceptionControllerAdvice {
         log.error("handleUserNotFound ex :::", ex);
 
         return ResultType.UNKNOWN_USER;
+    }
+
+    // CRUD 하려는 데이터가 존재하지 않는 경우
+    @ExceptionHandler({DataNotFoundException.class})
+    public ResultType handleNotFoundData(DataNotFoundException ex) {
+        log.error("handleNotFoundData ex :::", ex);
+
+        return ResultType.DATA_NOT_FOUND;
+    }
+
+    // 수정, 삭제하려는 데이터가 자신이 등록한 데이터가 아닌 경우
+    @ExceptionHandler({NoAuthorityException.class})
+    public ResultType handleNoAuthority(NoAuthorityException ex) {
+        log.error("handleNoAuthority ex :::", ex);
+
+        return ResultType.NO_ROLE;
     }
 }

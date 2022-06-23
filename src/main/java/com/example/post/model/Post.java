@@ -12,7 +12,7 @@ public class Post {
     private String boardCd;
     private String title;
     private String content;
-    private int memberNo;
+    private String memberNo;
     private String userId;
     private int viewCnt;
     private int replyCnt;

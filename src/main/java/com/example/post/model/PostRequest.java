@@ -1,9 +1,14 @@
 package com.example.post.model;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class PostRequest {
     private String boardName;
     private String postSeq;
+    private String userSeq;
 }

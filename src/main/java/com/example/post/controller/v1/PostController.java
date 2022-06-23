@@ -1,5 +1,8 @@
 package com.example.post.controller.v1;
 
+import com.example.common.dto.ResultType;
+import com.example.common.exception.DataNotFoundException;
+import com.example.common.exception.NoAuthorityException;
 import com.example.post.dto.PostList;
 import com.example.post.model.PostRequest;
 import com.example.post.model.Post;
@@ -8,9 +11,7 @@ import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/v1/board/{boardName}")
@@ -46,5 +47,30 @@ public class PostController {
         logger.info("getPost ::: {}", request);
 
         return postService.getPost(request);
+    }
+
+    /**
+     * 포스트 삭제
+     *
+     * @author hjkim
+     * @param request-boardName, postSeq
+     * @return Post
+     */
+    @DeleteMapping(value="/posts/{postSeq}")
+    public ResultType deletePost(@RequestAttribute String userSeq,
+                                 PostRequest request) {
+        logger.info("deletePost ::: {}", request);
+
+        Post post = postService.getPost(request);
+
+        if (post == null) {
+            throw new DataNotFoundException();
+        }
+
+        if (!post.getMemberNo().equals(userSeq)) {
+            throw new NoAuthorityException();
+        }
+
+        return postService.deletePost(request);
     }
 }

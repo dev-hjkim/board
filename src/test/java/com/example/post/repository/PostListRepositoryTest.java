@@ -8,11 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -47,9 +49,24 @@ class PostListRepositoryTest {
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        PostRequest postRequest = new PostRequest("AAA", "13");
+        PostRequest postRequest = new PostRequest();
+        postRequest.setBoardName("AAA");
+        postRequest.setPostSeq("13");
 
         Post post = postRepository.getPost(postRequest);
         assertThat(post.getTitle(), is("test13"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("deletePost :: 정상 케이스")
+    void deletePost() {
+        PostRequest postRequest = new PostRequest();
+        postRequest.setBoardName("AAA");
+        postRequest.setPostSeq("13");
+        postRepository.deletePost(postRequest);
+
+        Post post = postRepository.getPost(postRequest);
+        assertThat(post, nullValue());
     }
 }

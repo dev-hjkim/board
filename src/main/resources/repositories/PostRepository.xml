@@ -28,4 +28,10 @@
         where board.board_cd = #{boardName}
           and board.board_no = #{postSeq}
     </select>
+
+    <delete id="deletePost" parameterType="PostRequest">
+        delete from tb_board
+        where board_cd = #{boardName}
+          and board_no = #{postSeq}
+    </delete>
 </mapper>

@@ -14,4 +14,6 @@ public interface PostRepository {
     List<Post> getPostList(PostPageRequest request);
 
     Post getPost(PostRequest request);
+
+    void deletePost(PostRequest request);
 }
