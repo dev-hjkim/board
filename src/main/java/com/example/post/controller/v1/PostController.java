@@ -65,18 +65,13 @@ public class PostController {
         logger.info("deletePost ::: {} {}", userSeq, request);
 
         Post post = new Post(request.getBoardName(), request.getPostSeq());
-        Post selectedPost = postService.getPost(post);
 
-        if (selectedPost == null) {
-            throw new DataNotFoundException();
-        }
-
-        if (!selectedPost.getMemberNo().equals(userSeq)) {
-            throw new NoAuthorityException();
-        }
+        checkEditable(userSeq, post);
 
         return postService.deletePost(post);
     }
+
+
 
     /**
      * 포스트 수정
@@ -111,6 +106,13 @@ public class PostController {
 
         Post post = new Post(request.getBoardName(), request.getPostSeq(), body.getTitle(),
                 body.getContent(), userSeq);
+
+        checkEditable(userSeq, post);
+
+        return postService.modifyPost(post);
+    }
+
+    private void checkEditable(String userSeq, Post post) {
         Post selectedPost = postService.getPost(post);
 
         if (selectedPost == null) {
@@ -120,7 +122,5 @@ public class PostController {
         if (!selectedPost.getMemberNo().equals(userSeq)) {
             throw new NoAuthorityException();
         }
-
-        return postService.modifyPost(post);
     }
 }
