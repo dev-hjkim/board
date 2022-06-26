@@ -71,8 +71,6 @@ public class PostController {
         return postService.deletePost(post);
     }
 
-
-
     /**
      * 포스트 수정
      *
@@ -111,6 +109,8 @@ public class PostController {
 
         return postService.modifyPost(post);
     }
+
+
 
     private void checkEditable(String userSeq, Post post) {
         Post selectedPost = postService.getPost(post);
