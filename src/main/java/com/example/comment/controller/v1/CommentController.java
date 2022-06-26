@@ -2,14 +2,16 @@ package com.example.comment.controller.v1;
 
 import com.example.comment.dto.CommentList;
 import com.example.comment.dto.CommentPageRequest;
+import com.example.comment.dto.CommentRequest;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
+import com.example.common.dto.ResultType;
+import com.example.common.exception.DataNotFoundException;
+import com.example.common.exception.NoAuthorityException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/v1/board/{boardName}/posts/{postSeq}/")
@@ -33,5 +35,75 @@ public class CommentController {
         Comment comment = new Comment(request.getBoardName(), request.getPostSeq(),
                 request.getStartPage(), request.getPageSize());
         return commentService.getCommentList(comment);
+    }
+
+    /**
+     * 댓글 삭제
+     *
+     * @author hjkim
+     * @param request-boardName, postSeq, commentSeq
+     * @return ResultType
+     */
+    @DeleteMapping(value="/comments/{commentSeq}")
+    public ResultType deleteComment(@RequestAttribute String userSeq,
+                                 CommentRequest request) {
+        logger.info("deleteComment ::: {} {}", userSeq, request);
+
+        Comment comment = new Comment(request.getBoardName(), request.getPostSeq(), request.getCommentSeq());
+
+        checkEditable(userSeq, comment);
+
+        return commentService.deleteComment(comment);
+    }
+
+    /**
+     * 댓글 등록
+     *
+     * @author hjkim
+     * @param request-boardName, postSeq, content
+     * @return Post
+     */
+    @PostMapping(value="/comments")
+    public Comment createComment(@RequestAttribute String userSeq,
+                                 CommentRequest request,
+                                 @RequestBody CommentRequest body) {
+        logger.info("createComment ::: {} {} {}", userSeq, request, body);
+
+        Comment comment = new Comment(request.getBoardName(), request.getPostSeq(),
+                body.getContent(), userSeq);
+        return commentService.createComment(comment);
+    }
+
+    /**
+     * 댓글 수정
+     *
+     * @author hjkim
+     * @param request-boardName, postSeq, commentSeq, content
+     * @return Post
+     */
+    @PutMapping(value="/comments/{commentSeq}")
+    public Comment modifyComment(@RequestAttribute String userSeq,
+                           CommentRequest request,
+                           @RequestBody CommentRequest body) {
+        logger.info("modifyComment ::: {} {} {}", userSeq, request, body);
+
+        Comment comment = new Comment(request.getBoardName(), request.getPostSeq(),
+                request.getCommentSeq(), body.getContent(), userSeq);
+
+        checkEditable(userSeq, comment);
+
+        return commentService.modifyComment(comment);
+    }
+
+    private void checkEditable(String userSeq, Comment comment) {
+        Comment selectedComment = commentService.getComment(comment);
+
+        if (selectedComment == null) {
+            throw new DataNotFoundException();
+        }
+
+        if (!selectedComment.getMemberNo().equals(userSeq)) {
+            throw new NoAuthorityException();
+        }
     }
 }

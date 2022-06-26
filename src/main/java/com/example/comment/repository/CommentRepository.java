@@ -7,7 +7,15 @@ import java.util.List;
 
 @Mapper
 public interface CommentRepository {
-    int getTotalList(String postSeq);
+    int getTotalCount(String postSeq);
 
     List<Comment> getCommentList(Comment comment);
+
+    Comment getComment(Comment comment);
+
+    void deleteComment(Comment comment);
+
+    void insertComment(Comment comment);
+
+    void updateComment(Comment comment);
 }

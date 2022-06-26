@@ -72,7 +72,7 @@ public class PostController {
     }
 
     /**
-     * 포스트 수정
+     * 포스트 등록
      *
      * @author hjkim
      * @param request-boardName, title, content

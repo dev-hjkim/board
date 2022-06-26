@@ -19,7 +19,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostList getPostList(Post post) {
-        int totalCount = postRepository.getTotalList(post.getBoardCd());
+        int totalCount = postRepository.getTotalCount(post.getBoardCd());
         List<Post> postList = postRepository.getPostList(post);
         return new PostList(post.getPageSize(), totalCount, postList);
     }

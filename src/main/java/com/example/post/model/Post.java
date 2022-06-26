@@ -35,18 +35,18 @@ public class Post {
         this.boardNo = postSeq;
     }
 
-    public Post(String boardCd, String title, String content, String memberNo) {
+    public Post(String boardCd, String title, String content, String userSeq) {
         this.boardCd = boardCd;
         this.title = title;
         this.content = content;
-        this.memberNo = memberNo;
+        this.memberNo = userSeq;
     }
 
-    public Post(String boardCd, String postSeq, String title, String content, String memberNo) {
+    public Post(String boardCd, String postSeq, String title, String content, String userSeq) {
         this.boardCd = boardCd;
         this.boardNo = postSeq;
         this.title = title;
         this.content = content;
-        this.memberNo = memberNo;
+        this.memberNo = userSeq;
     }
 }

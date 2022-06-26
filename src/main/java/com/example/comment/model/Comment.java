@@ -28,4 +28,25 @@ public class Comment {
         this.startPage = startPage;
         this.pageSize = pageSize;
     }
+
+    public Comment(String boardName, String postSeq, String commentSeq) {
+        this.boardCd = boardName;
+        this.boardNo = postSeq;
+        this.commentNo = commentSeq;
+    }
+
+    public Comment(String boardName, String postSeq, String content, String userSeq) {
+        this.boardCd = boardName;
+        this.boardNo = postSeq;
+        this.content = content;
+        this.memberNo = userSeq;
+    }
+
+    public Comment(String boardName, String postSeq, String commentSeq, String content, String userSeq) {
+        this.boardCd = boardName;
+        this.boardNo = postSeq;
+        this.commentNo = commentSeq;
+        this.content = content;
+        this.memberNo = userSeq;
+    }
 }

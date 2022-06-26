@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface PostRepository {
-    int getTotalList(String boardName);
+    int getTotalCount(String boardName);
 
     List<Post> getPostList(Post request);
 

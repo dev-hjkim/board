@@ -26,9 +26,9 @@ class PostListRepositoryTest {
     }
 
     @Test
-    @DisplayName("getTotalList :: 정상 케이스")
-    void getTotalList() {
-        int totalCount = postRepository.getTotalList("AAA");
+    @DisplayName("getTotalCount :: 정상 케이스")
+    void getTotalCount() {
+        int totalCount = postRepository.getTotalCount("AAA");
 
         assertThat(totalCount, is(2));
     }
