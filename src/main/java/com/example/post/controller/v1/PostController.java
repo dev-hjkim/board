@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value="/v1/board/{boardName}")
+@RequestMapping(value="/v1/board/{boardName}/posts")
 @RequiredArgsConstructor
 public class PostController {
     final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -28,7 +28,7 @@ public class PostController {
      * @param request-pageIndex(nullable), pageSize(nullable), boardName
      * @return PostList-totalCount, totalPage, list
      */
-    @GetMapping(value="/posts")
+    @GetMapping(value="")
     public PostList getPostList(PostPageRequest request) {
         logger.info("getPostList ::: {}", request);
 
@@ -44,7 +44,7 @@ public class PostController {
      * @param request-boardName, postSeq
      * @return Post
      */
-    @GetMapping(value="/posts/{postSeq}")
+    @GetMapping(value="/{postSeq}")
     public Post getPost(PostRequest request) {
         logger.info("getPost ::: {}", request);
 
@@ -59,7 +59,7 @@ public class PostController {
      * @param request-boardName, postSeq
      * @return ResultType
      */
-    @DeleteMapping(value="/posts/{postSeq}")
+    @DeleteMapping(value="/{postSeq}")
     public ResultType deletePost(@RequestAttribute String userSeq,
                                  PostRequest request) {
         logger.info("deletePost ::: {} {}", userSeq, request);
@@ -78,7 +78,7 @@ public class PostController {
      * @param request-boardName, title, content
      * @return Post
      */
-    @PostMapping(value="/posts")
+    @PostMapping(value="")
     public Post createPost(@RequestAttribute String userSeq,
                            @PathVariable String boardName,
                            @RequestBody PostRequest request) {
@@ -96,7 +96,7 @@ public class PostController {
      * @param request-boardName, postSeq, title, content
      * @return Post
      */
-    @PutMapping(value="/posts/{postSeq}")
+    @PutMapping(value="/{postSeq}")
     public Post modifyPost(@RequestAttribute String userSeq,
                            PostRequest request,
                            @RequestBody PostRequest body) {

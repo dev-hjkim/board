@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value="/v1/board/{boardName}/posts/{postSeq}/")
+@RequestMapping(value="/v1/board/{boardName}/posts/{postSeq}/comments")
 @RequiredArgsConstructor
 public class CommentController {
     final Logger logger = LoggerFactory.getLogger(CommentController.class);
@@ -28,7 +28,7 @@ public class CommentController {
      * @param request-pageIndex(nullable), pageSize(nullable), boardName, postSeq
      * @return PostList-totalCount, totalPage, list
      */
-    @GetMapping(value="/comments")
+    @GetMapping(value="")
     public CommentList getCommentList(CommentPageRequest request) {
         logger.info("getCommentList ::: {}", request);
 
@@ -44,7 +44,7 @@ public class CommentController {
      * @param request-boardName, postSeq, commentSeq
      * @return ResultType
      */
-    @DeleteMapping(value="/comments/{commentSeq}")
+    @DeleteMapping(value="/{commentSeq}")
     public ResultType deleteComment(@RequestAttribute String userSeq,
                                  CommentRequest request) {
         logger.info("deleteComment ::: {} {}", userSeq, request);
@@ -63,7 +63,7 @@ public class CommentController {
      * @param request-boardName, postSeq, content
      * @return Post
      */
-    @PostMapping(value="/comments")
+    @PostMapping(value="")
     public Comment createComment(@RequestAttribute String userSeq,
                                  CommentRequest request,
                                  @RequestBody CommentRequest body) {
@@ -81,7 +81,7 @@ public class CommentController {
      * @param request-boardName, postSeq, commentSeq, content
      * @return Post
      */
-    @PutMapping(value="/comments/{commentSeq}")
+    @PutMapping(value="/{commentSeq}")
     public Comment modifyComment(@RequestAttribute String userSeq,
                            CommentRequest request,
                            @RequestBody CommentRequest body) {
