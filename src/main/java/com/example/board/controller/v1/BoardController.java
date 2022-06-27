@@ -2,7 +2,7 @@ package com.example.board.controller.v1;
 
 import com.example.board.dto.Board;
 import com.example.board.service.BoardService;
-import com.example.common.dto.Page;
+import com.example.common.dto.PageRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +21,13 @@ public class BoardController {
      * 게시판 목록 조회
      *
      * @author hjkim
-     * @param page-pageIndex(nullable), pageSize(nullable)
+     * @param pageRequest-pageIndex(nullable), pageSize(nullable)
      * @return Board-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public Board getBoardList(Page page) {
-        logger.info("getBoardList ::: {}", page);
+    public Board getBoardList(PageRequest pageRequest) {
+        logger.info("getBoardList ::: {}", pageRequest);
 
-        return boardService.getBoardList(page);
+        return boardService.getBoardList(pageRequest);
     }
 }

@@ -1,10 +1,10 @@
 package com.example.post.dto;
 
-import com.example.common.dto.Page;
+import com.example.common.dto.PageRequest;
 import lombok.Data;
 
 @Data
-public class PostPageRequest extends Page {
+public class PostPageRequestRequest extends PageRequest {
     private String boardName;
 
     private String postSeq;

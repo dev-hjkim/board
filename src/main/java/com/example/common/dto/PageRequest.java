@@ -3,7 +3,7 @@ package com.example.common.dto;
 import lombok.ToString;
 
 @ToString
-public class Page {
+public class PageRequest {
     private Integer pageIndex;
     private Integer pageSize;
 

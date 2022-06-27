@@ -6,7 +6,7 @@ import com.example.common.exception.NoAuthorityException;
 import com.example.post.dto.PostList;
 import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
-import com.example.post.dto.PostPageRequest;
+import com.example.post.dto.PostPageRequestRequest;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class PostController {
      * @return PostList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public PostList getPostList(PostPageRequest request) {
+    public PostList getPostList(PostPageRequestRequest request) {
         logger.info("getPostList ::: {}", request);
 
         Post post = new Post(request.getBoardName(), request.getStartPage(),

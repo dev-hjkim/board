@@ -1,7 +1,7 @@
 package com.example.comment.controller.v1;
 
 import com.example.comment.dto.CommentList;
-import com.example.comment.dto.CommentPageRequest;
+import com.example.comment.dto.CommentPageRequestRequest;
 import com.example.comment.dto.CommentRequest;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
@@ -29,7 +29,7 @@ public class CommentController {
      * @return PostList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public CommentList getCommentList(CommentPageRequest request) {
+    public CommentList getCommentList(CommentPageRequestRequest request) {
         logger.info("getCommentList ::: {}", request);
 
         Comment comment = new Comment(request.getBoardName(), request.getPostSeq(),
