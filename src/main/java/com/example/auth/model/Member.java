@@ -2,27 +2,27 @@ package com.example.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.Date;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Member {
     @JsonIgnore
-    String memberNo;
-    String userId;
+    private String memberNo;
+    private String userId;
     @JsonIgnore
-    String password;
-    Date regDt;
-    Date updDt;
+    private String password;
+    private Date regDt;
+    private Date updDt;
 
     public Member(String id, String pwd) {
         this.userId = id;
         this.password = pwd;
+    }
+
+    public Member(String memberNo) {
+        this.memberNo = memberNo;
     }
 }

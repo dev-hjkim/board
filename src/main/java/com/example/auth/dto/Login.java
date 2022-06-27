@@ -5,13 +5,13 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-@Setter
 @Builder
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
 public class Login {
     @NotEmpty
-    String id;
+    private String id;
     @NotEmpty
-    String password;
+    private String password;
 }

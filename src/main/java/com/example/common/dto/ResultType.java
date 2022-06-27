@@ -17,8 +17,10 @@ public enum ResultType {
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "401004", "Expired access token"),
     REFRESH_TOKEN_REQUIRED(HttpStatus.UNAUTHORIZED, "401005", "Refresh token required"),
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "401006", "Expired refresh token"),
+    NO_ROLE(HttpStatus.UNAUTHORIZED, "401007", "No Role"),
 
     PAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "404001", "Page not found"),
+    DATA_NOT_FOUND(HttpStatus.NOT_FOUND, "404002", "Data not found"),
 
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "405001", "Http method is not allowed"),
 

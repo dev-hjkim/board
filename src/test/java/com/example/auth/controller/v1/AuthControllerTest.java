@@ -3,12 +3,14 @@ package com.example.auth.controller.v1;
 import com.example.auth.dto.Login;
 import com.example.auth.dto.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +34,8 @@ class AuthControllerTest {
     }
 
     @Test
+    @Transactional
+    @DisplayName("signin :: 정상 케이스")
     void signin() throws Exception {
         Date now = new Date();
         DateFormat dateFormat = new SimpleDateFormat("ddhhmmss");
@@ -52,6 +56,7 @@ class AuthControllerTest {
     }
 
     @Test
+    @DisplayName("login :: 정상 케이스")
     void login() throws Exception {
         String content = objectMapper.writeValueAsString(
                 Login.builder()

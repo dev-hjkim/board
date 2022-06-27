@@ -13,13 +13,13 @@ import javax.validation.constraints.NotEmpty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     @NotEmpty
-    String id;
+    private String id;
 
     @NotEmpty
-    String password;
+    private String password;
 
-    String accessToken;
-    String refreshToken;
+    private String accessToken;
+    private String refreshToken;
 
     public User(String id, String accessToken, String refreshToken) {
         this.id = id;

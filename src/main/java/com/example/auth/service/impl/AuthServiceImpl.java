@@ -1,10 +1,10 @@
-package com.example.auth.service.impl.v1;
+package com.example.auth.service.impl;
 
 import com.example.auth.dto.User;
 import com.example.auth.model.Member;
 import com.example.auth.repository.AuthRepository;
 import com.example.auth.service.AuthService;
-import com.example.common.dto.ResultType;
+import com.example.common.exception.UserNotFoundException;
 import com.example.common.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -32,14 +32,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User login(Member member) {
-        Member registered = authRepository.login(member);
+    public User findUser(Member member) {
+        Member registered = authRepository.findUser(member);
 
         if (registered == null) {
-            throw new NullPointerException(ResultType.UNKNOWN_USER.getCode());
+            throw new UserNotFoundException();
         }
 
-        return new User(member.getUserId(),
+        return new User(registered.getUserId(),
                 jwtUtil.generate(registered.getMemberNo(),"ACCESS"),
                 jwtUtil.generate(registered.getMemberNo(), "REFRESH"));
     }

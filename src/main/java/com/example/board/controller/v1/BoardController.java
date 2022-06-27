@@ -1,8 +1,8 @@
 package com.example.board.controller.v1;
 
+import com.example.board.dto.Board;
 import com.example.board.service.BoardService;
-import com.example.common.dto.Result;
-import com.example.common.dto.ResultType;
+import com.example.common.dto.PageRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,17 +17,17 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping(value="/lists")
-    public Result getBoardList(@RequestHeader String userSeq) {
-        logger.info("getBoardList ::: userSeq {}", userSeq);
+    /**
+     * 게시판 목록 조회
+     *
+     * @author hjkim
+     * @param pageRequest-pageIndex(nullable), pageSize(nullable)
+     * @return Board-totalCount, totalPage, list
+     */
+    @GetMapping(value="")
+    public Board getBoardList(PageRequest pageRequest) {
+        logger.info("getBoardList ::: {}", pageRequest);
 
-        return null;
-    }
-
-    @GetMapping(value="/interceptor/lists")
-    public Result getBoardListWithInterceptor(@RequestAttribute String userSeq) {
-        logger.info("getBoardListWithInterceptor ::: userSeq {}", userSeq);
-
-        return null;
+        return boardService.getBoardList(pageRequest);
     }
 }

@@ -11,11 +11,11 @@ import org.springframework.http.HttpStatus;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Result {
     @JsonIgnore
-    HttpStatus status;
+    private HttpStatus status;
 
-    String code;
-    String message;
-    Object data;
+    private String code;
+    private String message;
+    private Object data;
 
     public Result(ResultType resultType) {
         this.status = resultType.getStatus();
