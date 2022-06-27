@@ -1,7 +1,9 @@
 package com.example.common.exception;
 
-public class DataNotFoundException extends RuntimeException {
+import com.example.common.dto.ResultType;
+
+public class DataNotFoundException extends BaseException {
     public DataNotFoundException() {
-        super("There is no data");
+        super(ResultType.DATA_NOT_FOUND, "There is no data");
     }
 }

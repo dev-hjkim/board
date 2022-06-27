@@ -1,7 +1,9 @@
 package com.example.common.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import com.example.common.dto.ResultType;
+
+public class UserNotFoundException extends BaseException {
     public UserNotFoundException() {
-        super("The user was not found.");
+        super(ResultType.UNKNOWN_USER, "The user was not found.");
     }
 }
