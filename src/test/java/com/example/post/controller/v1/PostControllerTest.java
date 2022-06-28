@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PostListControllerTest {
+class PostControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper objectMapper;
@@ -69,9 +69,7 @@ class PostListControllerTest {
     @Transactional
     @DisplayName("createPost :: 정상 케이스")
     void createPost() throws Exception {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setTitle("test14");
-        postRequest.setContent("test14's content");
+        PostRequest postRequest = new PostRequest("test14", "test14's content");
 
         String content = objectMapper.writeValueAsString(postRequest);
 
@@ -88,9 +86,7 @@ class PostListControllerTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() throws Exception {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setTitle("test13");
-        postRequest.setContent("test13's modified content");
+        PostRequest postRequest = new PostRequest("test13", "test13's modified content");
 
         String content = objectMapper.writeValueAsString(postRequest);
 

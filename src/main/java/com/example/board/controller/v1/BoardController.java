@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(value="/v1/board")
+@RequestMapping(value="/v1/boards")
 @RequiredArgsConstructor
 public class BoardController {
     final Logger logger = LoggerFactory.getLogger(BoardController.class);
