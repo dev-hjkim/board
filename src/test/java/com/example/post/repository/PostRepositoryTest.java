@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PostListRepositoryTest {
+class PostRepositoryTest {
 
     private PostRepository postRepository;
 
@@ -36,7 +36,11 @@ class PostListRepositoryTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        Post post = new Post("AAA", 0, 10);
+        Post post = Post.builder()
+                .boardCd("AAA")
+                .startPage(0)
+                .pageSize(10)
+                .build();
 
         List<Post> postList = postRepository.getPostList(post);
         assertThat(postList.get(0).getBoardCd(), is("AAA"));
@@ -46,7 +50,10 @@ class PostListRepositoryTest {
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .boardCd("AAA")
+                .boardNo("13")
+                .build();
 
         Post post = postRepository.getPost(postRequest);
         assertThat(post.getTitle(), is("test13"));
@@ -56,7 +63,12 @@ class PostListRepositoryTest {
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardCd("AAA")
+                .boardNo("13")
+                .build();
+
         postRepository.deletePost(postRequest);
 
         Post post = postRepository.getPost(postRequest);
@@ -67,8 +79,12 @@ class PostListRepositoryTest {
     @Transactional
     @DisplayName("insertPost :: 정상 케이스")
     void insertPost() {
-        Post postRequest = new Post("AAA", "test14",
-                "test14's content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardCd("AAA")
+                .title("test14")
+                .content("test14's content")
+                .build();
 
         postRepository.insertPost(postRequest);
         assertThat(postRequest.getTitle(), is("test14"));
@@ -78,8 +94,13 @@ class PostListRepositoryTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() {
-        Post postRequest = new Post("AAA", "13", "test13",
-                "test13's modified content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardCd("AAA")
+                .boardNo("13")
+                .title("test13")
+                .content("test13's modified content")
+                .build();
 
         postRepository.updatePost(postRequest);
         assertThat(postRequest.getContent(), is("test13's modified content"));

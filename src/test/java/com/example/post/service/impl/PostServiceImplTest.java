@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.is;
 
 
 @SpringBootTest
-class PostListServiceImplTest {
+class PostServiceImplTest {
     private PostServiceImpl postService;
 
     @Autowired
@@ -25,7 +25,11 @@ class PostListServiceImplTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        Post post = new Post("AAA", 0, 10);
+        Post post = Post.builder()
+                .boardCd("AAA")
+                .startPage(0)
+                .pageSize(10)
+                .build();
 
         PostList result = postService.getPostList(post);
 
@@ -37,7 +41,10 @@ class PostListServiceImplTest {
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .boardCd("AAA")
+                .boardNo("13")
+                .build();
 
         Post result = postService.getPost(postRequest);
 
@@ -48,7 +55,11 @@ class PostListServiceImplTest {
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardCd("AAA")
+                .boardNo("13")
+                .build();
 
         ResultType resultType = postService.deletePost(postRequest);
 
@@ -59,8 +70,12 @@ class PostListServiceImplTest {
     @Transactional
     @DisplayName("createPost :: 정상 케이스")
     void createPost() {
-        Post postRequest = new Post("AAA", "test14",
-                "test14's content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardCd("AAA")
+                .title("test14")
+                .content("test14's content")
+                .build();
 
         Post result = postService.createPost(postRequest);
 
@@ -71,8 +86,13 @@ class PostListServiceImplTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() {
-        Post postRequest = new Post("AAA", "13", "test13",
-                "test13's modified content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardCd("AAA")
+                .boardNo("13")
+                .title("test13")
+                .content("test13's modified content")
+                .build();
 
         Post result = postService.modifyPost(postRequest);
 

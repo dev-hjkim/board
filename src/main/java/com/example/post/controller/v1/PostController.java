@@ -2,8 +2,6 @@ package com.example.post.controller.v1;
 
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.ResultType;
-import com.example.common.exception.DataNotFoundException;
-import com.example.common.exception.NoAuthorityException;
 import com.example.post.dto.PostList;
 import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
@@ -33,8 +31,11 @@ public class PostController {
                                 PageRequest request) {
         logger.info("getPostList ::: {} {}", boardName, request);
 
-        Post post = new Post(boardName,
-                request.getStartPage(),request.getPageSize());
+        Post post = Post.builder()
+                .boardCd(boardName)
+                .startPage(request.getStartPage())
+                .pageSize(request.getPageSize())
+                .build();
         return postService.getPostList(post);
     }
 
@@ -50,7 +51,10 @@ public class PostController {
                         @PathVariable String postSeq) {
         logger.info("getPost ::: {} {}", boardName, postSeq);
 
-        Post post = new Post(boardName, postSeq);
+        Post post = Post.builder()
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .build();
         return postService.getPost(post);
     }
 
@@ -67,10 +71,11 @@ public class PostController {
                                  @PathVariable String postSeq) {
         logger.info("deletePost ::: {} {} {}", userSeq, boardName, postSeq);
 
-        Post post = new Post(boardName, postSeq);
-
-        checkEditable(userSeq, post);
-
+        Post post = Post.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .build();
         return postService.deletePost(post);
     }
 
@@ -87,8 +92,12 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("createPost ::: {} {} {}", userSeq, boardName, body);
 
-        Post post = new Post(boardName, body.getTitle(),
-                body.getContent(), userSeq);
+        Post post = Post.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .title(body.getTitle())
+                .content(body.getContent())
+                .build();
         return postService.createPost(post);
     }
 
@@ -106,25 +115,13 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("modifyPost ::: {} {} {} {}", userSeq, boardName, postSeq, body);
 
-        Post post = new Post(boardName, postSeq, body.getTitle(),
-                body.getContent(), userSeq);
-
-        checkEditable(userSeq, post);
-
+        Post post = Post.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .title(body.getTitle())
+                .content(body.getContent())
+                .build();
         return postService.modifyPost(post);
-    }
-
-
-
-    private void checkEditable(String userSeq, Post post) {
-        Post selectedPost = postService.getPost(post);
-
-        if (selectedPost == null) {
-            throw new DataNotFoundException();
-        }
-
-        if (!selectedPost.getMemberNo().equals(userSeq)) {
-            throw new NoAuthorityException();
-        }
     }
 }

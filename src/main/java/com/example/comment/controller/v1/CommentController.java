@@ -6,8 +6,6 @@ import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.ResultType;
-import com.example.common.exception.DataNotFoundException;
-import com.example.common.exception.NoAuthorityException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +32,12 @@ public class CommentController {
                                       PageRequest request) {
         logger.info("getCommentList ::: {} {} {}", boardName, postSeq, request);
 
-        Comment comment = new Comment(boardName, postSeq,
-                request.getStartPage(), request.getPageSize());
+        Comment comment = Comment.builder()
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .startPage(request.getStartPage())
+                .pageSize(request.getPageSize())
+                .build();
         return commentService.getCommentList(comment);
     }
 
@@ -53,10 +55,12 @@ public class CommentController {
                                     @PathVariable String commentSeq) {
         logger.info("deleteComment ::: {} {} {} {}", userSeq, boardName, postSeq, commentSeq);
 
-        Comment comment = new Comment(boardName, postSeq, commentSeq);
-
-        checkEditable(userSeq, comment);
-
+        Comment comment = Comment.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .commentNo(commentSeq)
+                .build();
         return commentService.deleteComment(comment);
     }
 
@@ -74,7 +78,12 @@ public class CommentController {
                                  @RequestBody CommentRequest body) {
         logger.info("createComment ::: {} {} {} {}", userSeq, boardName, postSeq, body);
 
-        Comment comment = new Comment(boardName, postSeq, body.getContent(), userSeq);
+        Comment comment = Comment.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .content(body.getContent())
+                .build();
         return commentService.createComment(comment);
     }
 
@@ -93,22 +102,13 @@ public class CommentController {
                                  @RequestBody CommentRequest body) {
         logger.info("modifyComment ::: {} {} {} {} {}", userSeq, boardName, postSeq, commentSeq, body);
 
-        Comment comment = new Comment(boardName, postSeq, commentSeq, body.getContent(), userSeq);
-
-        checkEditable(userSeq, comment);
-
+        Comment comment = Comment.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .commentNo(commentSeq)
+                .content(body.getContent())
+                .build();
         return commentService.modifyComment(comment);
-    }
-
-    private void checkEditable(String userSeq, Comment comment) {
-        Comment selectedComment = commentService.getComment(comment);
-
-        if (selectedComment == null) {
-            throw new DataNotFoundException();
-        }
-
-        if (!selectedComment.getMemberNo().equals(userSeq)) {
-            throw new NoAuthorityException();
-        }
     }
 }

@@ -24,7 +24,12 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("getCommentList :: 정상 케이스")
     void getCommentList() {
-        Comment comment = new Comment("AAA", "1", 0, 10);
+        Comment comment = Comment.builder()
+                .boardCd("AAA")
+                .boardNo("1")
+                .startPage(0)
+                .pageSize(10)
+                .build();
 
         CommentList result = commentService.getCommentList(comment);
 
@@ -36,7 +41,11 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("getComment :: 정상 케이스")
     void getComment() {
-        Comment commentRequest = new Comment("AAA", "1", "1");
+        Comment commentRequest = Comment.builder()
+                .boardCd("AAA")
+                .boardNo("1")
+                .commentNo("1")
+                .build();
 
         Comment result = commentService.getComment(commentRequest);
 
@@ -47,7 +56,12 @@ class CommentServiceImplTest {
     @Transactional
     @DisplayName("deleteComment :: 정상 케이스")
     void deleteComment() {
-        Comment commentRequest = new Comment("AAA", "1", "1");
+        Comment commentRequest = Comment.builder()
+                .memberNo("7")
+                .boardCd("AAA")
+                .boardNo("1")
+                .commentNo("1")
+                .build();
 
         ResultType resultType = commentService.deleteComment(commentRequest);
 
@@ -58,8 +72,12 @@ class CommentServiceImplTest {
     @Transactional
     @DisplayName("createComment :: 정상 케이스")
     void createComment() {
-        Comment commentRequest = new Comment("AAA", "1",
-                "test1's new comment", "7");
+        Comment commentRequest = Comment.builder()
+                .memberNo("7")
+                .boardCd("AAA")
+                .boardNo("1")
+                .content("test1's new comment")
+                .build();
 
         Comment result = commentService.createComment(commentRequest);
 
@@ -70,8 +88,13 @@ class CommentServiceImplTest {
     @Transactional
     @DisplayName("modifyComment :: 정상 케이스")
     void modifyComment() {
-        Comment commentRequest = new Comment("AAA", "1", "1",
-                "test1's modified comment", "7");
+        Comment commentRequest = Comment.builder()
+                .memberNo("7")
+                .boardCd("AAA")
+                .boardNo("1")
+                .commentNo("1")
+                .content("test1's modified comment")
+                .build();
 
         Comment result = commentService.modifyComment(commentRequest);
 

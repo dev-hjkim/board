@@ -1,13 +1,17 @@
 package com.example.post.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Post {
     private String boardNo;
@@ -23,30 +27,4 @@ public class Post {
 
     private Integer startPage;
     private Integer pageSize;
-
-    public Post(String boardName, Integer startPage, Integer pageSize) {
-        this.boardCd = boardName;
-        this.startPage = startPage;
-        this.pageSize = pageSize;
-    }
-
-    public Post(String boardName, String postSeq) {
-        this.boardCd = boardName;
-        this.boardNo = postSeq;
-    }
-
-    public Post(String boardCd, String title, String content, String userSeq) {
-        this.boardCd = boardCd;
-        this.title = title;
-        this.content = content;
-        this.memberNo = userSeq;
-    }
-
-    public Post(String boardCd, String postSeq, String title, String content, String userSeq) {
-        this.boardCd = boardCd;
-        this.boardNo = postSeq;
-        this.title = title;
-        this.content = content;
-        this.memberNo = userSeq;
-    }
 }
