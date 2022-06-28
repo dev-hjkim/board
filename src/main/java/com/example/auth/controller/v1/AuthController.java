@@ -31,7 +31,11 @@ public class AuthController {
     public Member signin(@Valid @RequestBody User user) {
         logger.info("signin ::: {}", user);
 
-        Member member = new Member(user.getId(), user.getPassword());
+        Member member = Member.builder()
+                .userId(user.getId())
+                .password(user.getPassword())
+                .build();
+
         return authService.signin(member);
     }
 
@@ -46,7 +50,11 @@ public class AuthController {
     public User login(@Valid @RequestBody Login login) {
         logger.info("login ::: {}", login);
 
-        Member member = new Member(login.getId(), login.getPassword());
+        Member member = Member.builder()
+                .userId(login.getId())
+                .password(login.getPassword())
+                .build();
+
         return authService.findUser(member);
     }
 
@@ -75,7 +83,10 @@ public class AuthController {
     public User refreshToken(@RequestAttribute String userSeq) {
         logger.info("refreshToken ::: {}", userSeq);
 
-        Member member = new Member(userSeq);
+        Member member = Member.builder()
+                .memberNo(userSeq)
+                .build();
+
         return authService.findUser(member);
     }
 }
