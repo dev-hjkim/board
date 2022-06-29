@@ -39,6 +39,7 @@ class PostServiceImplTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
         Post postRequest = Post.builder()
@@ -49,6 +50,7 @@ class PostServiceImplTest {
         Post result = postService.getPost(postRequest);
 
         assertThat(result.getTitle(), is("test13"));
+        assertThat(result.getViewCnt(), is(1));
     }
 
     @Test

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,6 +58,26 @@ class PostRepositoryTest {
 
         Post post = postRepository.getPost(postRequest);
         assertThat(post.getTitle(), is("test13"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("updateViewCount :: 정상 케이스")
+    void updateViewCount() {
+        Post postRequest = Post.builder()
+                .boardCd("AAA")
+                .boardNo("13")
+                .title("test13")
+                .content("test13's content")
+                .memberNo("5")
+                .userId("hjkim")
+                .viewCnt(1)
+                .replyCnt(0)
+                .build();
+
+        postRepository.updateViewCount(postRequest);
+        assertThat(postRequest.getViewCnt(), is(1));
+        assertThat(postRequest.getBoardCd(), is("AAA"));
     }
 
     @Test

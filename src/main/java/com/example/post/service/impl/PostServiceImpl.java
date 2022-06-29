@@ -28,7 +28,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPost(Post post) {
-        return postRepository.getPost(post);
+        Post selectedPost = postRepository.getPost(post);
+
+        if (selectedPost == null) {
+            throw new DataNotFoundException();
+        }
+
+        int updatedViewCount = selectedPost.getViewCnt() + 1;
+        selectedPost.setViewCnt(updatedViewCount);
+
+        postRepository.updateViewCount(selectedPost);
+        return selectedPost;
     }
 
     @Override

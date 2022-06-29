@@ -44,6 +44,14 @@
           AND board.board_no = #{boardNo}
     </select>
 
+    <update id="updateViewCount" parameterType="Post">
+        UPDATE tb_board
+           SET view_cnt = #{viewCnt}
+         WHERE 1=1
+           AND board_cd = #{boardCd}
+           AND board_no = #{boardNo}
+    </update>
+
     <delete id="deletePost" parameterType="Post">
         DELETE FROM tb_board
          WHERE 1=1

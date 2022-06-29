@@ -13,6 +13,8 @@ public interface PostRepository {
 
     Post getPost(Post post);
 
+    void updateViewCount(Post post);
+
     void deletePost(Post post);
 
     void insertPost(Post post);

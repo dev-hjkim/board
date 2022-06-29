@@ -43,6 +43,7 @@ class PostControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("getPost :: 정상 케이스")
     void getPost() throws Exception {
         mvc.perform(get("/v1/board/AAA/posts/13")
