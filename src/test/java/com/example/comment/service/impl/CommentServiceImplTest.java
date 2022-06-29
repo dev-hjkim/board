@@ -3,6 +3,8 @@ package com.example.comment.service.impl;
 import com.example.comment.dto.CommentList;
 import com.example.comment.model.Comment;
 import com.example.common.dto.ResultType;
+import com.example.post.model.Post;
+import com.example.post.service.impl.PostServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,12 @@ import static org.hamcrest.Matchers.is;
 @SpringBootTest
 class CommentServiceImplTest {
     private CommentServiceImpl commentService;
+    private PostServiceImpl postService;
 
     @Autowired
-    public void setCommentServiceImplTest(CommentServiceImpl commentService) {
+    public void setCommentServiceImplTest(CommentServiceImpl commentService, PostServiceImpl postService) {
         this.commentService = commentService;
+        this.postService = postService;
     }
 
     @Test
@@ -81,7 +85,17 @@ class CommentServiceImplTest {
 
         Comment result = commentService.createComment(commentRequest);
 
+        Post postRequest = Post.builder()
+                .boardCd("AAA")
+                .boardNo("1")
+                .build();
+
+        Post postResult = postService.getPost(postRequest);
+
+
         assertThat(result.getContent(), is(commentRequest.getContent()));
+        assertThat(postResult.getReplyCnt(), is(1));
+
     }
 
     @Test

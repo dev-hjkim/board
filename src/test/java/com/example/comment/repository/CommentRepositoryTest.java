@@ -1,6 +1,8 @@
 package com.example.comment.repository;
 
 import com.example.comment.model.Comment;
+import com.example.post.model.Post;
+import com.example.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -19,10 +21,12 @@ import static org.hamcrest.Matchers.nullValue;
 class CommentRepositoryTest {
 
     private CommentRepository commentRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    public void setCommentRepository(CommentRepository commentRepository) {
+    public void setCommentRepository(CommentRepository commentRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
     }
 
     @Test
@@ -91,6 +95,20 @@ class CommentRepositoryTest {
 
         commentRepository.insertComment(commentRequest);
         assertThat(commentRequest.getContent(), is("test1's new comment"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("updateReplyCount :: 정상 케이스")
+    void updateReplyCount() {
+        commentRepository.updateReplyCount("1");
+
+        Post postRequest = Post.builder()
+                .boardCd("AAA")
+                .boardNo("1")
+                .build();
+        Post post = postRepository.getPost(postRequest);
+        assertThat(post.getReplyCnt(), is(1));
     }
 
     @Test

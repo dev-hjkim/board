@@ -44,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public Comment createComment(Comment comment) {
         commentRepository.insertComment(comment);
+        commentRepository.updateReplyCount(comment.getBoardNo());
         return comment;
     }
 
