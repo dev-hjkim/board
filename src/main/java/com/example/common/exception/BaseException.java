@@ -5,6 +5,8 @@ import lombok.Getter;
 
 public class BaseException extends RuntimeException {
 
+    private static final long serialVersionUID = 1733247474863885433L;
+
     @Getter
     private final ResultType resultType;
 

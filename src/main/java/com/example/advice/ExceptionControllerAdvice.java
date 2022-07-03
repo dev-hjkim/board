@@ -67,22 +67,6 @@ public class ExceptionControllerAdvice {
         return ResultType.INVALID_TOKEN;
     }
 
-    // token이 누락된 경우
-    @ExceptionHandler({TokenRequiredException.class})
-    public ResultType handleTokenRequired(TokenRequiredException ex) {
-        log.error("handleTokenRequired ex :::", ex);
-
-        return ex.getResultType();
-    }
-
-    // token이 만료된 경우
-    @ExceptionHandler({ExpiredTokenException.class})
-    public ResultType handleExpiredToken(ExpiredTokenException ex) {
-        log.error("handleExpiredToken ex :::", ex);
-
-        return ex.getResultType();
-    }
-
     // customException 발생한 경우
     @ExceptionHandler({BaseException.class})
     public ResultType handleBaseException(BaseException ex) {
