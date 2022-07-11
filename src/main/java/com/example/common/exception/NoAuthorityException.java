@@ -7,6 +7,6 @@ public class NoAuthorityException extends BaseException {
     private static final long serialVersionUID = 323183528761167051L;
 
     public NoAuthorityException() {
-        super(ResultType.NO_ROLE, "User has no authority to access data.");
+        super(ResultType.NO_ROLE);
     }
 }

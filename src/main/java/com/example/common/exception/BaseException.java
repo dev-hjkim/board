@@ -10,8 +10,8 @@ public class BaseException extends RuntimeException {
     @Getter
     private final ResultType resultType;
 
-    public BaseException(ResultType resultType, String message) {
-        super(message);
+    public BaseException(ResultType resultType) {
+        super(resultType.getMessage());
         this.resultType = resultType;
     }
 }

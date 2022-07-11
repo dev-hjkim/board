@@ -16,10 +16,9 @@ public enum ResultType {
     UNKNOWN_USER(HttpStatus.UNAUTHORIZED, "401001", "Unknown user"),
     ACCESS_TOKEN_REQUIRED(HttpStatus.UNAUTHORIZED, "401002", "Access token required"),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "401003", "Invalid token"),
-    EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "401004", "Expired access token"),
-    REFRESH_TOKEN_REQUIRED(HttpStatus.UNAUTHORIZED, "401005", "Refresh token required"),
-    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "401006", "Expired refresh token"),
-    NO_ROLE(HttpStatus.UNAUTHORIZED, "401007", "No Role"),
+    REFRESH_TOKEN_REQUIRED(HttpStatus.UNAUTHORIZED, "401004", "Refresh token required"),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "401005", "token expired"),
+    NO_ROLE(HttpStatus.UNAUTHORIZED, "401006", "No Role"),
 
     PAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "404001", "Page not found"),
     DATA_NOT_FOUND(HttpStatus.NOT_FOUND, "404002", "Data not found"),
