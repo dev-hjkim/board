@@ -38,9 +38,9 @@ public class AuthFilter extends OncePerRequestFilter {
             if (token == null || "".equals(token)) {
                 setHttpServletResponse(response, ResultType.ACCESS_TOKEN_REQUIRED);
             } else {
-                // token 유효성 확인
+                String userSeq = null;
                 try {
-                    jwtUtil.isExpired(token);
+                    userSeq = jwtUtil.getUserSeqFromToken(token);
                 } catch (ExpiredJwtException ex) {
                     logger.error("ExpiredJwtException :: ex", ex);
                     setHttpServletResponse(response, ResultType.EXPIRED_ACCESS_TOKEN);
@@ -51,12 +51,6 @@ public class AuthFilter extends OncePerRequestFilter {
                     logger.error("Exception :: ex", ex);
                 }
 
-                String userSeq = null;
-                try {
-                    userSeq = jwtUtil.getUserSeqFromToken(token);
-                } catch (Exception ex) {
-                    logger.error("Exception :: ex", ex);
-                }
                 wrapper.addHeader("userSeq", userSeq);
                 chain.doFilter(wrapper, response);
             }

@@ -31,7 +31,7 @@ public class JwtUtil {
 
         // 1. token 내부에 저장할 정보
         Map<String, Object> claims = new HashMap<>();
-        claims.put("seq", userSeq);
+        claims.put("userSeq", userSeq);
         
         // 2. token 생성일
         final Date createdDate = new Date();
@@ -64,13 +64,8 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public boolean isExpired(String token) {
-        final Date expiration = getClaimsFromToken(token).getExpiration();
-        return expiration.before(new Date());
-    }
-
     public String getUserSeqFromToken(String token) {
-        return getClaimsFromToken(token).get("seq", String.class);
+        return getClaimsFromToken(token).get("userSeq", String.class);
     }
 
     private JwtUtil() { }
