@@ -1,7 +1,6 @@
 package com.example.advice;
 
 import com.example.common.dto.ResultType;
-import com.example.common.dto.ResultWithoutData;
 import com.example.common.exception.*;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;

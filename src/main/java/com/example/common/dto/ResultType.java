@@ -1,7 +1,9 @@
 package com.example.common.dto;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum ResultType {
     OK(HttpStatus.OK, "200000", "OK"),
 
@@ -35,17 +37,5 @@ public enum ResultType {
         this.status = status;
         this.code = code;
         this.message = message;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }
