@@ -1,38 +1,27 @@
 package com.example.interceptor;
 
 import com.example.common.exception.AccessTokenRequiredException;
-import com.example.common.exception.ExpiredAccessTokenException;
 import com.example.common.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Component
-@RequiredArgsConstructor
-public class AccessInterceptor implements HandlerInterceptor {
+public class AccessInterceptor extends AuthInterceptor {
 
-    private final JwtUtil jwtUtil;
+    public AccessInterceptor(JwtUtil jwtUtil) {
+        super(jwtUtil);
+    }
 
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String token = request.getHeader("Authorization");
+    @Override
+    protected String getToken(HttpServletRequest request) {
+        return request.getHeader("Authorization");
+    }
 
+    @Override
+    protected void checkTokenExist(String token) {
         if (token == null || "".equals(token)) {
             throw new AccessTokenRequiredException();
         }
-
-        try {
-            jwtUtil.isExpired(token);
-        } catch (ExpiredJwtException ex) {
-            throw new ExpiredAccessTokenException();
-        }
-
-        String userSeq = jwtUtil.getUserSeqFromToken(token);
-        request.setAttribute("userSeq", userSeq);
-
-        return true;
     }
 }
