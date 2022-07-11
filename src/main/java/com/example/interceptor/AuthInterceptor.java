@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 abstract public class AuthInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
+    private final String headerName;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -21,10 +22,13 @@ abstract public class AuthInterceptor implements HandlerInterceptor {
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
-    abstract protected String getToken(HttpServletRequest request);
     abstract protected void checkTokenExist(String token);
 
-    protected void setUserSeqToAttribute(HttpServletRequest request, String token) {
+    private String getToken(HttpServletRequest request) {
+        return request.getHeader(this.headerName);
+    }
+
+    private void setUserSeqToAttribute(HttpServletRequest request, String token) {
         String userSeq = jwtUtil.getUserSeqFromToken(token);
         request.setAttribute("userSeq", userSeq);
     }
