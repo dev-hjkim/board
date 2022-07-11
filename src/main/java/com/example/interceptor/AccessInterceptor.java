@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 @Component
 public class AccessInterceptor extends AuthInterceptor {
 
@@ -20,7 +22,7 @@ public class AccessInterceptor extends AuthInterceptor {
 
     @Override
     protected void checkTokenExist(String token) {
-        if (token == null || "".equals(token)) {
+        if (isEmpty(token)) {
             throw new AccessTokenRequiredException();
         }
     }
