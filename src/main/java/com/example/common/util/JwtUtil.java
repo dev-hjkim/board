@@ -1,6 +1,7 @@
 package com.example.common.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,6 +64,16 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public boolean isExpired(String token) {
+        try {
+            final Date expiration = getClaimsFromToken(token).getExpiration();
+            return expiration.before(new Date());
+        } catch (ExpiredJwtException ex) {
+            return true;
+        }
+    }
+
 
     public String getUserSeqFromToken(String token) {
         return getClaimsFromToken(token).get("userSeq", String.class);

@@ -1,7 +1,10 @@
 package com.example.interceptor;
 
+import com.example.common.exception.ExpiredTokenException;
 import com.example.common.util.JwtUtil;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,24 +15,33 @@ import javax.servlet.http.HttpServletResponse;
 abstract public class AuthInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
-    private final String headerName;
+
+    @Getter
+    @Setter
+    protected String token;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = getToken(request);
-        checkTokenExist(token);
-        setUserSeqToAttribute(request, token);
+        checkTokenExist();
+        checkTokenExpired();
+        setUserSeqToAttribute(request);
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
-    abstract protected void checkTokenExist(String token);
+    abstract protected void checkTokenExist();
 
-    private String getToken(HttpServletRequest request) {
-        return request.getHeader(this.headerName);
+    protected String getTokenFromHeader(HttpServletRequest request, String headerName) {
+        return request.getHeader(headerName);
     }
 
-    private void setUserSeqToAttribute(HttpServletRequest request, String token) {
-        String userSeq = jwtUtil.getUserSeqFromToken(token);
+    private void checkTokenExpired() {
+        if (jwtUtil.isExpired(this.token)) {
+            throw new ExpiredTokenException();
+        }
+    }
+
+    private void setUserSeqToAttribute(HttpServletRequest request) {
+        String userSeq = jwtUtil.getUserSeqFromToken(this.token);
         request.setAttribute("userSeq", userSeq);
     }
 }

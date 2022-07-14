@@ -43,7 +43,7 @@ public class AuthFilter extends OncePerRequestFilter {
                     userSeq = jwtUtil.getUserSeqFromToken(token);
                 } catch (ExpiredJwtException ex) {
                     logger.error("ExpiredJwtException :: ex", ex);
-                    setHttpServletResponse(response, ResultType.EXPIRED_ACCESS_TOKEN);
+                    setHttpServletResponse(response, ResultType.EXPIRED_TOKEN);
                 } catch (MalformedJwtException ex) {
                     logger.error("MalformedJwtException :: ex", ex);
                     setHttpServletResponse(response, ResultType.INVALID_TOKEN);
