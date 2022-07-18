@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class BoardControllerTest {
+class BoardListControllerTest {
 
     private MockMvc mvc;
     String accessToken;
@@ -29,7 +29,7 @@ class BoardControllerTest {
     @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() throws Exception {
-        mvc.perform(get("/v1/board?pageIndex=2&pageSize=10")
+        mvc.perform(get("/v1/boards?pageIndex=2&pageSize=10")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))

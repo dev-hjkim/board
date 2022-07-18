@@ -1,6 +1,7 @@
 package com.example.board.controller.v1;
 
-import com.example.board.dto.Board;
+import com.example.board.dto.BoardList;
+import com.example.board.model.Board;
 import com.example.board.service.BoardService;
 import com.example.common.dto.PageRequest;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(value="/v1/board")
+@RequestMapping(value="/v1/boards")
 @RequiredArgsConstructor
 public class BoardController {
     final Logger logger = LoggerFactory.getLogger(BoardController.class);
@@ -21,13 +22,17 @@ public class BoardController {
      * 게시판 목록 조회
      *
      * @author hjkim
-     * @param pageRequest-pageIndex(nullable), pageSize(nullable)
+     * @param  request-pageIndex(nullable), pageSize(nullable)
      * @return Board-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public Board getBoardList(PageRequest pageRequest) {
-        logger.info("getBoardList ::: {}", pageRequest);
+    public BoardList getBoardList(PageRequest request) {
+        logger.info("getBoardList ::: {}", request);
 
-        return boardService.getBoardList(pageRequest);
+        Board board = Board.builder()
+                .startPage(request.getStartPage())
+                .pageSize(request.getPageSize())
+                .build();
+        return boardService.getBoardList(board);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.common.converter;
 
 
-import com.example.common.dto.ResultWithoutData;
+import com.example.common.dto.ExceptionResult;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ResultConverter extends MappingJackson2HttpMessageConverter {
         Result result;
 
         if (object instanceof ResultType) {
-            result = new ResultWithoutData((ResultType) object);
+            result = new ExceptionResult((ResultType) object);
         } else {
             result = new Result(object);
         }

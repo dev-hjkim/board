@@ -59,8 +59,7 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("createComment :: 정상 케이스")
     void createComment() throws Exception {
-        CommentRequest commentRequest = new CommentRequest();
-        commentRequest.setContent("test1's new comment");
+        CommentRequest commentRequest = new CommentRequest("test1's new comment");
 
         String content = objectMapper.writeValueAsString(commentRequest);
 
@@ -77,8 +76,7 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("modifyComment :: 정상 케이스")
     void modifyComment() throws Exception {
-        CommentRequest commentRequest = new CommentRequest();
-        commentRequest.setContent("test1's modified comment");
+        CommentRequest commentRequest = new CommentRequest("test1's modified comment");
 
         String content = objectMapper.writeValueAsString(commentRequest);
 

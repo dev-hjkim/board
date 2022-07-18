@@ -1,6 +1,8 @@
 package com.example.post.service.impl;
 
 import com.example.common.dto.ResultType;
+import com.example.common.exception.DataNotFoundException;
+import com.example.common.exception.NoAuthorityException;
 import com.example.post.dto.PostList;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
@@ -26,12 +28,24 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPost(Post post) {
-        return postRepository.getPost(post);
+        Post selectedPost = postRepository.getPost(post);
+
+        if (selectedPost == null) {
+            throw new DataNotFoundException();
+        }
+
+        int updatedViewCount = selectedPost.getViewCnt() + 1;
+        selectedPost.setViewCnt(updatedViewCount);
+
+        postRepository.updateViewCount(selectedPost);
+        return selectedPost;
     }
 
     @Override
     @Transactional
     public ResultType deletePost(Post post) {
+        checkEditable(post);
+
         postRepository.deletePost(post);
         return ResultType.OK;
     }
@@ -46,7 +60,21 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post modifyPost(Post post) {
+        checkEditable(post);
+
         postRepository.updatePost(post);
         return post;
+    }
+
+    private void checkEditable(Post post) {
+        Post selectedPost = postRepository.getPost(post);
+
+        if (selectedPost == null) {
+            throw new DataNotFoundException();
+        }
+
+        if (!selectedPost.getMemberNo().equals(post.getMemberNo())) {
+            throw new NoAuthorityException();
+        }
     }
 }

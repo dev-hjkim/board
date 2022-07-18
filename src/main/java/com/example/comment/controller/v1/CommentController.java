@@ -1,13 +1,11 @@
 package com.example.comment.controller.v1;
 
 import com.example.comment.dto.CommentList;
-import com.example.comment.dto.CommentPageRequestRequest;
 import com.example.comment.dto.CommentRequest;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
+import com.example.common.dto.PageRequest;
 import com.example.common.dto.ResultType;
-import com.example.common.exception.DataNotFoundException;
-import com.example.common.exception.NoAuthorityException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +23,21 @@ public class CommentController {
      * 댓글 목록 조회
      *
      * @author hjkim
-     * @param request-pageIndex(nullable), pageSize(nullable), boardName, postSeq
-     * @return PostList-totalCount, totalPage, list
+     * @param boardName, postSeq, pageIndex(nullable), pageSize(nullable)
+     * @return CommentList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public CommentList getCommentList(CommentPageRequestRequest request) {
-        logger.info("getCommentList ::: {}", request);
+    public CommentList getCommentList(@PathVariable String boardName,
+                                      @PathVariable String postSeq,
+                                      PageRequest request) {
+        logger.info("getCommentList ::: {} {} {}", boardName, postSeq, request);
 
-        Comment comment = new Comment(request.getBoardName(), request.getPostSeq(),
-                request.getStartPage(), request.getPageSize());
+        Comment comment = Comment.builder()
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .startPage(request.getStartPage())
+                .pageSize(request.getPageSize())
+                .build();
         return commentService.getCommentList(comment);
     }
 
@@ -41,18 +45,22 @@ public class CommentController {
      * 댓글 삭제
      *
      * @author hjkim
-     * @param request-boardName, postSeq, commentSeq
+     * @param boardName, postSeq, commentSeq
      * @return ResultType
      */
     @DeleteMapping(value="/{commentSeq}")
     public ResultType deleteComment(@RequestAttribute String userSeq,
-                                 CommentRequest request) {
-        logger.info("deleteComment ::: {} {}", userSeq, request);
+                                    @PathVariable String boardName,
+                                    @PathVariable String postSeq,
+                                    @PathVariable String commentSeq) {
+        logger.info("deleteComment ::: {} {} {} {}", userSeq, boardName, postSeq, commentSeq);
 
-        Comment comment = new Comment(request.getBoardName(), request.getPostSeq(), request.getCommentSeq());
-
-        checkEditable(userSeq, comment);
-
+        Comment comment = Comment.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .commentNo(commentSeq)
+                .build();
         return commentService.deleteComment(comment);
     }
 
@@ -60,17 +68,22 @@ public class CommentController {
      * 댓글 등록
      *
      * @author hjkim
-     * @param request-boardName, postSeq, content
+     * @param boardName, postSeq, content
      * @return Post
      */
     @PostMapping(value="")
     public Comment createComment(@RequestAttribute String userSeq,
-                                 CommentRequest request,
+                                 @PathVariable String boardName,
+                                 @PathVariable String postSeq,
                                  @RequestBody CommentRequest body) {
-        logger.info("createComment ::: {} {} {}", userSeq, request, body);
+        logger.info("createComment ::: {} {} {} {}", userSeq, boardName, postSeq, body);
 
-        Comment comment = new Comment(request.getBoardName(), request.getPostSeq(),
-                body.getContent(), userSeq);
+        Comment comment = Comment.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .content(body.getContent())
+                .build();
         return commentService.createComment(comment);
     }
 
@@ -78,32 +91,24 @@ public class CommentController {
      * 댓글 수정
      *
      * @author hjkim
-     * @param request-boardName, postSeq, commentSeq, content
+     * @param boardName, postSeq, commentSeq, content
      * @return Post
      */
     @PutMapping(value="/{commentSeq}")
     public Comment modifyComment(@RequestAttribute String userSeq,
-                           CommentRequest request,
-                           @RequestBody CommentRequest body) {
-        logger.info("modifyComment ::: {} {} {}", userSeq, request, body);
+                                 @PathVariable String boardName,
+                                 @PathVariable String postSeq,
+                                 @PathVariable String commentSeq,
+                                 @RequestBody CommentRequest body) {
+        logger.info("modifyComment ::: {} {} {} {} {}", userSeq, boardName, postSeq, commentSeq, body);
 
-        Comment comment = new Comment(request.getBoardName(), request.getPostSeq(),
-                request.getCommentSeq(), body.getContent(), userSeq);
-
-        checkEditable(userSeq, comment);
-
+        Comment comment = Comment.builder()
+                .memberNo(userSeq)
+                .boardCd(boardName)
+                .boardNo(postSeq)
+                .commentNo(commentSeq)
+                .content(body.getContent())
+                .build();
         return commentService.modifyComment(comment);
-    }
-
-    private void checkEditable(String userSeq, Comment comment) {
-        Comment selectedComment = commentService.getComment(comment);
-
-        if (selectedComment == null) {
-            throw new DataNotFoundException();
-        }
-
-        if (!selectedComment.getMemberNo().equals(userSeq)) {
-            throw new NoAuthorityException();
-        }
     }
 }

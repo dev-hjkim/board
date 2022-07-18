@@ -1,6 +1,8 @@
 package com.example.comment.repository;
 
 import com.example.comment.model.Comment;
+import com.example.post.model.Post;
+import com.example.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -19,10 +21,12 @@ import static org.hamcrest.Matchers.nullValue;
 class CommentRepositoryTest {
 
     private CommentRepository commentRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    public void setCommentRepository(CommentRepository commentRepository) {
+    public void setCommentRepository(CommentRepository commentRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
     }
 
     @Test
@@ -36,7 +40,12 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("getCommentList :: 정상 케이스")
     void getCommentList() {
-        Comment comment = new Comment("AAA", "1", 0, 10);
+        Comment comment = Comment.builder()
+                .boardCd("AAA")
+                .boardNo("1")
+                .startPage(0)
+                .pageSize(10)
+                .build();
 
         List<Comment> commentList = commentRepository.getCommentList(comment);
         assertThat(commentList.get(0).getBoardNo(), is(comment.getBoardNo()));
@@ -46,7 +55,11 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("getComment :: 정상 케이스")
     void getComment() {
-        Comment commentRequest = new Comment("AAA", "1", "1");
+        Comment commentRequest = Comment.builder()
+                .boardCd("AAA")
+                .boardNo("1")
+                .commentNo("1")
+                .build();
 
         Comment comment = commentRepository.getComment(commentRequest);
         assertThat(comment.getContent(), is("test1's comment"));
@@ -56,7 +69,13 @@ class CommentRepositoryTest {
     @Transactional
     @DisplayName("deleteComment :: 정상 케이스")
     void deleteComment() {
-        Comment commentRequest = new Comment("AAA", "1", "1");
+        Comment commentRequest = Comment.builder()
+                .memberNo("7")
+                .boardCd("AAA")
+                .boardNo("1")
+                .commentNo("1")
+                .build();
+
         commentRepository.deleteComment(commentRequest);
 
         Comment comment = commentRepository.getComment(commentRequest);
@@ -67,8 +86,12 @@ class CommentRepositoryTest {
     @Transactional
     @DisplayName("insertComment :: 정상 케이스")
     void insertComment() {
-        Comment commentRequest = new Comment("AAA", "1",
-                "test1's new comment", "7");
+        Comment commentRequest = Comment.builder()
+                .memberNo("7")
+                .boardCd("AAA")
+                .boardNo("1")
+                .content("test1's new comment")
+                .build();
 
         commentRepository.insertComment(commentRequest);
         assertThat(commentRequest.getContent(), is("test1's new comment"));
@@ -76,10 +99,29 @@ class CommentRepositoryTest {
 
     @Test
     @Transactional
+    @DisplayName("updateReplyCount :: 정상 케이스")
+    void updateReplyCount() {
+        commentRepository.updateReplyCount("1");
+
+        Post postRequest = Post.builder()
+                .boardCd("AAA")
+                .boardNo("1")
+                .build();
+        Post post = postRepository.getPost(postRequest);
+        assertThat(post.getReplyCnt(), is(1));
+    }
+
+    @Test
+    @Transactional
     @DisplayName("updateComment :: 정상 케이스")
     void updateComment() {
-        Comment commentRequest = new Comment("AAA", "1", "1",
-                "test1's modified comment", "7");
+        Comment commentRequest = Comment.builder()
+                .memberNo("7")
+                .boardCd("AAA")
+                .boardNo("1")
+                .commentNo("1")
+                .content("test1's modified comment")
+                .build();
 
         commentRepository.updateComment(commentRequest);
         assertThat(commentRequest.getContent(), is("test1's modified comment"));

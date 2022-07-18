@@ -17,5 +17,8 @@ public interface CommentRepository {
 
     void insertComment(Comment comment);
 
+    void updateReplyCount(String boardNo);
+
     void updateComment(Comment comment);
+
 }

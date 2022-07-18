@@ -1,44 +1,47 @@
 package com.example.interceptor;
 
 import com.example.common.exception.ExpiredTokenException;
-import com.example.common.exception.TokenRequiredException;
 import com.example.common.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 @RequiredArgsConstructor
-public class AuthInterceptor implements HandlerInterceptor {
+abstract public class AuthInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
 
-    public boolean preHandle(HttpServletRequest request, String key, String tokenType) {
-        String token = getToken(request, key, tokenType);
+    @Getter
+    @Setter
+    protected String token;
 
-        try {
-            jwtUtil.isExpired(token);
-        } catch (ExpiredJwtException ex) {
-            throw new ExpiredTokenException(tokenType);
-        }
-
-        setRequestAttribute(request, token);
-
-        return true;
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        checkTokenExist();
+        checkTokenExpired();
+        setUserSeqToAttribute(request);
+        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
-    private String getToken(HttpServletRequest request, String key, String tokenType) {
-        String token = request.getHeader(key);
+    abstract protected void checkTokenExist();
 
-        if (token == null || "".equals(token)) {
-            throw new TokenRequiredException(tokenType);
-        }
-        return token;
+    protected String getTokenFromHeader(HttpServletRequest request, String headerName) {
+        return request.getHeader(headerName);
     }
 
-    private void setRequestAttribute(HttpServletRequest request, String token) {
-        String userSeq = jwtUtil.getUserSeqFromToken(token);
+    private void checkTokenExpired() {
+        if (jwtUtil.isExpired(this.token)) {
+            throw new ExpiredTokenException();
+        }
+    }
+
+    private void setUserSeqToAttribute(HttpServletRequest request) {
+        String userSeq = jwtUtil.getUserSeqFromToken(this.token);
         request.setAttribute("userSeq", userSeq);
     }
 }
