@@ -1,9 +1,7 @@
 package com.example.common.converter;
 
 
-import com.example.common.dto.ExceptionResult;
 import com.example.common.dto.Result;
-import com.example.common.dto.ResultType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpOutputMessage;
@@ -24,8 +22,8 @@ public class ResultConverter extends MappingJackson2HttpMessageConverter {
     protected void writeInternal(Object object, Type type, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         Result result;
 
-        if (object instanceof ResultType) {
-            result = new ExceptionResult((ResultType) object);
+        if (object instanceof Result) {
+            result = (Result) object;
         } else {
             result = new Result(object);
         }
