@@ -104,8 +104,8 @@ class CommentRepositoryTest {
         commentRepository.updateReplyCount("1");
 
         Post postRequest = Post.builder()
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .build();
         Post post = postRepository.getPost(postRequest);
         assertThat(post.getReplyCnt(), is(1));

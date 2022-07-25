@@ -2,7 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.board.repository.BoardRepository">
     <select id="getBoardList" parameterType="Board" resultType="Board">
-        SELECT board_no, name, reg_dt, upd_dt
+        SELECT board_no
+             , name
+             , reg_dt
+             , upd_dt
           FROM tb_board
          LIMIT #{startPage}, #{pageSize}
     </select>

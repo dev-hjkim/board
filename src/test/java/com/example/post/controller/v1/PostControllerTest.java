@@ -34,7 +34,7 @@ class PostControllerTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() throws Exception {
-        mvc.perform(get("/v1/board/AAA/posts")
+        mvc.perform(get("/v1/boards/1/posts")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -46,7 +46,7 @@ class PostControllerTest {
     @Transactional
     @DisplayName("getPost :: 정상 케이스")
     void getPost() throws Exception {
-        mvc.perform(get("/v1/board/AAA/posts/13")
+        mvc.perform(get("/v1/boards/1/posts/13")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -58,7 +58,7 @@ class PostControllerTest {
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() throws Exception {
-        mvc.perform(delete("/v1/board/AAA/posts/13")
+        mvc.perform(delete("/v1/boards/1/posts/13")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -74,7 +74,7 @@ class PostControllerTest {
 
         String content = objectMapper.writeValueAsString(postRequest);
 
-        mvc.perform(post("/v1/board/AAA/posts")
+        mvc.perform(post("/v1/boards/1/posts")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
@@ -91,7 +91,7 @@ class PostControllerTest {
 
         String content = objectMapper.writeValueAsString(postRequest);
 
-        mvc.perform(put("/v1/board/AAA/posts/13")
+        mvc.perform(put("/v1/boards/1/posts/13")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")

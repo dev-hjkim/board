@@ -2,98 +2,104 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.post.repository.PostRepository">
     <select id="getTotalCount" parameterType="String" resultType="int">
-        SELECT COUNT(board_cd)
-          FROM tb_board
+        SELECT COUNT(post_no)
+          FROM tb_post
          WHERE 1=1
-           AND board_cd = #{boardName}
+           AND board_no = #{boardNo}
     </select>
 
     <select id="getPostList" parameterType="Post" resultType="Post">
-        SELECT board.board_no
-             , board.board_cd
-             , board.title
-             , board.member_no
+        SELECT post.board_no
+             , board.name
+             , post.member_no
              , member.user_id
-             , board.view_cnt
-             , board.reply_cnt
-             , board.reg_dt
-             , board.upd_dt
-          FROM tb_board board
+             , post.title
+             , post.view_cnt
+             , post.reply_cnt
+             , post.reg_dt
+             , post.upd_dt
+          FROM tb_post post
                 JOIN tb_member member
-                  ON board.member_no = member.member_no
+                  ON post.member_no = member.member_no
+                JOIN tb_board board
+                  ON post.board_no = board.board_no
          WHERE 1=1
-           AND board.board_cd = #{boardCd}
+           AND post.board_no = #{boardNo}
          LIMIT #{startPage}, #{pageSize}
     </select>
 
     <select id="getPost" parameterType="Post" resultType="Post">
-        SELECT board.board_no
-             , board.title
-             , board.content
-             , board.member_no
+        SELECT post.board_no
+             , board.name
+             , post.member_no
              , member.user_id
-             , board.view_cnt
-             , board.reply_cnt
-             , board.reg_dt
-             , board.upd_dt
-          FROM tb_board board
+             , post.title
+             , post.content
+             , post.view_cnt
+             , post.reply_cnt
+             , post.reg_dt
+             , post.upd_dt
+          FROM tb_post post
                 JOIN tb_member member
-                  ON board.member_no = member.member_no
+                  ON post.member_no = member.member_no
+                JOIN tb_board board
+                  ON post.board_no = board.board_no
         WHERE 1=1
-          AND board.board_cd = #{boardCd}
-          AND board.board_no = #{boardNo}
+          AND post.board_no = #{boardNo}
+          AND post.post_no = #{postNo}
     </select>
 
     <update id="updateViewCount" parameterType="Post">
-        UPDATE tb_board
+        UPDATE tb_post
            SET view_cnt = #{viewCnt}
          WHERE 1=1
-           AND board_cd = #{boardCd}
            AND board_no = #{boardNo}
+           AND post_no = #{postNo}
     </update>
 
     <delete id="deletePost" parameterType="Post">
-        DELETE FROM tb_board
+        DELETE FROM tb_post
          WHERE 1=1
-           AND board_cd = #{boardCd}
            AND board_no = #{boardNo}
+           AND post_no = #{postNo}
     </delete>
 
     <insert id="insertPost" parameterType="Post">
-        INSERT INTO tb_board (
-                               board_cd
-                             , title
+        INSERT INTO tb_post (
+                               board_no
                              , member_no
+                             , title
                              , content
                              )
-                      VALUES (  #{boardCd}
-                              , #{title}
+                      VALUES (  #{boardNo}
                               , #{memberNo}
+                              , #{title}
                               , #{content}
                              )
-        <selectKey keyProperty="boardNo,boardCd,title,memberNo,content,viewCnt,replyCnt,regDt,updDt"
+        <selectKey keyProperty="postNo,boardNo,memberNo,title,content,viewCnt,replyCnt,regDt,updDt"
                    resultType="Post" order="AFTER">
             SELECT *
-              FROM tb_board
+              FROM tb_post
              WHERE 1=1
-               AND board_no = LAST_INSERT_ID()
+               AND post_no = LAST_INSERT_ID()
         </selectKey>
     </insert>
 
     <update id="updatePost" parameterType="Post">
-        UPDATE tb_board
+        UPDATE tb_post
            SET title = #{title}
              , content = #{content}
              , upd_dt = now()
          WHERE 1=1
-           AND board_cd = #{boardCd}
            AND board_no = #{boardNo}
-        <selectKey keyProperty="boardNo,boardCd,title,memberNo,content,viewCnt,replyCnt,regDt,updDt"
+           AND post_no = #{postNo}
+        <selectKey keyProperty="postNo,boardNo,memberNo,title,content,viewCnt,replyCnt,regDt,updDt"
                    resultType="Post" order="AFTER">
             SELECT *
-              FROM tb_board
+              FROM tb_post
              WHERE 1=1
                AND board_no = #{boardNo}
+               AND post_no = #{postNo}
         </selectKey>
     </update>
 </mapper>

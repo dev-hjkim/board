@@ -14,12 +14,16 @@ import java.util.Date;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Post {
+    private String postNo;
+
     private String boardNo;
-    private String boardCd;
-    private String title;
-    private String content;
+    private String name;
+
     private String memberNo;
     private String userId;
+
+    private String title;
+    private String content;
     private int viewCnt;
     private int replyCnt;
     private Date regDt;

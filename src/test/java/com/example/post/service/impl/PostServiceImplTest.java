@@ -1,6 +1,6 @@
 package com.example.post.service.impl;
 
-import com.example.common.dto.ResultType;
+import com.example.common.dto.Result;
 import com.example.post.dto.PostList;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class PostServiceImplTest {
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
         Post post = Post.builder()
-                .boardCd("AAA")
+                .boardNo("1")
                 .startPage(0)
                 .pageSize(10)
                 .build();
@@ -35,7 +35,7 @@ class PostServiceImplTest {
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
-        assertThat(result.getList().get(0).getBoardCd(), is(post.getBoardCd()));
+        assertThat(result.getList().get(0).getBoardNo(), is(post.getBoardNo()));
     }
 
     @Test
@@ -43,8 +43,8 @@ class PostServiceImplTest {
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
         Post postRequest = Post.builder()
-                .boardCd("AAA")
-                .boardNo("13")
+                .boardNo("1")
+                .postNo("13")
                 .build();
 
         Post result = postService.getPost(postRequest);
@@ -59,13 +59,13 @@ class PostServiceImplTest {
     void deletePost() {
         Post postRequest = Post.builder()
                 .memberNo("5")
-                .boardCd("AAA")
-                .boardNo("13")
+                .boardNo("1")
+                .postNo("13")
                 .build();
 
-        ResultType resultType = postService.deletePost(postRequest);
+        Result result = postService.deletePost(postRequest);
 
-        assertThat(resultType.getCode(), is("200000"));
+        assertThat(result.getCode(), is("200000"));
     }
 
     @Test
@@ -74,7 +74,7 @@ class PostServiceImplTest {
     void createPost() {
         Post postRequest = Post.builder()
                 .memberNo("5")
-                .boardCd("AAA")
+                .boardNo("1")
                 .title("test14")
                 .content("test14's content")
                 .build();
@@ -90,8 +90,8 @@ class PostServiceImplTest {
     void updatePost() {
         Post postRequest = Post.builder()
                 .memberNo("5")
-                .boardCd("AAA")
-                .boardNo("13")
+                .boardNo("1")
+                .postNo("13")
                 .title("test13")
                 .content("test13's modified content")
                 .build();

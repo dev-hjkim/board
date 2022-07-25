@@ -86,8 +86,8 @@ class CommentServiceImplTest {
         Comment result = commentService.createComment(commentRequest);
 
         Post postRequest = Post.builder()
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .build();
 
         Post postResult = postService.getPost(postRequest);

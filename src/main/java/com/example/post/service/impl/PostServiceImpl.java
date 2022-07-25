@@ -1,5 +1,6 @@
 package com.example.post.service.impl;
 
+import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.NoAuthorityException;
@@ -21,7 +22,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostList getPostList(Post post) {
-        int totalCount = postRepository.getTotalCount(post.getBoardCd());
+        int totalCount = postRepository.getTotalCount(post.getBoardNo());
         List<Post> postList = postRepository.getPostList(post);
         return new PostList(post.getPageSize(), totalCount, postList);
     }
@@ -43,11 +44,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public ResultType deletePost(Post post) {
+    public Result deletePost(Post post) {
         checkEditable(post);
 
         postRepository.deletePost(post);
-        return ResultType.OK;
+        return new Result(ResultType.OK);
     }
 
     @Override

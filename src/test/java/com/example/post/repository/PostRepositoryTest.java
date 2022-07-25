@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,7 +28,7 @@ class PostRepositoryTest {
     @Test
     @DisplayName("getTotalCount :: 정상 케이스")
     void getTotalCount() {
-        int totalCount = postRepository.getTotalCount("AAA");
+        int totalCount = postRepository.getTotalCount("1");
 
         assertThat(totalCount, is(2));
     }
@@ -38,13 +37,13 @@ class PostRepositoryTest {
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
         Post post = Post.builder()
-                .boardCd("AAA")
+                .boardNo("1")
                 .startPage(0)
                 .pageSize(10)
                 .build();
 
         List<Post> postList = postRepository.getPostList(post);
-        assertThat(postList.get(0).getBoardCd(), is("AAA"));
+        assertThat(postList.get(0).getName(), is("AAA"));
         assertThat(postList.size(), is(2));
     }
 
@@ -52,8 +51,8 @@ class PostRepositoryTest {
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
         Post postRequest = Post.builder()
-                .boardCd("AAA")
-                .boardNo("13")
+                .boardNo("1")
+                .postNo("13")
                 .build();
 
         Post post = postRepository.getPost(postRequest);
@@ -65,8 +64,8 @@ class PostRepositoryTest {
     @DisplayName("updateViewCount :: 정상 케이스")
     void updateViewCount() {
         Post postRequest = Post.builder()
-                .boardCd("AAA")
-                .boardNo("13")
+                .boardNo("1")
+                .postNo("13")
                 .title("test13")
                 .content("test13's content")
                 .memberNo("5")
@@ -77,7 +76,7 @@ class PostRepositoryTest {
 
         postRepository.updateViewCount(postRequest);
         assertThat(postRequest.getViewCnt(), is(1));
-        assertThat(postRequest.getBoardCd(), is("AAA"));
+        assertThat(postRequest.getBoardNo(), is("1"));
     }
 
     @Test
@@ -86,8 +85,8 @@ class PostRepositoryTest {
     void deletePost() {
         Post postRequest = Post.builder()
                 .memberNo("5")
-                .boardCd("AAA")
-                .boardNo("13")
+                .boardNo("1")
+                .postNo("13")
                 .build();
 
         postRepository.deletePost(postRequest);
@@ -102,7 +101,7 @@ class PostRepositoryTest {
     void insertPost() {
         Post postRequest = Post.builder()
                 .memberNo("5")
-                .boardCd("AAA")
+                .boardNo("1")
                 .title("test14")
                 .content("test14's content")
                 .build();
@@ -117,8 +116,8 @@ class PostRepositoryTest {
     void updatePost() {
         Post postRequest = Post.builder()
                 .memberNo("5")
-                .boardCd("AAA")
-                .boardNo("13")
+                .boardNo("1")
+                .postNo("13")
                 .title("test13")
                 .content("test13's modified content")
                 .build();
