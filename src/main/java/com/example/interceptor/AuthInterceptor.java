@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 abstract public class AuthInterceptor implements HandlerInterceptor {
 
+    private static final String USER_SEQ_ATTRIBUTE_KEY = "userSeq";
+
     private final JwtUtil jwtUtil;
 
     @Getter
@@ -42,6 +44,6 @@ abstract public class AuthInterceptor implements HandlerInterceptor {
 
     private void setUserSeqToAttribute(HttpServletRequest request) {
         String userSeq = jwtUtil.getUserSeqFromToken(this.token);
-        request.setAttribute("userSeq", userSeq);
+        request.setAttribute(USER_SEQ_ATTRIBUTE_KEY, userSeq);
     }
 }
