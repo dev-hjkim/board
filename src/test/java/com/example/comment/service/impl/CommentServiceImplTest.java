@@ -2,7 +2,7 @@ package com.example.comment.service.impl;
 
 import com.example.comment.dto.CommentList;
 import com.example.comment.model.Comment;
-import com.example.common.dto.ResultType;
+import com.example.common.dto.Result;
 import com.example.post.model.Post;
 import com.example.post.service.impl.PostServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -29,8 +29,8 @@ class CommentServiceImplTest {
     @DisplayName("getCommentList :: 정상 케이스")
     void getCommentList() {
         Comment comment = Comment.builder()
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .startPage(0)
                 .pageSize(10)
                 .build();
@@ -39,15 +39,15 @@ class CommentServiceImplTest {
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
-        assertThat(result.getList().get(0).getBoardNo(), is(comment.getBoardNo()));
+        assertThat(result.getList().get(0).getPostNo(), is(comment.getPostNo()));
     }
 
     @Test
     @DisplayName("getComment :: 정상 케이스")
     void getComment() {
         Comment commentRequest = Comment.builder()
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .commentNo("1")
                 .build();
 
@@ -62,14 +62,14 @@ class CommentServiceImplTest {
     void deleteComment() {
         Comment commentRequest = Comment.builder()
                 .memberNo("7")
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .commentNo("1")
                 .build();
 
-        ResultType resultType = commentService.deleteComment(commentRequest);
+        Result result = commentService.deleteComment(commentRequest);
 
-        assertThat(resultType.getCode(), is("200000"));
+        assertThat(result.getCode(), is("200000"));
     }
 
     @Test
@@ -78,8 +78,8 @@ class CommentServiceImplTest {
     void createComment() {
         Comment commentRequest = Comment.builder()
                 .memberNo("7")
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .content("test1's new comment")
                 .build();
 
@@ -104,8 +104,8 @@ class CommentServiceImplTest {
     void modifyComment() {
         Comment commentRequest = Comment.builder()
                 .memberNo("7")
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .commentNo("1")
                 .content("test1's modified comment")
                 .build();

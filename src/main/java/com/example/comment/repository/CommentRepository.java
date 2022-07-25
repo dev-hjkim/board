@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface CommentRepository {
-    int getTotalCount(String postSeq);
+    int getTotalCount(String postNo);
 
     List<Comment> getCommentList(Comment comment);
 
@@ -17,7 +17,7 @@ public interface CommentRepository {
 
     void insertComment(Comment comment);
 
-    void updateReplyCount(String boardNo);
+    void updateReplyCount(String postNo);
 
     void updateComment(Comment comment);
 

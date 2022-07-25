@@ -4,6 +4,7 @@ import com.example.comment.dto.CommentList;
 import com.example.comment.model.Comment;
 import com.example.comment.repository.CommentRepository;
 import com.example.comment.service.CommentService;
+import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.NoAuthorityException;
@@ -21,7 +22,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentList getCommentList(Comment comment) {
-        int totalCount = commentRepository.getTotalCount(comment.getBoardNo());
+        int totalCount = commentRepository.getTotalCount(comment.getPostNo());
         List<Comment> commentList = commentRepository.getCommentList(comment);
         return new CommentList(comment.getPageSize(), totalCount, commentList);
     }
@@ -33,18 +34,18 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public ResultType deleteComment(Comment comment) {
+    public Result deleteComment(Comment comment) {
         checkEditable(comment);
 
         commentRepository.deleteComment(comment);
-        return ResultType.OK;
+        return new Result(ResultType.OK);
     }
 
     @Override
     @Transactional
     public Comment createComment(Comment comment) {
         commentRepository.insertComment(comment);
-        commentRepository.updateReplyCount(comment.getBoardNo());
+        commentRepository.updateReplyCount(comment.getPostNo());
         return comment;
     }
 

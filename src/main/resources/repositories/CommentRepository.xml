@@ -6,57 +6,59 @@
         SELECT COUNT(*)
           FROM tb_comment
          WHERE 1=1
-           AND board_no = #{postSeq}
+           AND post_no = #{postNo}
     </select>
 
     <select id="getCommentList" parameterType="Comment" resultType="Comment">
         SELECT comment.comment_no
-             , comment.board_no
+             , comment.post_no
              , comment.member_no
              , member.user_id
              , comment.content
+             , comment.reg_dt
              , comment.upd_dt
           FROM tb_comment comment
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.board_no = #{boardNo}
+           AND comment.post_no = #{postNo}
          LIMIT #{startPage}, #{pageSize}
     </select>
 
     <select id="getComment" parameterType="Comment" resultType="Comment">
         SELECT comment.comment_no
-             , comment.board_no
+             , comment.post_no
              , comment.member_no
              , member.user_id
              , comment.content
+             , comment.reg_dt
              , comment.upd_dt
           FROM tb_comment comment
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.board_no = #{boardNo}
+           AND comment.post_no = #{postNo}
            AND comment.comment_no = #{commentNo}
     </select>
 
     <delete id="deleteComment" parameterType="Comment">
         DELETE FROM tb_comment
          WHERE 1=1
-           AND board_no = #{boardNo}
+           AND post_no = #{postNo}
            AND comment_no = #{commentNo}
     </delete>
 
     <insert id="insertComment" parameterType="Comment">
         INSERT INTO tb_comment (
-                                 board_no
+                                 post_no
                                , member_no
                                , content
                                )
-                        VALUES (  #{boardNo}
+                        VALUES (  #{postNo}
                                 , #{memberNo}
                                 , #{content}
                                 )
-        <selectKey keyProperty="commentNo,boardNo,memberNo,content,updDt"
+        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
                    resultType="Comment" order="AFTER">
             SELECT *
               FROM tb_comment
@@ -66,10 +68,10 @@
     </insert>
 
     <update id="updateReplyCount" parameterType="String">
-        UPDATE tb_board
+        UPDATE tb_post
            SET reply_cnt = reply_cnt+1
          WHERE 1=1
-           AND board_no = #{boardNo}
+           AND post_no = #{postNo}
     </update>
 
     <update id="updateComment" parameterType="Comment">
@@ -77,9 +79,9 @@
            SET content = #{content}
              , upd_dt = now()
          WHERE 1=1
-           AND board_no = #{boardNo}
+           AND post_no = #{postNo}
            AND comment_no = #{commentNo}
-        <selectKey keyProperty="commentNo,boardNo,memberNo,content,updDt"
+        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
                    resultType="Comment" order="AFTER">
             SELECT *
               FROM tb_comment

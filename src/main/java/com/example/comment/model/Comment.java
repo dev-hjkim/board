@@ -14,13 +14,17 @@ import java.util.Date;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Comment {
-    private String boardNo;
-    private String boardCd;
-
     private String commentNo;
+
+    private String boardNo;
+    private String postNo;
+
     private String memberNo;
     private String userId;
+
     private String content;
+
+    private Date regDt;
     private Date updDt;
 
     private Integer startPage;

@@ -41,14 +41,14 @@ class CommentRepositoryTest {
     @DisplayName("getCommentList :: 정상 케이스")
     void getCommentList() {
         Comment comment = Comment.builder()
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .startPage(0)
                 .pageSize(10)
                 .build();
 
         List<Comment> commentList = commentRepository.getCommentList(comment);
-        assertThat(commentList.get(0).getBoardNo(), is(comment.getBoardNo()));
+        assertThat(commentList.get(0).getPostNo(), is(comment.getPostNo()));
         assertThat(commentList.size(), is(2));
     }
 
@@ -56,8 +56,8 @@ class CommentRepositoryTest {
     @DisplayName("getComment :: 정상 케이스")
     void getComment() {
         Comment commentRequest = Comment.builder()
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .commentNo("1")
                 .build();
 
@@ -71,8 +71,8 @@ class CommentRepositoryTest {
     void deleteComment() {
         Comment commentRequest = Comment.builder()
                 .memberNo("7")
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .commentNo("1")
                 .build();
 
@@ -88,8 +88,8 @@ class CommentRepositoryTest {
     void insertComment() {
         Comment commentRequest = Comment.builder()
                 .memberNo("7")
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .content("test1's new comment")
                 .build();
 
@@ -117,8 +117,8 @@ class CommentRepositoryTest {
     void updateComment() {
         Comment commentRequest = Comment.builder()
                 .memberNo("7")
-                .boardCd("AAA")
                 .boardNo("1")
+                .postNo("1")
                 .commentNo("1")
                 .content("test1's modified comment")
                 .build();
