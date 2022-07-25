@@ -7,6 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface BoardRepository {
-    List<String> getBoardList(Board board);
+    List<Board> getBoardList(Board board);
     int getTotalList();
 }

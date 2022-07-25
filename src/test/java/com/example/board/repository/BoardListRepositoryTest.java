@@ -37,7 +37,7 @@ class BoardListRepositoryTest {
                 .pageSize(10)
                 .build();
 
-        List<String> boardList = boardRepository.getBoardList(board);
-        assertThat(boardList.get(0), is("AAA"));
+        List<Board> boardList = boardRepository.getBoardList(board);
+        assertThat(boardList.get(0).getName(), is("AAA"));
     }
 }

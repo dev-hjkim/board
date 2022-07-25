@@ -6,13 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Board {
-    private String boardCd;
+    private String boardNo;
+    private String name;
+
+    private Date regDt;
+    private Date updDt;
 
     private Integer startPage;
     private Integer pageSize;

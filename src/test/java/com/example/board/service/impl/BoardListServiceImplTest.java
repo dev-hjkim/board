@@ -33,6 +33,6 @@ class BoardListServiceImplTest {
 
         assertThat(result.getTotalCount(), is(12));
         assertThat(result.getTotalPage(), is(2));
-        assertThat(result.getList().get(0), is("AAA"));
+        assertThat(result.getList().get(0).getName(), is("AAA"));
     }
 }
