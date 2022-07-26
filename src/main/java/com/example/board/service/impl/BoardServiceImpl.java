@@ -1,9 +1,9 @@
 package com.example.board.service.impl;
 
-import com.example.board.dto.BoardList;
 import com.example.board.model.Board;
 import com.example.board.repository.BoardRepository;
 import com.example.board.service.BoardService;
+import com.example.common.dto.PageList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,9 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
-    public BoardList getBoardList(Board board) {
+    public PageList<Board> getBoardList(Board board) {
         int totalCount = boardRepository.getTotalList();
         List<Board> boardList = boardRepository.getBoardList(board);
-        return new BoardList(board.getPageSize(), totalCount, boardList);
+        return new PageList<>(board.getPageSize(), totalCount, boardList);
     }
 }

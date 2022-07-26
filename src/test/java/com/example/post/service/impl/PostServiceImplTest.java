@@ -1,7 +1,7 @@
 package com.example.post.service.impl;
 
+import com.example.common.dto.PageList;
 import com.example.common.dto.Result;
-import com.example.post.dto.PostList;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class PostServiceImplTest {
                 .pageSize(10)
                 .build();
 
-        PostList result = postService.getPostList(post);
+        PageList<Post> result = postService.getPostList(post);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));

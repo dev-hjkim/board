@@ -1,8 +1,8 @@
 package com.example.post.controller.v1;
 
+import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
-import com.example.post.dto.PostList;
 import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
 import com.example.post.service.PostService;
@@ -27,8 +27,8 @@ public class PostController {
      * @return PostList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public PostList getPostList(@PathVariable String boardSeq,
-                                PageRequest request) {
+    public PageList<Post> getPostList(@PathVariable String boardSeq,
+                                      PageRequest request) {
         logger.info("getPostList ::: {} {}", boardSeq, request);
 
         Post post = Post.builder()

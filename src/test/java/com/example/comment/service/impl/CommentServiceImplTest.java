@@ -1,7 +1,7 @@
 package com.example.comment.service.impl;
 
-import com.example.comment.dto.CommentList;
 import com.example.comment.model.Comment;
+import com.example.common.dto.PageList;
 import com.example.common.dto.Result;
 import com.example.post.model.Post;
 import com.example.post.service.impl.PostServiceImpl;
@@ -35,7 +35,7 @@ class CommentServiceImplTest {
                 .pageSize(10)
                 .build();
 
-        CommentList result = commentService.getCommentList(comment);
+        PageList<Comment> result = commentService.getCommentList(comment);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));

@@ -1,10 +1,10 @@
 package com.example.post.service.impl;
 
+import com.example.common.dto.PageList;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.NoAuthorityException;
-import com.example.post.dto.PostList;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
 import com.example.post.service.PostService;
@@ -21,10 +21,10 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public PostList getPostList(Post post) {
+    public PageList<Post> getPostList(Post post) {
         int totalCount = postRepository.getTotalCount(post.getBoardNo());
         List<Post> postList = postRepository.getPostList(post);
-        return new PostList(post.getPageSize(), totalCount, postList);
+        return new PageList<>(post.getPageSize(), totalCount, postList);
     }
 
     @Override

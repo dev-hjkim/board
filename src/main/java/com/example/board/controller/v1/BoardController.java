@@ -1,8 +1,8 @@
 package com.example.board.controller.v1;
 
-import com.example.board.dto.BoardList;
 import com.example.board.model.Board;
 import com.example.board.service.BoardService;
+import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class BoardController {
      * @return Board-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public BoardList getBoardList(PageRequest request) {
+    public PageList<Board> getBoardList(PageRequest request) {
         logger.info("getBoardList ::: {}", request);
 
         Board board = Board.builder()

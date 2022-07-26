@@ -1,9 +1,9 @@
 package com.example.comment.controller.v1;
 
-import com.example.comment.dto.CommentList;
 import com.example.comment.dto.CommentRequest;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
+import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +27,9 @@ public class CommentController {
      * @return CommentList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public CommentList getCommentList(@PathVariable String boardSeq,
-                                      @PathVariable String postSeq,
-                                      PageRequest request) {
+    public PageList<Comment> getCommentList(@PathVariable String boardSeq,
+                                            @PathVariable String postSeq,
+                                            PageRequest request) {
         logger.info("getCommentList ::: {} {} {}", boardSeq, postSeq, request);
 
         Comment comment = Comment.builder()

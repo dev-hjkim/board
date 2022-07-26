@@ -1,7 +1,7 @@
 package com.example.board.service.impl;
 
-import com.example.board.dto.BoardList;
 import com.example.board.model.Board;
+import com.example.common.dto.PageList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ class BoardListServiceImplTest {
                 .pageSize(10)
                 .build();
 
-        BoardList result = boardService.getBoardList(board);
+        PageList<Board> result = boardService.getBoardList(board);
 
         assertThat(result.getTotalCount(), is(12));
         assertThat(result.getTotalPage(), is(2));
