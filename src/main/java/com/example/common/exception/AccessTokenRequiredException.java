@@ -9,4 +9,8 @@ public class AccessTokenRequiredException extends BaseException {
     public AccessTokenRequiredException() {
         super(ResultType.ACCESS_TOKEN_REQUIRED);
     }
+
+    public AccessTokenRequiredException(String message) {
+        super(ResultType.ACCESS_TOKEN_REQUIRED, message);
+    }
 }

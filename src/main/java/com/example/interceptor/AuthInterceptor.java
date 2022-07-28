@@ -22,6 +22,10 @@ abstract public class AuthInterceptor implements HandlerInterceptor {
     @Setter
     protected String token;
 
+    @Getter
+    @Setter
+    protected String uri;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         checkTokenExist();

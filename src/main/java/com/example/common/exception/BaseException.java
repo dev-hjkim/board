@@ -15,6 +15,11 @@ public class BaseException extends RuntimeException {
         this.resultType = resultType;
     }
 
+    public BaseException(ResultType resultType, String message) {
+        super(message);
+        this.resultType = resultType;
+    }
+
     public ExceptionResult getExceptionResult() {
         return new ExceptionResult(this.resultType);
     }

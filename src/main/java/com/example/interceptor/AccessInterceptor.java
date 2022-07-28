@@ -24,6 +24,7 @@ public class AccessInterceptor extends AuthInterceptor {
                              Object handler) throws Exception {
 
         this.setToken(this.getTokenFromHeader(request, ACCESS_TOKEN_HEADER_NAME));
+        this.setUri(request.getRequestURI());
 
         return super.preHandle(request, response, handler);
     }
@@ -31,7 +32,7 @@ public class AccessInterceptor extends AuthInterceptor {
     @Override
     protected void checkTokenExist() {
         if (isEmpty(this.token)) {
-            throw new AccessTokenRequiredException();
+            throw new AccessTokenRequiredException(this.uri);
         }
     }
 }
