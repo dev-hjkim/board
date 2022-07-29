@@ -22,17 +22,12 @@ public class BoardController {
      * 게시판 목록 조회
      *
      * @author hjkim
-     * @param  request-pageIndex(nullable), pageSize(nullable)
+     * @param  pageRequest-pageIndex(nullable), pageSize(nullable)
      * @return Board-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public PageList<Board> getBoardList(PageRequest request) {
-        logger.info("getBoardList ::: {}", request);
-
-        Board board = Board.builder()
-                .startPage(request.getStartPage())
-                .pageSize(request.getPageSize())
-                .build();
-        return boardService.getBoardList(board);
+    public PageList<Board> getBoardList(PageRequest pageRequest) {
+        logger.info("getBoardList ::: {}", pageRequest);
+        return boardService.getBoardList(pageRequest);
     }
 }

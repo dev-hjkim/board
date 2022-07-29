@@ -1,6 +1,7 @@
 package com.example.board.repository;
 
 import com.example.board.model.Board;
+import com.example.common.dto.PageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -32,12 +33,11 @@ class BoardListRepositoryTest {
     @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
-        Board board = Board.builder()
-                .startPage(0)
-                .pageSize(10)
-                .build();
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(2);
+        pageRequest.setPageSize(10);
 
-        List<Board> boardList = boardRepository.getBoardList(board);
-        assertThat(boardList.get(0).getName(), is("AAA"));
+        List<Board> boardList = boardRepository.getBoardList(pageRequest);
+        assertThat(boardList.get(0).getName(), is("KKK"));
     }
 }

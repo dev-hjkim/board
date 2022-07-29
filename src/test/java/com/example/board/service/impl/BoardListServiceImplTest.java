@@ -2,6 +2,7 @@ package com.example.board.service.impl;
 
 import com.example.board.model.Board;
 import com.example.common.dto.PageList;
+import com.example.common.dto.PageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,14 @@ class BoardListServiceImplTest {
     @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
-        Board board = Board.builder()
-                .startPage(0)
-                .pageSize(10)
-                .build();
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(2);
+        pageRequest.setPageSize(10);
 
-        PageList<Board> result = boardService.getBoardList(board);
+        PageList<Board> result = boardService.getBoardList(pageRequest);
 
         assertThat(result.getTotalCount(), is(12));
         assertThat(result.getTotalPage(), is(2));
-        assertThat(result.getList().get(0).getName(), is("AAA"));
+        assertThat(result.getList().get(0).getName(), is("KKK"));
     }
 }
