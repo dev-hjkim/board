@@ -1,6 +1,7 @@
 package com.example.auth.controller.v1;
 
 import com.example.auth.dto.User;
+import com.example.auth.dto.UserWithToken;
 import com.example.auth.model.JoinedUser;
 import com.example.auth.service.AuthService;
 import lombok.*;
@@ -46,7 +47,7 @@ public class AuthController {
      * @return User-id, accessToken, refreshToken
      */
     @PostMapping(value="/login")
-    public User login(@Valid @RequestBody User user) {
+    public UserWithToken login(@Valid @RequestBody User user) {
         logger.info("login ::: {}", user);
 
         JoinedUser joinedUser = JoinedUser.builder()
@@ -79,7 +80,7 @@ public class AuthController {
      * @return User-id, accessToken, refreshToken
      */
     @GetMapping(value="/refresh")
-    public User refreshToken(@RequestAttribute String userSeq) {
+    public UserWithToken refreshToken(@RequestAttribute String userSeq) {
         logger.info("refreshToken ::: {}", userSeq);
 
         JoinedUser joinedUser = JoinedUser.builder()

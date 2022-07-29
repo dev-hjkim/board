@@ -1,6 +1,7 @@
 package com.example.auth.service.impl;
 
 import com.example.auth.dto.User;
+import com.example.auth.dto.UserWithToken;
 import com.example.auth.model.JoinedUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,6 @@ class AuthServiceImplTest {
         User result = authService.findUser(joinedUser);
 
         assertThat(result.getId(), is("hjkim"));
-        assertThat(result, instanceOf(User.class));
+        assertThat(result, instanceOf(UserWithToken.class));
     }
 }
