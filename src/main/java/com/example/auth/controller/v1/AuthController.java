@@ -1,6 +1,5 @@
 package com.example.auth.controller.v1;
 
-import com.example.auth.dto.Login;
 import com.example.auth.dto.User;
 import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
@@ -43,16 +42,16 @@ public class AuthController {
      * 로그인
      *
      * @author hjkim
-     * @param login-id, password
+     * @param user-id, password
      * @return User-id, accessToken, refreshToken
      */
     @PostMapping(value="/login")
-    public User login(@Valid @RequestBody Login login) {
-        logger.info("login ::: {}", login);
+    public User login(@Valid @RequestBody User user) {
+        logger.info("login ::: {}", user);
 
         Member member = Member.builder()
-                .userId(login.getId())
-                .password(login.getPassword())
+                .userId(user.getId())
+                .password(user.getPassword())
                 .build();
 
         return authService.findUser(member);

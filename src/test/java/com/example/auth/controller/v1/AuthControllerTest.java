@@ -1,6 +1,5 @@
 package com.example.auth.controller.v1;
 
-import com.example.auth.dto.Login;
 import com.example.auth.dto.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -59,7 +58,7 @@ class AuthControllerTest {
     @DisplayName("login :: 정상 케이스")
     void login() throws Exception {
         String content = objectMapper.writeValueAsString(
-                Login.builder()
+                User.builder()
                         .id("hjkim")
                         .password("asdf")
                         .build());
