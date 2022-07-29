@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Member {
+public class JoinedUser {
     @JsonIgnore
     private String memberNo;
     private String userId;

@@ -1,7 +1,7 @@
 package com.example.auth.controller.v1;
 
 import com.example.auth.dto.User;
-import com.example.auth.model.Member;
+import com.example.auth.model.JoinedUser;
 import com.example.auth.service.AuthService;
 import lombok.*;
 import org.slf4j.Logger;
@@ -27,15 +27,15 @@ public class AuthController {
      * @return Member-userId, regDt, updDt
      */
     @PostMapping(value="/signin")
-    public Member signin(@Valid @RequestBody User user) {
+    public JoinedUser signin(@Valid @RequestBody User user) {
         logger.info("signin ::: {}", user);
 
-        Member member = Member.builder()
+        JoinedUser joinedUser = JoinedUser.builder()
                 .userId(user.getId())
                 .password(user.getPassword())
                 .build();
 
-        return authService.signin(member);
+        return authService.signin(joinedUser);
     }
 
     /**
@@ -49,12 +49,12 @@ public class AuthController {
     public User login(@Valid @RequestBody User user) {
         logger.info("login ::: {}", user);
 
-        Member member = Member.builder()
+        JoinedUser joinedUser = JoinedUser.builder()
                 .userId(user.getId())
                 .password(user.getPassword())
                 .build();
 
-        return authService.findUser(member);
+        return authService.findUser(joinedUser);
     }
 
     /**
@@ -82,10 +82,10 @@ public class AuthController {
     public User refreshToken(@RequestAttribute String userSeq) {
         logger.info("refreshToken ::: {}", userSeq);
 
-        Member member = Member.builder()
+        JoinedUser joinedUser = JoinedUser.builder()
                 .memberNo(userSeq)
                 .build();
 
-        return authService.findUser(member);
+        return authService.findUser(joinedUser);
     }
 }

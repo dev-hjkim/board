@@ -1,6 +1,6 @@
 package com.example.auth.repository;
 
-import com.example.auth.model.Member;
+import com.example.auth.model.JoinedUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -33,25 +33,25 @@ class AuthRepositoryTest {
     @Transactional
     @DisplayName("signin :: 정상 케이스")
     void signin() {
-        Member member = Member.builder()
+        JoinedUser joinedUser = JoinedUser.builder()
                 .userId("asdf")
                 .password("asdf")
                 .build();
 
-        authRepository.signin(member);
+        authRepository.signin(joinedUser);
 
-        assertThat(member.getMemberNo(), notNullValue());
-        assertThat(member.getRegDt(), notNullValue());
+        assertThat(joinedUser.getMemberNo(), notNullValue());
+        assertThat(joinedUser.getRegDt(), notNullValue());
     }
 
     @Test
     @DisplayName("findUser :: 정상 케이스")
     void findUser() {
-        Member member = Member.builder()
+        JoinedUser joinedUser = JoinedUser.builder()
                 .memberNo("5")
                 .build();
 
-        Member found = authRepository.findUser(member);
+        JoinedUser found = authRepository.findUser(joinedUser);
 
         assertThat(found.getMemberNo(), is("5"));
         assertThat(found.getUserId(), is("hjkim"));
