@@ -29,16 +29,14 @@ public class CommentController {
     @GetMapping(value="")
     public PageList<Comment> getCommentList(@PathVariable String boardSeq,
                                             @PathVariable String postSeq,
-                                            PageRequest request) {
-        logger.info("getCommentList ::: {} {} {}", boardSeq, postSeq, request);
+                                            PageRequest pageRequest) {
+        logger.info("getCommentList ::: {} {} {}", boardSeq, postSeq, pageRequest);
 
         Comment comment = Comment.builder()
                 .boardNo(boardSeq)
                 .postNo(postSeq)
-                .startPage(request.getStartPage())
-                .pageSize(request.getPageSize())
                 .build();
-        return commentService.getCommentList(comment);
+        return commentService.getCommentList(pageRequest, comment);
     }
 
     /**

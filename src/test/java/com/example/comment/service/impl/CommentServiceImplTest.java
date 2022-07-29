@@ -2,6 +2,7 @@ package com.example.comment.service.impl;
 
 import com.example.comment.model.Comment;
 import com.example.common.dto.PageList;
+import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.post.model.Post;
 import com.example.post.service.impl.PostServiceImpl;
@@ -28,14 +29,16 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("getCommentList :: 정상 케이스")
     void getCommentList() {
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(1);
+        pageRequest.setPageSize(10);
+
         Comment comment = Comment.builder()
                 .boardNo("1")
                 .postNo("1")
-                .startPage(0)
-                .pageSize(10)
                 .build();
 
-        PageList<Comment> result = commentService.getCommentList(comment);
+        PageList<Comment> result = commentService.getCommentList(pageRequest, comment);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));

@@ -9,7 +9,7 @@
            AND post_no = #{postNo}
     </select>
 
-    <select id="getCommentList" parameterType="Comment" resultType="Comment">
+    <select id="getCommentList" resultType="Comment">
         SELECT comment.comment_no
              , comment.post_no
              , comment.member_no
@@ -21,8 +21,8 @@
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.post_no = #{postNo}
-         LIMIT #{startPage}, #{pageSize}
+           AND comment.post_no = #{comment.postNo}
+         LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 
     <select id="getComment" parameterType="Comment" resultType="Comment">

@@ -1,6 +1,7 @@
 package com.example.post.service.impl;
 
 import com.example.common.dto.PageList;
+import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
@@ -25,13 +26,15 @@ class PostServiceImplTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(1);
+        pageRequest.setPageSize(10);
+
         Post post = Post.builder()
                 .boardNo("1")
-                .startPage(0)
-                .pageSize(10)
                 .build();
 
-        PageList<Post> result = postService.getPostList(post);
+        PageList<Post> result = postService.getPostList(pageRequest, post);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));

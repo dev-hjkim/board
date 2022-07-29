@@ -8,7 +8,7 @@
            AND board_no = #{boardNo}
     </select>
 
-    <select id="getPostList" parameterType="Post" resultType="Post">
+    <select id="getPostList" resultType="Post">
         SELECT post.board_no
              , board.name
              , post.member_no
@@ -24,8 +24,8 @@
                 JOIN tb_board board
                   ON post.board_no = board.board_no
          WHERE 1=1
-           AND post.board_no = #{boardNo}
-         LIMIT #{startPage}, #{pageSize}
+           AND post.board_no = #{post.boardNo}
+         LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 
     <select id="getPost" parameterType="Post" resultType="Post">

@@ -1,6 +1,7 @@
 package com.example.comment.repository;
 
 import com.example.comment.model.Comment;
+import com.example.common.dto.PageRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface CommentRepository {
     int getTotalCount(String postNo);
 
-    List<Comment> getCommentList(Comment comment);
+    List<Comment> getCommentList(PageRequest pageRequest, Comment comment);
 
     Comment getComment(Comment comment);
 

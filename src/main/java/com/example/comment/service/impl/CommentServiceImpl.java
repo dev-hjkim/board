@@ -4,6 +4,7 @@ import com.example.comment.model.Comment;
 import com.example.comment.repository.CommentRepository;
 import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
+import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
@@ -21,10 +22,10 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public PageList<Comment> getCommentList(Comment comment) {
+    public PageList<Comment> getCommentList(PageRequest pageRequest, Comment comment) {
         int totalCount = commentRepository.getTotalCount(comment.getPostNo());
-        List<Comment> commentList = commentRepository.getCommentList(comment);
-        return new PageList<>(comment.getPageSize(), totalCount, commentList);
+        List<Comment> commentList = commentRepository.getCommentList(pageRequest, comment);
+        return new PageList<>(pageRequest.getPageSize(), totalCount, commentList);
     }
 
     @Override

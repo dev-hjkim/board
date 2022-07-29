@@ -28,15 +28,13 @@ public class PostController {
      */
     @GetMapping(value="")
     public PageList<Post> getPostList(@PathVariable String boardSeq,
-                                      PageRequest request) {
-        logger.info("getPostList ::: {} {}", boardSeq, request);
+                                      PageRequest pageRequest) {
+        logger.info("getPostList ::: {} {}", boardSeq, pageRequest);
 
         Post post = Post.builder()
                 .boardNo(boardSeq)
-                .startPage(request.getStartPage())
-                .pageSize(request.getPageSize())
                 .build();
-        return postService.getPostList(post);
+        return postService.getPostList(pageRequest, post);
     }
 
     /**

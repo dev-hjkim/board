@@ -1,6 +1,7 @@
 package com.example.post.service.impl;
 
 import com.example.common.dto.PageList;
+import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
@@ -21,10 +22,10 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public PageList<Post> getPostList(Post post) {
+    public PageList<Post> getPostList(PageRequest pageRequest, Post post) {
         int totalCount = postRepository.getTotalCount(post.getBoardNo());
-        List<Post> postList = postRepository.getPostList(post);
-        return new PageList<>(post.getPageSize(), totalCount, postList);
+        List<Post> postList = postRepository.getPostList(pageRequest, post);
+        return new PageList<>(pageRequest.getPageSize(), totalCount, postList);
     }
 
     @Override

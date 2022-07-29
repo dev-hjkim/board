@@ -1,6 +1,7 @@
 package com.example.comment.repository;
 
 import com.example.comment.model.Comment;
+import com.example.common.dto.PageRequest;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -40,14 +41,16 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("getCommentList :: 정상 케이스")
     void getCommentList() {
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(1);
+        pageRequest.setPageSize(10);
+
         Comment comment = Comment.builder()
                 .boardNo("1")
                 .postNo("1")
-                .startPage(0)
-                .pageSize(10)
                 .build();
 
-        List<Comment> commentList = commentRepository.getCommentList(comment);
+        List<Comment> commentList = commentRepository.getCommentList(pageRequest, comment);
         assertThat(commentList.get(0).getPostNo(), is(comment.getPostNo()));
         assertThat(commentList.size(), is(2));
     }

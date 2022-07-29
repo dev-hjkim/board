@@ -1,5 +1,6 @@
 package com.example.post.repository;
 
+import com.example.common.dto.PageRequest;
 import com.example.post.model.Post;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface PostRepository {
     int getTotalCount(String boardNo);
 
-    List<Post> getPostList(Post request);
+    List<Post> getPostList(PageRequest pageRequest, Post post);
 
     Post getPost(Post post);
 

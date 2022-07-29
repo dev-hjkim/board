@@ -26,9 +26,7 @@ public class Post {
     private String content;
     private int viewCnt;
     private int replyCnt;
+
     private Date regDt;
     private Date updDt;
-
-    private Integer startPage;
-    private Integer pageSize;
 }

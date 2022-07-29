@@ -1,5 +1,6 @@
 package com.example.post.repository;
 
+import com.example.common.dto.PageRequest;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,13 +37,15 @@ class PostRepositoryTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(1);
+        pageRequest.setPageSize(10);
+
         Post post = Post.builder()
                 .boardNo("1")
-                .startPage(0)
-                .pageSize(10)
                 .build();
 
-        List<Post> postList = postRepository.getPostList(post);
+        List<Post> postList = postRepository.getPostList(pageRequest, post);
         assertThat(postList.get(0).getName(), is("AAA"));
         assertThat(postList.size(), is(2));
     }

@@ -26,7 +26,4 @@ public class Comment {
 
     private Date regDt;
     private Date updDt;
-
-    private Integer startPage;
-    private Integer pageSize;
 }
