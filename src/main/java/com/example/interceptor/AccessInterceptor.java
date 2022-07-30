@@ -24,7 +24,6 @@ public class AccessInterceptor extends AuthInterceptor {
                              Object handler) throws Exception {
 
         this.setToken(this.getTokenFromHeader(request, ACCESS_TOKEN_HEADER_NAME));
-        this.setUri(request.getRequestURI());
 
         return super.preHandle(request, response, handler);
     }

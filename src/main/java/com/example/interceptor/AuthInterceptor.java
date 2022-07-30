@@ -28,6 +28,8 @@ abstract public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        this.setUri(request.getRequestURI());
+
         checkTokenExist();
         checkTokenExpired();
         setUserSeqToAttribute(request);
