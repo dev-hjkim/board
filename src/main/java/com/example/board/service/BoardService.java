@@ -1,8 +1,9 @@
 package com.example.board.service;
 
-import com.example.board.dto.Board;
+import com.example.board.model.Board;
+import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 
 public interface BoardService {
-    Board getBoardList(PageRequest pageRequest);
+    PageList<Board> getBoardList(PageRequest pageRequest);
 }

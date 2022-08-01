@@ -3,57 +3,90 @@
 <mapper namespace="com.example.comment.repository.CommentRepository">
 
     <select id="getTotalCount" parameterType="String" resultType="int">
-        select count(*)
-        from tb_comment
-        where board_no = #{postSeq}
+        SELECT COUNT(*)
+          FROM tb_comment
+         WHERE 1=1
+           AND post_no = #{postNo}
     </select>
 
-    <select id="getCommentList" parameterType="Comment" resultType="Comment">
-        select comment.comment_no, comment.board_no, comment.member_no,
-               member.user_id, comment.content,
-               comment.upd_dt
-        from tb_comment comment
-                 join tb_member member
-                      on comment.member_no = member.member_no
-        where comment.board_no = #{boardNo}
-            limit #{startPage}, #{pageSize}
+    <select id="getCommentList" resultType="Comment">
+        SELECT comment.comment_no
+             , comment.post_no
+             , comment.member_no
+             , member.user_id
+             , comment.content
+             , comment.reg_dt
+             , comment.upd_dt
+          FROM tb_comment comment
+                JOIN tb_member member
+                  ON comment.member_no = member.member_no
+         WHERE 1=1
+           AND comment.post_no = #{comment.postNo}
+         LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 
     <select id="getComment" parameterType="Comment" resultType="Comment">
-        select comment.comment_no, comment.board_no, comment.member_no,
-               member.user_id, comment.content,
-               comment.upd_dt
-        from tb_comment comment
-                 join tb_member member
-                      on comment.member_no = member.member_no
-        where comment.board_no = #{boardNo}
-          and comment.comment_no = #{commentNo}
+        SELECT comment.comment_no
+             , comment.post_no
+             , comment.member_no
+             , member.user_id
+             , comment.content
+             , comment.reg_dt
+             , comment.upd_dt
+          FROM tb_comment comment
+                JOIN tb_member member
+                  ON comment.member_no = member.member_no
+         WHERE 1=1
+           AND comment.post_no = #{postNo}
+           AND comment.comment_no = #{commentNo}
     </select>
 
     <delete id="deleteComment" parameterType="Comment">
-        delete from tb_comment
-        where board_no = #{boardNo}
-          and comment_no = #{commentNo}
+        DELETE FROM tb_comment
+         WHERE 1=1
+           AND post_no = #{postNo}
+           AND comment_no = #{commentNo}
     </delete>
 
     <insert id="insertComment" parameterType="Comment">
-        insert into tb_comment(board_no, member_no, content)
-        values(#{boardNo}, #{memberNo}, #{content})
-        <selectKey keyProperty="commentNo,boardNo,memberNo,content,updDt"
+        INSERT INTO tb_comment (
+                                 post_no
+                               , member_no
+                               , content
+                               )
+                        VALUES (  #{postNo}
+                                , #{memberNo}
+                                , #{content}
+                                )
+        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
                    resultType="Comment" order="AFTER">
-            select * from tb_comment where comment_no = LAST_INSERT_ID()
+            SELECT *
+              FROM tb_comment
+             WHERE 1=1
+               AND comment_no = LAST_INSERT_ID()
         </selectKey>
     </insert>
 
+    <update id="updateReplyCount" parameterType="String">
+        UPDATE tb_post
+           SET reply_cnt = reply_cnt+1
+         WHERE 1=1
+           AND post_no = #{postNo}
+    </update>
+
     <update id="updateComment" parameterType="Comment">
-        update tb_comment
-        set content = #{content}
-        , upd_dt = now()
-        where board_no = #{boardNo}
-        and comment_no = #{commentNo}
-        <selectKey keyProperty="commentNo,boardNo,memberNo,content,updDt"
+        UPDATE tb_comment
+           SET content = #{content}
+             , upd_dt = now()
+         WHERE 1=1
+           AND post_no = #{postNo}
+           AND comment_no = #{commentNo}
+        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
                    resultType="Comment" order="AFTER">
-            select * from tb_comment where comment_no = #{commentNo}
+            SELECT *
+              FROM tb_comment
+             WHERE 1=1
+               AND comment_no = #{commentNo}
         </selectKey>
     </update>
 

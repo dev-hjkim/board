@@ -1,5 +1,6 @@
 package com.example.post.repository;
 
+import com.example.common.dto.PageRequest;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PostListRepositoryTest {
+class PostRepositoryTest {
 
     private PostRepository postRepository;
 
@@ -28,7 +29,7 @@ class PostListRepositoryTest {
     @Test
     @DisplayName("getTotalCount :: 정상 케이스")
     void getTotalCount() {
-        int totalCount = postRepository.getTotalCount("AAA");
+        int totalCount = postRepository.getTotalCount("1");
 
         assertThat(totalCount, is(2));
     }
@@ -36,17 +37,26 @@ class PostListRepositoryTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        Post post = new Post("AAA", 0, 10);
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(1);
+        pageRequest.setPageSize(10);
 
-        List<Post> postList = postRepository.getPostList(post);
-        assertThat(postList.get(0).getBoardCd(), is("AAA"));
+        Post post = Post.builder()
+                .boardNo("1")
+                .build();
+
+        List<Post> postList = postRepository.getPostList(pageRequest, post);
+        assertThat(postList.get(0).getName(), is("AAA"));
         assertThat(postList.size(), is(2));
     }
 
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .boardNo("1")
+                .postNo("13")
+                .build();
 
         Post post = postRepository.getPost(postRequest);
         assertThat(post.getTitle(), is("test13"));
@@ -54,9 +64,34 @@ class PostListRepositoryTest {
 
     @Test
     @Transactional
+    @DisplayName("updateViewCount :: 정상 케이스")
+    void updateViewCount() {
+        Post postRequest = Post.builder()
+                .boardNo("1")
+                .postNo("13")
+                .title("test13")
+                .content("test13's content")
+                .memberNo("5")
+                .userId("hjkim")
+                .viewCnt(1)
+                .replyCnt(0)
+                .build();
+
+        postRepository.updateViewCount(postRequest);
+        assertThat(postRequest.getViewCnt(), is(1));
+        assertThat(postRequest.getBoardNo(), is("1"));
+    }
+
+    @Test
+    @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardNo("1")
+                .postNo("13")
+                .build();
+
         postRepository.deletePost(postRequest);
 
         Post post = postRepository.getPost(postRequest);
@@ -67,8 +102,12 @@ class PostListRepositoryTest {
     @Transactional
     @DisplayName("insertPost :: 정상 케이스")
     void insertPost() {
-        Post postRequest = new Post("AAA", "test14",
-                "test14's content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardNo("1")
+                .title("test14")
+                .content("test14's content")
+                .build();
 
         postRepository.insertPost(postRequest);
         assertThat(postRequest.getTitle(), is("test14"));
@@ -78,8 +117,13 @@ class PostListRepositoryTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() {
-        Post postRequest = new Post("AAA", "13", "test13",
-                "test13's modified content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardNo("1")
+                .postNo("13")
+                .title("test13")
+                .content("test13's modified content")
+                .build();
 
         postRepository.updatePost(postRequest);
         assertThat(postRequest.getContent(), is("test13's modified content"));

@@ -41,6 +41,12 @@ dependencies {
     implementation('org.slf4j:jcl-over-slf4j')
     implementation('ch.qos.logback:logback-classic')
 
+    // apache commons lang3
+    implementation('org.apache.commons:commons-lang3')
+
+    // swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.2'
 }

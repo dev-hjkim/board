@@ -35,7 +35,7 @@ class CommentControllerTest {
     @Test
     @DisplayName("getCommentList :: 정상 케이스")
     void getCommentList() throws Exception {
-        mvc.perform(get("/v1/board/AAA/posts/1/comments")
+        mvc.perform(get("/v1/boards/1/posts/1/comments")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -47,7 +47,7 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("deleteComment :: 정상 케이스")
     void deleteComment() throws Exception {
-        mvc.perform(delete("/v1/board/AAA/posts/1/comments/1")
+        mvc.perform(delete("/v1/boards/1/posts/1/comments/1")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -59,12 +59,11 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("createComment :: 정상 케이스")
     void createComment() throws Exception {
-        CommentRequest commentRequest = new CommentRequest();
-        commentRequest.setContent("test1's new comment");
+        CommentRequest commentRequest = new CommentRequest("test1's new comment");
 
         String content = objectMapper.writeValueAsString(commentRequest);
 
-        mvc.perform(post("/v1/board/AAA/posts/1/comments")
+        mvc.perform(post("/v1/boards/1/posts/1/comments")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
@@ -77,12 +76,11 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("modifyComment :: 정상 케이스")
     void modifyComment() throws Exception {
-        CommentRequest commentRequest = new CommentRequest();
-        commentRequest.setContent("test1's modified comment");
+        CommentRequest commentRequest = new CommentRequest("test1's modified comment");
 
         String content = objectMapper.writeValueAsString(commentRequest);
 
-        mvc.perform(put("/v1/board/AAA/posts/1/comments/1")
+        mvc.perform(put("/v1/boards/1/posts/1/comments/1")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")

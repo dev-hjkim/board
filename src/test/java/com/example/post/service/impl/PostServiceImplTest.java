@@ -1,7 +1,8 @@
 package com.example.post.service.impl;
 
-import com.example.common.dto.ResultType;
-import com.example.post.dto.PostList;
+import com.example.common.dto.PageList;
+import com.example.common.dto.PageRequest;
+import com.example.common.dto.Result;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 
 @SpringBootTest
-class PostListServiceImplTest {
+class PostServiceImplTest {
     private PostServiceImpl postService;
 
     @Autowired
@@ -25,42 +26,61 @@ class PostListServiceImplTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() {
-        Post post = new Post("AAA", 0, 10);
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(1);
+        pageRequest.setPageSize(10);
 
-        PostList result = postService.getPostList(post);
+        Post post = Post.builder()
+                .boardNo("1")
+                .build();
+
+        PageList<Post> result = postService.getPostList(pageRequest, post);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
-        assertThat(result.getList().get(0).getBoardCd(), is(post.getBoardCd()));
+        assertThat(result.getList().get(0).getBoardNo(), is(post.getBoardNo()));
     }
 
     @Test
+    @Transactional
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .boardNo("1")
+                .postNo("13")
+                .build();
 
         Post result = postService.getPost(postRequest);
 
         assertThat(result.getTitle(), is("test13"));
+        assertThat(result.getViewCnt(), is(1));
     }
 
     @Test
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        Post postRequest = new Post("AAA", "13");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardNo("1")
+                .postNo("13")
+                .build();
 
-        ResultType resultType = postService.deletePost(postRequest);
+        Result result = postService.deletePost(postRequest);
 
-        assertThat(resultType.getCode(), is("200000"));
+        assertThat(result.getCode(), is("200000"));
     }
 
     @Test
     @Transactional
     @DisplayName("createPost :: 정상 케이스")
     void createPost() {
-        Post postRequest = new Post("AAA", "test14",
-                "test14's content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardNo("1")
+                .title("test14")
+                .content("test14's content")
+                .build();
 
         Post result = postService.createPost(postRequest);
 
@@ -71,8 +91,13 @@ class PostListServiceImplTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() {
-        Post postRequest = new Post("AAA", "13", "test13",
-                "test13's modified content", "5");
+        Post postRequest = Post.builder()
+                .memberNo("5")
+                .boardNo("1")
+                .postNo("13")
+                .title("test13")
+                .content("test13's modified content")
+                .build();
 
         Post result = postService.modifyPost(postRequest);
 

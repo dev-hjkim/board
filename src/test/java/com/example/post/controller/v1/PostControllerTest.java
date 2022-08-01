@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PostListControllerTest {
+class PostControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper objectMapper;
@@ -34,7 +34,7 @@ class PostListControllerTest {
     @Test
     @DisplayName("getPostList :: 정상 케이스")
     void getPostList() throws Exception {
-        mvc.perform(get("/v1/board/AAA/posts")
+        mvc.perform(get("/v1/boards/1/posts")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -43,9 +43,10 @@ class PostListControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("getPost :: 정상 케이스")
     void getPost() throws Exception {
-        mvc.perform(get("/v1/board/AAA/posts/13")
+        mvc.perform(get("/v1/boards/1/posts/13")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -57,7 +58,7 @@ class PostListControllerTest {
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() throws Exception {
-        mvc.perform(delete("/v1/board/AAA/posts/13")
+        mvc.perform(delete("/v1/boards/1/posts/13")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8"))
@@ -69,13 +70,11 @@ class PostListControllerTest {
     @Transactional
     @DisplayName("createPost :: 정상 케이스")
     void createPost() throws Exception {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setTitle("test14");
-        postRequest.setContent("test14's content");
+        PostRequest postRequest = new PostRequest("test14", "test14's content");
 
         String content = objectMapper.writeValueAsString(postRequest);
 
-        mvc.perform(post("/v1/board/AAA/posts")
+        mvc.perform(post("/v1/boards/1/posts")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
@@ -88,13 +87,11 @@ class PostListControllerTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() throws Exception {
-        PostRequest postRequest = new PostRequest();
-        postRequest.setTitle("test13");
-        postRequest.setContent("test13's modified content");
+        PostRequest postRequest = new PostRequest("test13", "test13's modified content");
 
         String content = objectMapper.writeValueAsString(postRequest);
 
-        mvc.perform(put("/v1/board/AAA/posts/13")
+        mvc.perform(put("/v1/boards/1/posts/13")
                         .header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")

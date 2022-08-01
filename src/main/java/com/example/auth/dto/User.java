@@ -7,9 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @ToString
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     @NotEmpty
@@ -20,6 +18,11 @@ public class User {
 
     private String accessToken;
     private String refreshToken;
+
+    public User(String id, String password) {
+        this.id = id;
+        this.password = password;
+    }
 
     public User(String id, String accessToken, String refreshToken) {
         this.id = id;

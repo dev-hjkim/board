@@ -1,6 +1,7 @@
 package com.example.board.service.impl;
 
-import com.example.board.dto.Board;
+import com.example.board.model.Board;
+import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import static org.hamcrest.Matchers.is;
 
 
 @SpringBootTest
-class BoardServiceImplTest {
+class BoardListServiceImplTest {
 
     private BoardServiceImpl boardService;
 
@@ -24,10 +25,14 @@ class BoardServiceImplTest {
     @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
-        Board result = boardService.getBoardList(new PageRequest());
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(2);
+        pageRequest.setPageSize(10);
+
+        PageList<Board> result = boardService.getBoardList(pageRequest);
 
         assertThat(result.getTotalCount(), is(12));
         assertThat(result.getTotalPage(), is(2));
-        assertThat(result.getList().get(0), is("AAA"));
+        assertThat(result.getList().get(0).getName(), is("KKK"));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.board.repository;
 
+import com.example.board.model.Board;
 import com.example.common.dto.PageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BoardRepositoryTest {
+class BoardListRepositoryTest {
     private BoardRepository boardRepository;
 
     @Autowired
@@ -32,7 +33,11 @@ class BoardRepositoryTest {
     @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
-        List<String> boardList = boardRepository.getBoardList(new PageRequest());
-        assertThat(boardList.get(0), is("AAA"));
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPageIndex(2);
+        pageRequest.setPageSize(10);
+
+        List<Board> boardList = boardRepository.getBoardList(pageRequest);
+        assertThat(boardList.get(0).getName(), is("KKK"));
     }
 }

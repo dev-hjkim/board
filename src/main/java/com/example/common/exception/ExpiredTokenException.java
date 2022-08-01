@@ -1,20 +1,12 @@
 package com.example.common.exception;
 
-
 import com.example.common.dto.ResultType;
-import lombok.Getter;
 
-public class ExpiredTokenException extends RuntimeException {
-    @Getter
-    ResultType resultType;
+public class ExpiredTokenException extends BaseException {
 
-    public ExpiredTokenException(String message) {
-        super(message);
+    private static final long serialVersionUID = -6564973261837433080L;
 
-        if (message.equals("ACCESS")) {
-            resultType = ResultType.EXPIRED_ACCESS_TOKEN;
-        } else {
-            resultType = ResultType.EXPIRED_REFRESH_TOKEN;
-        }
+    public ExpiredTokenException() {
+        super(ResultType.EXPIRED_TOKEN);
     }
 }

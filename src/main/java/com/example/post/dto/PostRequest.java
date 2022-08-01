@@ -1,15 +1,15 @@
 package com.example.post.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostRequest {
-    private String boardName;
-    private String postSeq;
     private String title;
     private String content;
 }

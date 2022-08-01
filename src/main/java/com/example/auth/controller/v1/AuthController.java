@@ -1,8 +1,8 @@
 package com.example.auth.controller.v1;
 
-import com.example.auth.dto.Login;
 import com.example.auth.dto.User;
-import com.example.auth.model.Member;
+import com.example.auth.dto.UserWithToken;
+import com.example.auth.model.JoinedUser;
 import com.example.auth.service.AuthService;
 import lombok.*;
 import org.slf4j.Logger;
@@ -28,26 +28,34 @@ public class AuthController {
      * @return Member-userId, regDt, updDt
      */
     @PostMapping(value="/signin")
-    public Member signin(@Valid @RequestBody User user) {
+    public JoinedUser signin(@Valid @RequestBody User user) {
         logger.info("signin ::: {}", user);
 
-        Member member = new Member(user.getId(), user.getPassword());
-        return authService.signin(member);
+        JoinedUser joinedUser = JoinedUser.builder()
+                .userId(user.getId())
+                .password(user.getPassword())
+                .build();
+
+        return authService.signin(joinedUser);
     }
 
     /**
      * 로그인
      *
      * @author hjkim
-     * @param login-id, password
+     * @param user-id, password
      * @return User-id, accessToken, refreshToken
      */
     @PostMapping(value="/login")
-    public User login(@Valid @RequestBody Login login) {
-        logger.info("login ::: {}", login);
+    public UserWithToken login(@Valid @RequestBody User user) {
+        logger.info("login ::: {}", user);
 
-        Member member = new Member(login.getId(), login.getPassword());
-        return authService.findUser(member);
+        JoinedUser joinedUser = JoinedUser.builder()
+                .userId(user.getId())
+                .password(user.getPassword())
+                .build();
+
+        return authService.findUser(joinedUser);
     }
 
     /**
@@ -72,10 +80,13 @@ public class AuthController {
      * @return User-id, accessToken, refreshToken
      */
     @GetMapping(value="/refresh")
-    public User refreshToken(@RequestAttribute String userSeq) {
+    public UserWithToken refreshToken(@RequestAttribute String userSeq) {
         logger.info("refreshToken ::: {}", userSeq);
 
-        Member member = new Member(userSeq);
-        return authService.findUser(member);
+        JoinedUser joinedUser = JoinedUser.builder()
+                .memberNo(userSeq)
+                .build();
+
+        return authService.findUser(joinedUser);
     }
 }

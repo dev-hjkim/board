@@ -1,7 +1,11 @@
 package com.example.post.service.impl;
 
+import com.example.common.dto.PageList;
+import com.example.common.dto.PageRequest;
+import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
-import com.example.post.dto.PostList;
+import com.example.common.exception.DataNotFoundException;
+import com.example.common.exception.NoAuthorityException;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
 import com.example.post.service.PostService;
@@ -18,22 +22,34 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public PostList getPostList(Post post) {
-        int totalCount = postRepository.getTotalCount(post.getBoardCd());
-        List<Post> postList = postRepository.getPostList(post);
-        return new PostList(post.getPageSize(), totalCount, postList);
+    public PageList<Post> getPostList(PageRequest pageRequest, Post post) {
+        int totalCount = postRepository.getTotalCount(post.getBoardNo());
+        List<Post> postList = postRepository.getPostList(pageRequest, post);
+        return new PageList<>(pageRequest.getPageSize(), totalCount, postList);
     }
 
     @Override
     public Post getPost(Post post) {
-        return postRepository.getPost(post);
+        Post selectedPost = postRepository.getPost(post);
+
+        if (selectedPost == null) {
+            throw new DataNotFoundException();
+        }
+
+        int updatedViewCount = selectedPost.getViewCnt() + 1;
+        selectedPost.setViewCnt(updatedViewCount);
+
+        postRepository.updateViewCount(selectedPost);
+        return selectedPost;
     }
 
     @Override
     @Transactional
-    public ResultType deletePost(Post post) {
+    public Result deletePost(Post post) {
+        checkEditable(post);
+
         postRepository.deletePost(post);
-        return ResultType.OK;
+        return new Result(ResultType.OK);
     }
 
     @Override
@@ -46,7 +62,21 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post modifyPost(Post post) {
+        checkEditable(post);
+
         postRepository.updatePost(post);
         return post;
+    }
+
+    private void checkEditable(Post post) {
+        Post selectedPost = postRepository.getPost(post);
+
+        if (selectedPost == null) {
+            throw new DataNotFoundException();
+        }
+
+        if (!selectedPost.getMemberNo().equals(post.getMemberNo())) {
+            throw new NoAuthorityException();
+        }
     }
 }
