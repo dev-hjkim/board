@@ -2,7 +2,7 @@ package com.example.auth.controller.v1;
 
 import com.example.auth.dto.User;
 import com.example.auth.dto.UserWithToken;
-import com.example.auth.model.JoinedUser;
+import com.example.auth.model.Member;
 import com.example.auth.service.AuthService;
 import lombok.*;
 import org.slf4j.Logger;
@@ -28,15 +28,15 @@ public class AuthController {
      * @return Member-userId, regDt, updDt
      */
     @PostMapping(value="/signin")
-    public JoinedUser signin(@Valid @RequestBody User user) {
+    public Member signin(@Valid @RequestBody User user) {
         logger.info("signin ::: {}", user);
 
-        JoinedUser joinedUser = JoinedUser.builder()
+        Member member = Member.builder()
                 .userId(user.getId())
                 .password(user.getPassword())
                 .build();
 
-        return authService.signin(joinedUser);
+        return authService.signin(member);
     }
 
     /**
@@ -50,12 +50,12 @@ public class AuthController {
     public UserWithToken login(@Valid @RequestBody User user) {
         logger.info("login ::: {}", user);
 
-        JoinedUser joinedUser = JoinedUser.builder()
+        Member member = Member.builder()
                 .userId(user.getId())
                 .password(user.getPassword())
                 .build();
 
-        return authService.findUser(joinedUser);
+        return authService.findUser(member);
     }
 
     /**
@@ -80,13 +80,13 @@ public class AuthController {
      * @return User-id, accessToken, refreshToken
      */
     @GetMapping(value="/refresh")
-    public UserWithToken refreshToken(@RequestAttribute String userSeq) {
+    public UserWithToken refreshToken(@RequestAttribute long userSeq) {
         logger.info("refreshToken ::: {}", userSeq);
 
-        JoinedUser joinedUser = JoinedUser.builder()
-                .memberNo(userSeq)
+        Member member = Member.builder()
+//                .memberNo(userSeq)
                 .build();
 
-        return authService.findUser(joinedUser);
+        return authService.findUser(member);
     }
 }

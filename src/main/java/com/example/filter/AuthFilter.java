@@ -38,7 +38,7 @@ public class AuthFilter extends OncePerRequestFilter {
             if (token == null || "".equals(token)) {
                 setHttpServletResponse(response, ResultType.ACCESS_TOKEN_REQUIRED);
             } else {
-                String userSeq = null;
+                Long userSeq = null;
                 try {
                     userSeq = jwtUtil.getUserSeqFromToken(token);
                 } catch (ExpiredJwtException ex) {
@@ -51,7 +51,7 @@ public class AuthFilter extends OncePerRequestFilter {
                     logger.error("Exception :: ex", ex);
                 }
 
-                wrapper.addHeader("userSeq", userSeq);
+                wrapper.addHeader("userSeq", String.valueOf(userSeq));
                 chain.doFilter(wrapper, response);
             }
         }

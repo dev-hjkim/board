@@ -28,7 +28,7 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generate(String userSeq, String type) {
+    public String generate(long userSeq, String type) {
 
         // 1. token 내부에 저장할 정보
         Map<String, Object> claims = new HashMap<>();
@@ -75,8 +75,8 @@ public class JwtUtil {
     }
 
 
-    public String getUserSeqFromToken(String token) {
-        return getClaimsFromToken(token).get("userSeq", String.class);
+    public Long getUserSeqFromToken(String token) {
+        return getClaimsFromToken(token).get("userSeq", Long.class);
     }
 
     private JwtUtil() { }

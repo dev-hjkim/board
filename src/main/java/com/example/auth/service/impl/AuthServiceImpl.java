@@ -1,7 +1,7 @@
 package com.example.auth.service.impl;
 
 import com.example.auth.dto.UserWithToken;
-import com.example.auth.model.JoinedUser;
+import com.example.auth.model.Member;
 import com.example.auth.repository.AuthRepository;
 import com.example.auth.service.AuthService;
 import com.example.common.exception.UserNotFoundException;
@@ -20,20 +20,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public JoinedUser signin(JoinedUser joinedUser) {
-        boolean isDuplicated = authRepository.isDuplicated(joinedUser.getUserId());
+    public Member signin(Member member) {
+        boolean isDuplicated = authRepository.isDuplicated(member.getUserId());
 
         if (isDuplicated) {
             throw new DuplicateKeyException("userId");
         }
 
-        authRepository.signin(joinedUser);
-        return joinedUser;
+        authRepository.signin(member);
+        return member;
     }
 
     @Override
-    public UserWithToken findUser(JoinedUser joinedUser) {
-        JoinedUser registered = authRepository.findUser(joinedUser);
+    public UserWithToken findUser(Member member) {
+        Member registered = authRepository.findUser(member);
 
         if (registered == null) {
             throw new UserNotFoundException();

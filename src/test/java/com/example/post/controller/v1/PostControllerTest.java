@@ -28,7 +28,7 @@ class PostControllerTest {
     public void setPostControllerTest(MockMvc mvc, ObjectMapper objectMapper, JwtUtil jwtUtil) {
         this.mvc = mvc;
         this.objectMapper = objectMapper;
-        this.accessToken = jwtUtil.generate("5", "ACCESS");
+        this.accessToken = jwtUtil.generate(5, "ACCESS");
     }
 
     @Test

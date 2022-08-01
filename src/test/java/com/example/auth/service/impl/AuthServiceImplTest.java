@@ -2,7 +2,7 @@ package com.example.auth.service.impl;
 
 import com.example.auth.dto.User;
 import com.example.auth.dto.UserWithToken;
-import com.example.auth.model.JoinedUser;
+import com.example.auth.model.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +27,26 @@ class AuthServiceImplTest {
     @Transactional
     @DisplayName("signin :: 정상 케이스")
     void signinSuccess(){
-        JoinedUser joinedUser = JoinedUser.builder()
+        Member member = Member.builder()
                 .userId("asdf")
                 .password("asdf")
                 .build();
 
-        JoinedUser result = authService.signin(joinedUser);
+        Member result = authService.signin(member);
 
         assertThat(result.getUserId(), is("asdf"));
         assertThat(result.getPassword(), is("asdf"));
-        assertThat(result, instanceOf(JoinedUser.class));
+        assertThat(result, instanceOf(Member.class));
     }
 
     @Test
     @DisplayName("findUser :: 정상 케이스")
     void findUserSuccess() {
-        JoinedUser joinedUser = JoinedUser.builder()
-                .memberNo("5")
+        Member member = Member.builder()
+//                .memberNo("5")
                 .build();
 
-        User result = authService.findUser(joinedUser);
+        User result = authService.findUser(member);
 
         assertThat(result.getId(), is("hjkim"));
         assertThat(result, instanceOf(UserWithToken.class));

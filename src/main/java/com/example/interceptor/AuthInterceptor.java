@@ -49,7 +49,7 @@ abstract public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private void setUserSeqToAttribute(HttpServletRequest request) {
-        String userSeq = jwtUtil.getUserSeqFromToken(this.token);
+        Long userSeq = jwtUtil.getUserSeqFromToken(this.token);
         request.setAttribute(USER_SEQ_ATTRIBUTE_KEY, userSeq);
     }
 }

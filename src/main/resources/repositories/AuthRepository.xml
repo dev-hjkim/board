@@ -8,7 +8,7 @@
                          AND user_id=#{userId})
     </select>
 
-    <insert id="signin" parameterType="JoinedUser">
+    <insert id="signin" parameterType="Member">
         INSERT INTO tb_member (
                                 user_id
                               , password
@@ -18,7 +18,7 @@
                                , #{password}
                                )
         <selectKey keyProperty="memberNo,userId,password,regDt,updDt"
-                   resultType="JoinedUser" order="AFTER">
+                   resultType="Member" order="AFTER">
             SELECT *
               FROM tb_member
              WHERE 1=1
@@ -26,7 +26,7 @@
         </selectKey>
     </insert>
 
-    <select id="findUser" parameterType="JoinedUser" resultType="JoinedUser">
+    <select id="findUser" parameterType="Member" resultType="Member">
         SELECT member_no
              , user_id
           FROM tb_member
