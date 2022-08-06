@@ -61,7 +61,7 @@ class CommentRepositoryTest {
         Comment commentRequest = Comment.builder()
                 .boardNo("1")
                 .postNo("1")
-                .commentNo("1")
+//                .commentNo("1")
                 .build();
 
         Comment comment = commentRepository.getComment(commentRequest);
@@ -76,7 +76,7 @@ class CommentRepositoryTest {
                 .memberNo("7")
                 .boardNo("1")
                 .postNo("1")
-                .commentNo("1")
+//                .commentNo("1")
                 .build();
 
         commentRepository.deleteComment(commentRequest);
@@ -93,7 +93,7 @@ class CommentRepositoryTest {
                 .memberNo("7")
                 .boardNo("1")
                 .postNo("1")
-                .content("test1's new comment")
+//                .content("test1's new comment")
                 .build();
 
         commentRepository.insertComment(commentRequest);
@@ -122,8 +122,8 @@ class CommentRepositoryTest {
                 .memberNo("7")
                 .boardNo("1")
                 .postNo("1")
-                .commentNo("1")
-                .content("test1's modified comment")
+//                .commentNo("1")
+//                .content("test1's modified comment")
                 .build();
 
         commentRepository.updateComment(commentRequest);

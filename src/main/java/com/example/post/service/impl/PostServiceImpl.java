@@ -36,9 +36,6 @@ public class PostServiceImpl implements PostService {
             throw new DataNotFoundException();
         }
 
-        int updatedViewCount = selectedPost.getViewCnt() + 1;
-        selectedPost.setViewCnt(updatedViewCount);
-
         postRepository.updateViewCount(selectedPost);
         return selectedPost;
     }

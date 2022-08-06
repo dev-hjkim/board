@@ -51,7 +51,7 @@
 
     <update id="updateViewCount" parameterType="Post">
         UPDATE tb_post
-           SET view_cnt = #{viewCnt}
+           SET view_cnt = #{viewCnt}+1
          WHERE 1=1
            AND board_no = #{boardNo}
            AND post_no = #{postNo}

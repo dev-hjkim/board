@@ -55,7 +55,7 @@ class PostRepositoryTest {
     void getPost() {
         Post postRequest = Post.builder()
                 .boardNo("1")
-                .postNo("13")
+//                .postNo("13")
                 .build();
 
         Post post = postRepository.getPost(postRequest);
@@ -68,13 +68,13 @@ class PostRepositoryTest {
     void updateViewCount() {
         Post postRequest = Post.builder()
                 .boardNo("1")
-                .postNo("13")
-                .title("test13")
-                .content("test13's content")
+//                .postNo("13")
+//                .title("test13")
+//                .content("test13's content")
                 .memberNo("5")
-                .userId("hjkim")
-                .viewCnt(1)
-                .replyCnt(0)
+//                .userId("hjkim")
+//                .viewCnt(1)
+//                .replyCnt(0)
                 .build();
 
         postRepository.updateViewCount(postRequest);
@@ -89,7 +89,7 @@ class PostRepositoryTest {
         Post postRequest = Post.builder()
                 .memberNo("5")
                 .boardNo("1")
-                .postNo("13")
+//                .postNo("13")
                 .build();
 
         postRepository.deletePost(postRequest);
@@ -105,8 +105,8 @@ class PostRepositoryTest {
         Post postRequest = Post.builder()
                 .memberNo("5")
                 .boardNo("1")
-                .title("test14")
-                .content("test14's content")
+//                .title("test14")
+//                .content("test14's content")
                 .build();
 
         postRepository.insertPost(postRequest);
@@ -120,9 +120,9 @@ class PostRepositoryTest {
         Post postRequest = Post.builder()
                 .memberNo("5")
                 .boardNo("1")
-                .postNo("13")
-                .title("test13")
-                .content("test13's modified content")
+//                .postNo("13")
+//                .title("test13")
+//                .content("test13's modified content")
                 .build();
 
         postRepository.updatePost(postRequest);

@@ -47,7 +47,7 @@ class PostServiceImplTest {
     void getPost() {
         Post postRequest = Post.builder()
                 .boardNo("1")
-                .postNo("13")
+//                .postNo("13")
                 .build();
 
         Post result = postService.getPost(postRequest);
@@ -63,7 +63,7 @@ class PostServiceImplTest {
         Post postRequest = Post.builder()
                 .memberNo("5")
                 .boardNo("1")
-                .postNo("13")
+//                .postNo("13")
                 .build();
 
         Result result = postService.deletePost(postRequest);
@@ -78,8 +78,8 @@ class PostServiceImplTest {
         Post postRequest = Post.builder()
                 .memberNo("5")
                 .boardNo("1")
-                .title("test14")
-                .content("test14's content")
+//                .title("test14")
+//                .content("test14's content")
                 .build();
 
         Post result = postService.createPost(postRequest);
@@ -94,9 +94,9 @@ class PostServiceImplTest {
         Post postRequest = Post.builder()
                 .memberNo("5")
                 .boardNo("1")
-                .postNo("13")
-                .title("test13")
-                .content("test13's modified content")
+//                .postNo("13")
+//                .title("test13")
+//                .content("test13's modified content")
                 .build();
 
         Post result = postService.modifyPost(postRequest);

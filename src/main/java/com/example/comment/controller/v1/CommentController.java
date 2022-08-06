@@ -57,7 +57,7 @@ public class CommentController {
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
                 .postNo(postSeq)
-                .commentNo(commentSeq)
+//                .commentNo(commentSeq)
                 .build();
         return commentService.deleteComment(comment);
     }
@@ -80,7 +80,7 @@ public class CommentController {
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
                 .postNo(postSeq)
-                .content(body.getContent())
+//                .content(body.getContent())
                 .build();
         return commentService.createComment(comment);
     }
@@ -104,8 +104,8 @@ public class CommentController {
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
                 .postNo(postSeq)
-                .commentNo(commentSeq)
-                .content(body.getContent())
+//                .commentNo(commentSeq)
+//                .content(body.getContent())
                 .build();
         return commentService.modifyComment(comment);
     }

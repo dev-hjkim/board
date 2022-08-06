@@ -1,17 +1,11 @@
 package com.example.comment.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Comment {
     private String commentNo;
@@ -22,8 +16,16 @@ public class Comment {
     private String memberNo;
     private String userId;
 
+    @Setter
     private String content;
 
     private Date regDt;
     private Date updDt;
+
+    @Builder
+    public Comment(String boardNo, String postNo, String memberNo) {
+        this.boardNo = boardNo;
+        this.postNo = postNo;
+        this.memberNo = memberNo;
+    }
 }

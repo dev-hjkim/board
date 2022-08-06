@@ -51,7 +51,7 @@ public class PostController {
 
         Post post = Post.builder()
                 .boardNo(boardSeq)
-                .postNo(postSeq)
+//                .postNo(postSeq)
                 .build();
         return postService.getPost(post);
     }
@@ -72,7 +72,7 @@ public class PostController {
         Post post = Post.builder()
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
-                .postNo(postSeq)
+//                .postNo(postSeq)
                 .build();
         return postService.deletePost(post);
     }
@@ -93,8 +93,8 @@ public class PostController {
         Post post = Post.builder()
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
-                .title(body.getTitle())
-                .content(body.getContent())
+//                .title(body.getTitle())
+//                .content(body.getContent())
                 .build();
         return postService.createPost(post);
     }
@@ -116,9 +116,9 @@ public class PostController {
         Post post = Post.builder()
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
-                .postNo(postSeq)
-                .title(body.getTitle())
-                .content(body.getContent())
+//                .postNo(postSeq)
+//                .title(body.getTitle())
+//                .content(body.getContent())
                 .build();
         return postService.modifyPost(post);
     }
