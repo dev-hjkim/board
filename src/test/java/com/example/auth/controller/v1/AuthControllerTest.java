@@ -36,12 +36,9 @@ class AuthControllerTest {
     @Transactional
     @DisplayName("signin :: 정상 케이스")
     void signin() throws Exception {
-        Date now = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("ddhhmmss");
-        String strNow = dateFormat.format(now);
 
         String content = objectMapper.writeValueAsString(
-                new User("test" + strNow, "0000")
+                new User("test1234567", "0000")
         );
 
         mvc.perform(post("/v1/auth/signin")

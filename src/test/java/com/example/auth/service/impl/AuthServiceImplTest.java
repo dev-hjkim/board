@@ -26,7 +26,7 @@ class AuthServiceImplTest {
     @Test
     @Transactional
     @DisplayName("signin :: 정상 케이스")
-    void signinSuccess(){
+    void signin(){
         Member member = Member.builder()
                 .userId("asdf")
                 .password("asdf")
@@ -40,15 +40,14 @@ class AuthServiceImplTest {
     }
 
     @Test
-    @DisplayName("findUser :: 정상 케이스")
-    void findUserSuccess() {
-        Member member = Member.builder()
-//                .memberNo("5")
-                .build();
+    @DisplayName("login :: 정상 케이스")
+    void loginSuccess() {
+        User user = new User("hjkim", "asdf");
+//        Member member = new Member("hjkim", "asdf");
 
-        User result = authService.findUser(member);
-
-        assertThat(result.getId(), is("hjkim"));
-        assertThat(result, instanceOf(UserWithToken.class));
+//        UserWithToken result = authService.login(user, member);
+//
+//        assertThat(result.getId(), is("hjkim"));
+//        assertThat(result, instanceOf(UserWithToken.class));
     }
 }

@@ -45,15 +45,20 @@ class AuthRepositoryTest {
     }
 
     @Test
-    @DisplayName("findUser :: 정상 케이스")
-    void findUser() {
-        Member member = Member.builder()
-//                .memberNo("5")
-                .build();
+    @DisplayName("findUserById :: 정상 케이스")
+    void findUserById() {
+        Member found = authRepository.findUserById("hjkim");
 
-        Member found = authRepository.findUser(member);
+        assertThat(found.getMemberNo(), is(5L));
+        assertThat(found.getUserId(), is("hjkim"));
+    }
 
-        assertThat(found.getMemberNo(), is("5"));
+    @Test
+    @DisplayName("findUserByUserSeq :: 정상 케이스")
+    void findUserByUserSeq() {
+        Member found = authRepository.findUserByUserSeq(5);
+
+        assertThat(found.getMemberNo(), is(5L));
         assertThat(found.getUserId(), is("hjkim"));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.auth.service.impl;
 
+import com.example.auth.dto.User;
 import com.example.auth.dto.UserWithToken;
 import com.example.auth.model.Member;
 import com.example.auth.repository.AuthRepository;
@@ -32,15 +33,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserWithToken findUser(Member member) {
-        Member registered = authRepository.findUser(member);
-
-        if (registered == null) {
+    public UserWithToken login(User user, Member member) {
+        if (!user.getPassword().equals(member.getPassword())) {
             throw new UserNotFoundException();
         }
 
-        return new UserWithToken(registered.getUserId(),
-                jwtUtil.generate(registered.getMemberNo(),"ACCESS"),
-                jwtUtil.generate(registered.getMemberNo(), "REFRESH"));
+        return generateToken(member);
+    }
+
+    @Override
+    public UserWithToken generateToken(Member member) {
+        return new UserWithToken(member.getUserId(),
+                jwtUtil.generate(member.getMemberNo(), "ACCESS"),
+                jwtUtil.generate(member.getMemberNo(), "REFRESH"));
     }
 }

@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AuthRepository {
     boolean isDuplicated(String userId);
     void signin(Member member);
-    Member findUser(Member member);
+    Member findUserById(String userId);
+    Member findUserByUserSeq(long userSeq);
 }

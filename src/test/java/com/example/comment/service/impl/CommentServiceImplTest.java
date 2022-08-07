@@ -90,7 +90,7 @@ class CommentServiceImplTest {
 
         Post postRequest = Post.builder()
                 .boardNo("1")
-                .postNo("1")
+//                .postNo("1")
                 .build();
 
         Post postResult = postService.getPost(postRequest);
