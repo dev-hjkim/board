@@ -31,7 +31,7 @@ class PostServiceImplTest {
         pageRequest.setPageSize(10);
 
         Post post = Post.builder()
-                .boardNo("1")
+                .boardNo(1)
                 .build();
 
         PageList<Post> result = postService.getPostList(pageRequest, post);
@@ -46,7 +46,7 @@ class PostServiceImplTest {
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
         Post postRequest = Post.builder()
-                .boardNo("1")
+                .boardNo(1)
 //                .postNo("13")
                 .build();
 
@@ -61,8 +61,8 @@ class PostServiceImplTest {
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
         Post postRequest = Post.builder()
-                .memberNo("5")
-                .boardNo("1")
+                .memberNo(5)
+                .boardNo(1)
 //                .postNo("13")
                 .build();
 
@@ -76,11 +76,12 @@ class PostServiceImplTest {
     @DisplayName("createPost :: 정상 케이스")
     void createPost() {
         Post postRequest = Post.builder()
-                .memberNo("5")
-                .boardNo("1")
-//                .title("test14")
-//                .content("test14's content")
+                .memberNo(5)
+                .boardNo(1)
                 .build();
+
+        postRequest.setTitle("test14");
+        postRequest.setContent("test14's content");
 
         Post result = postService.createPost(postRequest);
 
@@ -92,12 +93,13 @@ class PostServiceImplTest {
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() {
         Post postRequest = Post.builder()
-                .memberNo("5")
-                .boardNo("1")
+                .memberNo(5)
+                .boardNo(1)
 //                .postNo("13")
-//                .title("test13")
-//                .content("test13's modified content")
                 .build();
+
+        postRequest.setTitle("test13");
+        postRequest.setContent("test13's modified content");
 
         Post result = postService.modifyPost(postRequest);
 

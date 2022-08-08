@@ -30,21 +30,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPost(Post post) {
-        Post selectedPost = postRepository.getPost(post);
-
-        if (selectedPost == null) {
-            throw new DataNotFoundException();
-        }
-
-        postRepository.updateViewCount(selectedPost);
-        return selectedPost;
+        postRepository.updateViewCount(post);
+        return post;
     }
 
     @Override
     @Transactional
     public Result deletePost(Post post) {
-        checkEditable(post);
-
         postRepository.deletePost(post);
         return new Result(ResultType.OK);
     }
@@ -59,21 +51,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post modifyPost(Post post) {
-        checkEditable(post);
-
         postRepository.updatePost(post);
         return post;
-    }
-
-    private void checkEditable(Post post) {
-        Post selectedPost = postRepository.getPost(post);
-
-        if (selectedPost == null) {
-            throw new DataNotFoundException();
-        }
-
-        if (!selectedPost.getMemberNo().equals(post.getMemberNo())) {
-            throw new NoAuthorityException();
-        }
     }
 }

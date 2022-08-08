@@ -29,7 +29,7 @@ class PostRepositoryTest {
     @Test
     @DisplayName("getTotalCount :: 정상 케이스")
     void getTotalCount() {
-        int totalCount = postRepository.getTotalCount("1");
+        int totalCount = postRepository.getTotalCount(1);
 
         assertThat(totalCount, is(2));
     }
@@ -42,23 +42,18 @@ class PostRepositoryTest {
         pageRequest.setPageSize(10);
 
         Post post = Post.builder()
-                .boardNo("1")
+                .boardNo(1)
                 .build();
 
         List<Post> postList = postRepository.getPostList(pageRequest, post);
-        assertThat(postList.get(0).getName(), is("AAA"));
+        assertThat(postList.get(0).getTitle(), is("test1"));
         assertThat(postList.size(), is(2));
     }
 
     @Test
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        Post postRequest = Post.builder()
-                .boardNo("1")
-//                .postNo("13")
-                .build();
-
-        Post post = postRepository.getPost(postRequest);
+        Post post = postRepository.getPost(13);
         assertThat(post.getTitle(), is("test13"));
     }
 
@@ -66,35 +61,21 @@ class PostRepositoryTest {
     @Transactional
     @DisplayName("updateViewCount :: 정상 케이스")
     void updateViewCount() {
-        Post postRequest = Post.builder()
-                .boardNo("1")
-//                .postNo("13")
-//                .title("test13")
-//                .content("test13's content")
-                .memberNo("5")
-//                .userId("hjkim")
-//                .viewCnt(1)
-//                .replyCnt(0)
-                .build();
+        Post postRequest = postRepository.getPost(13);
 
         postRepository.updateViewCount(postRequest);
         assertThat(postRequest.getViewCnt(), is(1));
-        assertThat(postRequest.getBoardNo(), is("1"));
+        assertThat(postRequest.getBoardNo(), is(1L));
     }
 
     @Test
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        Post postRequest = Post.builder()
-                .memberNo("5")
-                .boardNo("1")
-//                .postNo("13")
-                .build();
-
+        Post postRequest = postRepository.getPost(5);
         postRepository.deletePost(postRequest);
 
-        Post post = postRepository.getPost(postRequest);
+        Post post = postRepository.getPost(5);
         assertThat(post, nullValue());
     }
 
@@ -103,11 +84,12 @@ class PostRepositoryTest {
     @DisplayName("insertPost :: 정상 케이스")
     void insertPost() {
         Post postRequest = Post.builder()
-                .memberNo("5")
-                .boardNo("1")
-//                .title("test14")
-//                .content("test14's content")
+                .memberNo(5)
+                .boardNo(1)
                 .build();
+
+        postRequest.setTitle("test14");
+        postRequest.setContent("test14's content");
 
         postRepository.insertPost(postRequest);
         assertThat(postRequest.getTitle(), is("test14"));
@@ -117,13 +99,9 @@ class PostRepositoryTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() {
-        Post postRequest = Post.builder()
-                .memberNo("5")
-                .boardNo("1")
-//                .postNo("13")
-//                .title("test13")
-//                .content("test13's modified content")
-                .build();
+        Post postRequest = postRepository.getPost(13);
+        postRequest.setTitle("test13");
+        postRequest.setContent("test13's modified content");
 
         postRepository.updatePost(postRequest);
         assertThat(postRequest.getContent(), is("test13's modified content"));

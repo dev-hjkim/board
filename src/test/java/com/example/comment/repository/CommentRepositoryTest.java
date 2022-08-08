@@ -106,11 +106,7 @@ class CommentRepositoryTest {
     void updateReplyCount() {
         commentRepository.updateReplyCount("1");
 
-        Post postRequest = Post.builder()
-                .boardNo("1")
-//                .postNo("1")
-                .build();
-        Post post = postRepository.getPost(postRequest);
+        Post post = postRepository.getPost(1);
         assertThat(post.getReplyCnt(), is(1));
     }
 

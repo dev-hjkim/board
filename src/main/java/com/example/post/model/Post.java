@@ -6,14 +6,15 @@ import lombok.*;
 import java.util.Date;
 
 @Getter
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Post {
-    private String postNo;
+    private long postNo;
 
-    private String boardNo;
+    private long boardNo;
     private String name;
 
-    private String memberNo;
+    private long memberNo;
     private String userId;
 
     @Setter
@@ -28,7 +29,7 @@ public class Post {
     private Date updDt;
 
     @Builder
-    public Post(String boardNo, String memberNo) {
+    public Post(long boardNo, long memberNo) {
         this.boardNo = boardNo;
         this.memberNo = memberNo;
     }
