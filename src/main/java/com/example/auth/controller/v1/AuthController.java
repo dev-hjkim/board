@@ -55,14 +55,12 @@ public class AuthController {
 
         Member member = authRepository.findUserById(user.getId());
 
-        if (member == null) {
-            throw new UserNotFoundException();
-        }
+        validateMember(member);
 
         return authService.login(user, member);
     }
 
-    /**
+   /**
      * 로그아웃
      *
      * @author hjkim
@@ -89,6 +87,14 @@ public class AuthController {
 
         Member member = authRepository.findUserByUserSeq(userSeq);
 
+        validateMember(member);
+
         return authService.generateToken(member);
+    }
+
+    private void validateMember(Member member) {
+        if (member == null) {
+            throw new UserNotFoundException();
+        }
     }
 }
