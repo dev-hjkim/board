@@ -34,7 +34,6 @@ class CommentServiceImplTest {
         pageRequest.setPageSize(10);
 
         Comment comment = Comment.builder()
-                .boardNo(1)
                 .postNo(1)
                 .build();
 
@@ -70,7 +69,6 @@ class CommentServiceImplTest {
     void createComment() {
         Comment commentRequest = Comment.builder()
                 .memberNo(7)
-                .boardNo(1)
                 .postNo(1)
                 .build();
 

@@ -36,7 +36,6 @@ public class CommentController {
         logger.info("getCommentList ::: {} {} {}", boardSeq, postSeq, pageRequest);
 
         Comment comment = Comment.builder()
-                .boardNo(boardSeq)
                 .postNo(postSeq)
                 .build();
         return commentService.getCommentList(pageRequest, comment);
@@ -58,7 +57,7 @@ public class CommentController {
 
         Comment comment = commentRepository.getComment(commentSeq);
 
-        validateComment(comment, userSeq, boardSeq, postSeq);
+        validateComment(comment, userSeq, postSeq);
 
         return commentService.deleteComment(comment);
     }
@@ -81,7 +80,6 @@ public class CommentController {
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
-                .boardNo(boardSeq)
                 .postNo(postSeq)
                 .build();
 
@@ -107,19 +105,15 @@ public class CommentController {
 
         Comment comment = commentRepository.getComment(commentSeq);
 
-        validateComment(comment, userSeq, boardSeq, postSeq);
+        validateComment(comment, userSeq, postSeq);
 
         comment.setContent(body.getContent());
 
         return commentService.modifyComment(comment);
     }
 
-    private void validateComment(Comment comment, long userSeq, long boardSeq, long postSeq) {
+    private void validateComment(Comment comment, long userSeq, long postSeq) {
         if (comment == null) {
-            throw new DataNotFoundException();
-        }
-
-        if (comment.getBoardNo() != boardSeq) {
             throw new DataNotFoundException();
         }
 

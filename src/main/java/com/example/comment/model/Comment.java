@@ -11,7 +11,6 @@ import java.util.Date;
 public class Comment {
     private long commentNo;
 
-    private long boardNo;
     private long postNo;
 
     private long memberNo;
@@ -24,8 +23,7 @@ public class Comment {
     private Date updDt;
 
     @Builder
-    public Comment(long boardNo, long postNo, long memberNo) {
-        this.boardNo = boardNo;
+    public Comment(long postNo, long memberNo) {
         this.postNo = postNo;
         this.memberNo = memberNo;
     }
