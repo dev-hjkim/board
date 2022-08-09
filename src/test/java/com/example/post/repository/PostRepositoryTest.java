@@ -61,19 +61,18 @@ class PostRepositoryTest {
     @Transactional
     @DisplayName("updateViewCount :: 정상 케이스")
     void updateViewCount() {
-        Post postRequest = postRepository.getPost(13);
+        postRepository.updateViewCount(13);
 
-        postRepository.updateViewCount(postRequest);
-        assertThat(postRequest.getViewCnt(), is(1));
-        assertThat(postRequest.getBoardNo(), is(1L));
+        Post post = postRepository.getPost(13);
+        assertThat(post.getViewCnt(), is(1));
+        assertThat(post.getBoardNo(), is(1L));
     }
 
     @Test
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        Post postRequest = postRepository.getPost(5);
-        postRepository.deletePost(postRequest);
+        postRepository.deletePost(5);
 
         Post post = postRepository.getPost(5);
         assertThat(post, nullValue());
@@ -104,6 +103,7 @@ class PostRepositoryTest {
         postRequest.setContent("test13's modified content");
 
         postRepository.updatePost(postRequest);
+        assertThat(postRequest.getTitle(), is("test13"));
         assertThat(postRequest.getContent(), is("test13's modified content"));
     }
 }

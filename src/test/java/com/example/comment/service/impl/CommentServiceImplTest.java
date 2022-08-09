@@ -77,14 +77,7 @@ class CommentServiceImplTest {
         commentRequest.setContent("test1's new comment");
 
         Comment result = commentService.createComment(commentRequest);
-
-        Post postRequest = Post.builder()
-                .boardNo(1)
-//                .postNo("1")
-                .build();
-
-        Post postResult = postService.getPost(postRequest);
-
+        Post postResult = postService.getPost(1);
 
         assertThat(result.getContent(), is(commentRequest.getContent()));
         assertThat(postResult.getReplyCnt(), is(1));

@@ -8,7 +8,7 @@ import com.example.post.model.Post;
 public interface PostService {
     PageList<Post> getPostList(PageRequest pageRequest, Post post);
 
-    Post getPost(Post post);
+    Post getPost(long postSeq);
 
     Result deletePost(Post post);
 

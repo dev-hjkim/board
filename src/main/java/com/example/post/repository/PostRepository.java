@@ -12,11 +12,11 @@ public interface PostRepository {
 
     List<Post> getPostList(PageRequest pageRequest, Post post);
 
-    Post getPost(long postSeq);
+    Post getPost(long postNo);
 
-    void updateViewCount(Post post);
+    void updateViewCount(long postNo);
 
-    void deletePost(Post post);
+    void deletePost(long postNo);
 
     void insertPost(Post post);
 

@@ -29,7 +29,8 @@
     </select>
 
     <select id="getPost" parameterType="long" resultType="Post">
-        SELECT post.board_no
+        SELECT post.post_no
+             , post.board_no
              , board.name
              , post.member_no
              , member.user_id
@@ -45,17 +46,17 @@
                 JOIN tb_board board
                   ON post.board_no = board.board_no
         WHERE 1=1
-          AND post.post_no = #{postSeq}
+          AND post.post_no = #{postNo}
     </select>
 
-    <update id="updateViewCount" parameterType="Post">
+    <update id="updateViewCount" parameterType="long">
         UPDATE tb_post
            SET view_cnt = view_cnt+1
          WHERE 1=1
            AND post_no = #{postNo}
     </update>
 
-    <delete id="deletePost" parameterType="Post">
+    <delete id="deletePost" parameterType="long">
         DELETE FROM tb_post
          WHERE 1=1
            AND post_no = #{postNo}
@@ -73,7 +74,7 @@
                               , #{title}
                               , #{content}
                              )
-        <selectKey keyProperty="postNo,boardNo,memberNo,title,content,viewCnt,replyCnt,regDt,updDt"
+        <selectKey keyProperty="postNo,memberNo,boardNo,title,content,viewCnt,replyCnt,regDt,updDt"
                    resultType="Post" order="AFTER">
             SELECT *
               FROM tb_post
@@ -89,7 +90,7 @@
              , upd_dt = now()
          WHERE 1=1
            AND post_no = #{postNo}
-        <selectKey keyProperty="postNo,boardNo,memberNo,title,content,viewCnt,replyCnt,regDt,updDt"
+        <selectKey keyProperty="postNo,memberNo,boardNo,title,content,viewCnt,replyCnt,regDt,updDt"
                    resultType="Post" order="AFTER">
             SELECT *
               FROM tb_post

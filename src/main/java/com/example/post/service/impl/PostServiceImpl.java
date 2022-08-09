@@ -29,15 +29,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getPost(Post post) {
-        postRepository.updateViewCount(post);
-        return post;
+    @Transactional
+    public Post getPost(long postSeq) {
+        postRepository.updateViewCount(postSeq);
+        return postRepository.getPost(postSeq);
     }
 
     @Override
     @Transactional
     public Result deletePost(Post post) {
-        postRepository.deletePost(post);
+        postRepository.deletePost(post.getPostNo());
         return new Result(ResultType.OK);
     }
 

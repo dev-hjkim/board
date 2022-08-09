@@ -57,7 +57,7 @@ public class PostController {
 
         validatePost(post, userSeq, boardSeq);
 
-        return postService.getPost(post);
+        return postService.getPost(postSeq);
     }
 
     /**

@@ -45,12 +45,7 @@ class PostServiceImplTest {
     @Transactional
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
-        Post postRequest = Post.builder()
-                .boardNo(1)
-//                .postNo("13")
-                .build();
-
-        Post result = postService.getPost(postRequest);
+        Post result = postService.getPost(13);
 
         assertThat(result.getTitle(), is("test13"));
         assertThat(result.getViewCnt(), is(1));
@@ -60,11 +55,7 @@ class PostServiceImplTest {
     @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
-        Post postRequest = Post.builder()
-                .memberNo(5)
-                .boardNo(1)
-//                .postNo("13")
-                .build();
+        Post postRequest = postService.getPost(13);
 
         Result result = postService.deletePost(postRequest);
 
@@ -92,11 +83,7 @@ class PostServiceImplTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() {
-        Post postRequest = Post.builder()
-                .memberNo(5)
-                .boardNo(1)
-//                .postNo("13")
-                .build();
+        Post postRequest = postService.getPost(13);
 
         postRequest.setTitle("test13");
         postRequest.setContent("test13's modified content");

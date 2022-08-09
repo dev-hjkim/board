@@ -11,11 +11,11 @@ import java.util.Date;
 public class Post {
     private long postNo;
 
-    private long boardNo;
-    private String name;
-
     private long memberNo;
     private String userId;
+
+    private long boardNo;
+    private String name;
 
     @Setter
     private String title;
