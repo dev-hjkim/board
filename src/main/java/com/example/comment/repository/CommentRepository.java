@@ -14,7 +14,7 @@ public interface CommentRepository {
 
     Comment getComment(long commentSeq);
 
-    void deleteComment(Comment comment);
+    void deleteComment(long commentSeq);
 
     void insertComment(Comment comment);
 

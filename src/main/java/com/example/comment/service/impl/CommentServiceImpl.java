@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Result deleteComment(Comment comment) {
-        commentRepository.deleteComment(comment);
+        commentRepository.deleteComment(comment.getCommentNo());
         return new Result(ResultType.OK);
     }
 

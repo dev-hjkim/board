@@ -40,10 +40,9 @@
            AND comment.comment_no = #{commentSeq}
     </select>
 
-    <delete id="deleteComment" parameterType="Comment">
+    <delete id="deleteComment" parameterType="long">
         DELETE FROM tb_comment
          WHERE 1=1
-           AND post_no = #{postNo}
            AND comment_no = #{commentNo}
     </delete>
 

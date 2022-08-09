@@ -66,8 +66,7 @@ class CommentRepositoryTest {
     @Transactional
     @DisplayName("deleteComment :: 정상 케이스")
     void deleteComment() {
-        Comment commentRequest = commentRepository.getComment(1);
-        commentRepository.deleteComment(commentRequest);
+        commentRepository.deleteComment(1);
 
         Comment comment = commentRepository.getComment(1);
         assertThat(comment, nullValue());
