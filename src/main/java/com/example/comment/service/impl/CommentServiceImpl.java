@@ -7,8 +7,6 @@ import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
-import com.example.common.exception.DataNotFoundException;
-import com.example.common.exception.NoAuthorityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,16 +26,13 @@ public class CommentServiceImpl implements CommentService {
         return new PageList<>(pageRequest.getPageSize(), totalCount, commentList);
     }
 
-    @Override
-    public Comment getComment(Comment comment) {
-        return commentRepository.getComment(comment);
+    public Comment getComment(long commentSeq) {
+        return commentRepository.getComment(commentSeq);
     }
 
     @Override
     @Transactional
     public Result deleteComment(Comment comment) {
-        checkEditable(comment);
-
         commentRepository.deleteComment(comment);
         return new Result(ResultType.OK);
     }
@@ -53,22 +48,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Comment modifyComment(Comment comment) {
-        checkEditable(comment);
-
         commentRepository.updateComment(comment);
         return comment;
-    }
-
-
-    private void checkEditable(Comment comment) {
-        Comment selectedComment = commentRepository.getComment(comment);
-
-        if (selectedComment == null) {
-            throw new DataNotFoundException();
-        }
-
-        if (!selectedComment.getMemberNo().equals(comment.getMemberNo())) {
-            throw new NoAuthorityException();
-        }
     }
 }

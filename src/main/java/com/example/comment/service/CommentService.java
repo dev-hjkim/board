@@ -8,7 +8,7 @@ import com.example.common.dto.Result;
 public interface CommentService {
     PageList<Comment> getCommentList(PageRequest pageRequest, Comment comment);
 
-    Comment getComment(Comment comment);
+    Comment getComment(long commentSeq);
 
     Result deleteComment(Comment comment);
 

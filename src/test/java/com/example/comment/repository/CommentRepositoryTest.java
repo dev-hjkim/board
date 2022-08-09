@@ -33,7 +33,7 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("getTotalCount :: 정상 케이스")
     void getTotalCount() {
-        int totalCount = commentRepository.getTotalCount("1");
+        int totalCount = commentRepository.getTotalCount(1);
 
         assertThat(totalCount, is(2));
     }
@@ -46,8 +46,8 @@ class CommentRepositoryTest {
         pageRequest.setPageSize(10);
 
         Comment comment = Comment.builder()
-                .boardNo("1")
-                .postNo("1")
+                .boardNo(1)
+                .postNo(1)
                 .build();
 
         List<Comment> commentList = commentRepository.getCommentList(pageRequest, comment);
@@ -58,13 +58,7 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("getComment :: 정상 케이스")
     void getComment() {
-        Comment commentRequest = Comment.builder()
-                .boardNo("1")
-                .postNo("1")
-//                .commentNo("1")
-                .build();
-
-        Comment comment = commentRepository.getComment(commentRequest);
+        Comment comment = commentRepository.getComment(1);
         assertThat(comment.getContent(), is("test1's comment"));
     }
 
@@ -72,16 +66,10 @@ class CommentRepositoryTest {
     @Transactional
     @DisplayName("deleteComment :: 정상 케이스")
     void deleteComment() {
-        Comment commentRequest = Comment.builder()
-                .memberNo("7")
-                .boardNo("1")
-                .postNo("1")
-//                .commentNo("1")
-                .build();
-
+        Comment commentRequest = commentRepository.getComment(1);
         commentRepository.deleteComment(commentRequest);
 
-        Comment comment = commentRepository.getComment(commentRequest);
+        Comment comment = commentRepository.getComment(1);
         assertThat(comment, nullValue());
     }
 
@@ -90,11 +78,12 @@ class CommentRepositoryTest {
     @DisplayName("insertComment :: 정상 케이스")
     void insertComment() {
         Comment commentRequest = Comment.builder()
-                .memberNo("7")
-                .boardNo("1")
-                .postNo("1")
-//                .content("test1's new comment")
+                .memberNo(7)
+                .boardNo(1)
+                .postNo(1)
                 .build();
+
+        commentRequest.setContent("test1's new comment");
 
         commentRepository.insertComment(commentRequest);
         assertThat(commentRequest.getContent(), is("test1's new comment"));
@@ -104,7 +93,7 @@ class CommentRepositoryTest {
     @Transactional
     @DisplayName("updateReplyCount :: 정상 케이스")
     void updateReplyCount() {
-        commentRepository.updateReplyCount("1");
+        commentRepository.updateReplyCount(1);
 
         Post post = postRepository.getPost(1);
         assertThat(post.getReplyCnt(), is(1));
@@ -114,13 +103,8 @@ class CommentRepositoryTest {
     @Transactional
     @DisplayName("updateComment :: 정상 케이스")
     void updateComment() {
-        Comment commentRequest = Comment.builder()
-                .memberNo("7")
-                .boardNo("1")
-                .postNo("1")
-//                .commentNo("1")
-//                .content("test1's modified comment")
-                .build();
+        Comment commentRequest = commentRepository.getComment(1);
+        commentRequest.setContent("test1's modified comment");
 
         commentRepository.updateComment(commentRequest);
         assertThat(commentRequest.getContent(), is("test1's modified comment"));

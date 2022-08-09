@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.comment.repository.CommentRepository">
 
-    <select id="getTotalCount" parameterType="String" resultType="int">
+    <select id="getTotalCount" parameterType="long" resultType="int">
         SELECT COUNT(*)
           FROM tb_comment
          WHERE 1=1
@@ -25,7 +25,7 @@
          LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 
-    <select id="getComment" parameterType="Comment" resultType="Comment">
+    <select id="getComment" parameterType="long" resultType="Comment">
         SELECT comment.comment_no
              , comment.post_no
              , comment.member_no
@@ -37,8 +37,7 @@
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.post_no = #{postNo}
-           AND comment.comment_no = #{commentNo}
+           AND comment.comment_no = #{commentSeq}
     </select>
 
     <delete id="deleteComment" parameterType="Comment">
@@ -67,7 +66,7 @@
         </selectKey>
     </insert>
 
-    <update id="updateReplyCount" parameterType="String">
+    <update id="updateReplyCount" parameterType="long">
         UPDATE tb_post
            SET reply_cnt = reply_cnt+1
          WHERE 1=1

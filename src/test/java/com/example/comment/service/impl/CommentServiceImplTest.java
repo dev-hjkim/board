@@ -34,8 +34,8 @@ class CommentServiceImplTest {
         pageRequest.setPageSize(10);
 
         Comment comment = Comment.builder()
-                .boardNo("1")
-                .postNo("1")
+                .boardNo(1)
+                .postNo(1)
                 .build();
 
         PageList<Comment> result = commentService.getCommentList(pageRequest, comment);
@@ -48,13 +48,7 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("getComment :: 정상 케이스")
     void getComment() {
-        Comment commentRequest = Comment.builder()
-                .boardNo("1")
-                .postNo("1")
-//                .commentNo("1")
-                .build();
-
-        Comment result = commentService.getComment(commentRequest);
+        Comment result = commentService.getComment(1);
 
         assertThat(result.getContent(), is("test1's comment"));
     }
@@ -63,12 +57,7 @@ class CommentServiceImplTest {
     @Transactional
     @DisplayName("deleteComment :: 정상 케이스")
     void deleteComment() {
-        Comment commentRequest = Comment.builder()
-                .memberNo("7")
-                .boardNo("1")
-                .postNo("1")
-//                .commentNo("1")
-                .build();
+        Comment commentRequest = commentService.getComment(1);
 
         Result result = commentService.deleteComment(commentRequest);
 
@@ -80,11 +69,12 @@ class CommentServiceImplTest {
     @DisplayName("createComment :: 정상 케이스")
     void createComment() {
         Comment commentRequest = Comment.builder()
-                .memberNo("7")
-                .boardNo("1")
-                .postNo("1")
-//                .content("test1's new comment")
+                .memberNo(7)
+                .boardNo(1)
+                .postNo(1)
                 .build();
+
+        commentRequest.setContent("test1's new comment");
 
         Comment result = commentService.createComment(commentRequest);
 
@@ -105,13 +95,9 @@ class CommentServiceImplTest {
     @Transactional
     @DisplayName("modifyComment :: 정상 케이스")
     void modifyComment() {
-        Comment commentRequest = Comment.builder()
-                .memberNo("7")
-                .boardNo("1")
-                .postNo("1")
-//                .commentNo("1")
-//                .content("test1's modified comment")
-                .build();
+        Comment commentRequest = commentService.getComment(1);
+
+        commentRequest.setContent("test1's modified comment");
 
         Comment result = commentService.modifyComment(commentRequest);
 

@@ -55,7 +55,7 @@ public class PostController {
 
         Post post = postRepository.getPost(postSeq);
 
-        validatePost(post, boardSeq, userSeq);
+        validatePost(post, userSeq, boardSeq);
 
         return postService.getPost(post);
     }
@@ -75,7 +75,7 @@ public class PostController {
 
         Post post = postRepository.getPost(postSeq);
 
-        validatePost(post, boardSeq, userSeq);
+        validatePost(post, userSeq, boardSeq);
 
         return postService.deletePost(post);
     }
@@ -120,7 +120,7 @@ public class PostController {
 
         Post post = postRepository.getPost(postSeq);
 
-        validatePost(post, boardSeq, userSeq);
+        validatePost(post, userSeq, boardSeq);
 
         post.setTitle(body.getTitle());
         post.setContent(body.getContent());
@@ -128,7 +128,7 @@ public class PostController {
         return postService.modifyPost(post);
     }
 
-    private void validatePost(Post post, long boardSeq, long userSeq) {
+    private void validatePost(Post post, long userSeq, long boardSeq) {
         if (post == null) {
             throw new DataNotFoundException();
         }
