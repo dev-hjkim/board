@@ -1,5 +1,6 @@
 package com.example.post.controller.v1;
 
+import com.example.board.repository.BoardRepository;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
@@ -21,6 +22,7 @@ public class PostController {
 
     private final PostService postService;
     private final PostRepository postRepository;
+    private final BoardRepository boardRepository;
 
     /**
      * 포스트 목록 조회
@@ -34,11 +36,15 @@ public class PostController {
                                       PageRequest pageRequest) {
         logger.info("getPostList ::: {} {}", boardSeq, pageRequest);
 
+        checkBoardSeq(boardSeq);
+
         Post post = Post.builder()
                 .boardNo(boardSeq)
                 .build();
         return postService.getPostList(pageRequest, post);
     }
+
+
 
     /**
      * 포스트 조회
@@ -93,6 +99,8 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("createPost ::: {} {} {}", userSeq, boardSeq, body);
 
+        checkBoardSeq(boardSeq);
+
         Post post = Post.builder()
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
@@ -138,6 +146,12 @@ public class PostController {
         }
 
         if (post.getMemberNo() != userSeq) {
+            throw new DataNotFoundException();
+        }
+    }
+
+    private void checkBoardSeq(long boardSeq) {
+        if (!boardRepository.isExist(boardSeq)) {
             throw new DataNotFoundException();
         }
     }

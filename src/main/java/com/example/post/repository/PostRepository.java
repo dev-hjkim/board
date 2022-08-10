@@ -21,4 +21,6 @@ public interface PostRepository {
     void insertPost(Post post);
 
     void updatePost(Post post);
+
+    boolean isExist(long postNo);
 }

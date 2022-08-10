@@ -37,7 +37,7 @@
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.comment_no = #{commentSeq}
+           AND comment.comment_no = #{commentNo}
     </select>
 
     <delete id="deleteComment" parameterType="long">
@@ -77,7 +77,6 @@
            SET content = #{content}
              , upd_dt = now()
          WHERE 1=1
-           AND post_no = #{postNo}
            AND comment_no = #{commentNo}
         <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
                    resultType="Comment" order="AFTER">

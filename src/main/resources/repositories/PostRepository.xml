@@ -98,4 +98,11 @@
                AND post_no = #{postNo}
         </selectKey>
     </update>
+
+    <select id="isExist" parameterType="long" resultType="boolean">
+        SELECT EXISTS(SELECT post_no
+                      FROM tb_post
+                      WHERE 1=1
+                        AND post_no=#{postNo})
+    </select>
 </mapper>

@@ -10,4 +10,5 @@ import java.util.List;
 public interface BoardRepository {
     List<Board> getBoardList(PageRequest pageRequest);
     int getTotalList();
+    boolean isExist(long boardNo);
 }

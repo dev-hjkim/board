@@ -8,6 +8,7 @@ import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
+import com.example.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     /**
      * 댓글 목록 조회
@@ -35,11 +37,14 @@ public class CommentController {
                                             PageRequest pageRequest) {
         logger.info("getCommentList ::: {} {} {}", boardSeq, postSeq, pageRequest);
 
+        checkPostSeq(postSeq);
+
         Comment comment = Comment.builder()
                 .postNo(postSeq)
                 .build();
         return commentService.getCommentList(pageRequest, comment);
     }
+
 
     /**
      * 댓글 삭제
@@ -77,6 +82,8 @@ public class CommentController {
                                  @PathVariable long postSeq,
                                  @RequestBody CommentRequest body) {
         logger.info("createComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
+
+        checkPostSeq(postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -122,6 +129,12 @@ public class CommentController {
         }
 
         if (comment.getPostNo() != postSeq) {
+            throw new DataNotFoundException();
+        }
+    }
+
+    private void checkPostSeq(long postSeq) {
+        if (!postRepository.isExist(postSeq)) {
             throw new DataNotFoundException();
         }
     }

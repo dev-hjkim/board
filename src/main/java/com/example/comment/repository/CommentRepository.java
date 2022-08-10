@@ -12,9 +12,9 @@ public interface CommentRepository {
 
     List<Comment> getCommentList(PageRequest pageRequest, Comment comment);
 
-    Comment getComment(long commentSeq);
+    Comment getComment(long commentNo);
 
-    void deleteComment(long commentSeq);
+    void deleteComment(long commentNo);
 
     void insertComment(Comment comment);
 
