@@ -32,13 +32,15 @@ public class PostController {
      * @return PostList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public PageList<Post> getPostList(@PathVariable long boardSeq,
+    public PageList<Post> getPostList(@RequestAttribute long userSeq,
+                                      @PathVariable long boardSeq,
                                       PageRequest pageRequest) {
-        logger.info("getPostList ::: {} {}", boardSeq, pageRequest);
+        logger.info("getPostList ::: {} {} {}", userSeq, boardSeq, pageRequest);
 
         checkBoardSeq(boardSeq);
 
         Post post = Post.builder()
+                .memberNo(userSeq)
                 .boardNo(boardSeq)
                 .build();
         return postService.getPostList(pageRequest, post);
