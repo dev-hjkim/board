@@ -39,7 +39,7 @@ public class CommentController {
         logger.info("getCommentList ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, pageRequest);
 
-        checkPostSeq(postSeq);
+        validatePostSeq(postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -63,7 +63,7 @@ public class CommentController {
                                 @PathVariable long commentSeq) {
         logger.info("deleteComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq);
 
-        Comment comment = commentRepository.getComment(commentSeq);
+        Comment comment = getComment(commentSeq);
 
         validateComment(comment, userSeq, postSeq);
 
@@ -86,7 +86,7 @@ public class CommentController {
                                  @RequestBody CommentRequest body) {
         logger.info("createComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
 
-        checkPostSeq(postSeq);
+        validatePostSeq(postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -113,7 +113,7 @@ public class CommentController {
                                  @RequestBody CommentRequest body) {
         logger.info("modifyComment ::: {} {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq, body);
 
-        Comment comment = commentRepository.getComment(commentSeq);
+        Comment comment = getComment(commentSeq);
 
         validateComment(comment, userSeq, postSeq);
 
@@ -122,10 +122,17 @@ public class CommentController {
         return commentService.modifyComment(comment);
     }
 
-    private void validateComment(Comment comment, long userSeq, long postSeq) {
+    private Comment getComment(long commentSeq) {
+        Comment comment = commentRepository.getComment(commentSeq);
+
         if (comment == null) {
             throw new DataNotFoundException();
         }
+
+        return comment;
+    }
+
+    private void validateComment(Comment comment, long userSeq, long postSeq) {
 
         if (comment.getMemberNo() != userSeq) {
             throw new DataNotFoundException();
@@ -136,7 +143,7 @@ public class CommentController {
         }
     }
 
-    private void checkPostSeq(long postSeq) {
+    private void validatePostSeq(long postSeq) {
         if (!postRepository.isExist(postSeq)) {
             throw new DataNotFoundException();
         }

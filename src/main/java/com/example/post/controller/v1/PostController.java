@@ -37,7 +37,7 @@ public class PostController {
                                       PageRequest pageRequest) {
         logger.info("getPostList ::: {} {} {}", userSeq, boardSeq, pageRequest);
 
-        checkBoardSeq(boardSeq);
+        validateBoardSeq(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
@@ -61,12 +61,14 @@ public class PostController {
                         @PathVariable long postSeq) {
         logger.info("getPost ::: {} {} {}", userSeq, boardSeq, postSeq);
 
-        Post post = postRepository.getPost(postSeq);
+        Post post = getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
 
         return postService.getPost(postSeq);
     }
+
+
 
     /**
      * 포스트 삭제
@@ -81,7 +83,7 @@ public class PostController {
                              @PathVariable long postSeq) {
         logger.info("deletePost ::: {} {} {}", userSeq, boardSeq, postSeq);
 
-        Post post = postRepository.getPost(postSeq);
+        Post post = getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
 
@@ -101,7 +103,7 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("createPost ::: {} {} {}", userSeq, boardSeq, body);
 
-        checkBoardSeq(boardSeq);
+        validateBoardSeq(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
@@ -128,7 +130,7 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("modifyPost ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
 
-        Post post = postRepository.getPost(postSeq);
+        Post post = getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
 
@@ -138,11 +140,17 @@ public class PostController {
         return postService.modifyPost(post);
     }
 
-    private void validatePost(Post post, long userSeq, long boardSeq) {
+    private Post getPost(long postSeq) {
+        Post post = postRepository.getPost(postSeq);
+
         if (post == null) {
             throw new DataNotFoundException();
         }
 
+        return post;
+    }
+
+    private void validatePost(Post post, long userSeq, long boardSeq) {
         if (post.getBoardNo() != boardSeq) {
             throw new DataNotFoundException();
         }
@@ -152,7 +160,7 @@ public class PostController {
         }
     }
 
-    private void checkBoardSeq(long boardSeq) {
+    private void validateBoardSeq(long boardSeq) {
         if (!boardRepository.isExist(boardSeq)) {
             throw new DataNotFoundException();
         }
