@@ -43,16 +43,11 @@ class AuthServiceImplTest {
     @Transactional
     @DisplayName("login :: 정상 케이스")
     void loginSuccess() {
-        User user = new User("asdf", "asdf");
-        Member member = Member.builder()
-                .userId("asdf")
-                .password("asdf")
-                .build();
-        Member joinedUser = authService.signin(member);
+        User user = new User("hjkim", "asdf");
 
-        UserWithToken result = authService.login(user, joinedUser);
+        UserWithToken result = authService.login(user);
 
-        assertThat(result.getId(), is("asdf"));
+        assertThat(result.getId(), is("hjkim"));
         assertThat(result, instanceOf(UserWithToken.class));
     }
 }

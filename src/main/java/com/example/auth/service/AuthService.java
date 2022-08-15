@@ -6,6 +6,6 @@ import com.example.auth.model.Member;
 
 public interface AuthService {
     Member signin(Member member);
-    UserWithToken login(User user, Member member);
-    UserWithToken generateToken(Member member);
+    UserWithToken login(User user);
+    UserWithToken refreshToken(long userSeq);
 }

@@ -33,7 +33,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserWithToken login(User user, Member member) {
+    public UserWithToken login(User user) {
+        Member member = authRepository.findUserById(user.getId());
+
+        validateMember(member);
+
         if (!user.getPassword().equals(member.getPassword())) {
             throw new UserNotFoundException();
         }
@@ -42,9 +46,24 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserWithToken generateToken(Member member) {
+    public UserWithToken refreshToken(long userSeq) {
+        Member member = authRepository.findUserByUserSeq(userSeq);
+
+        validateMember(member);
+
+        return generateToken(member);
+
+    }
+
+    private UserWithToken generateToken(Member member) {
         return new UserWithToken(member.getUserId(),
                 jwtUtil.generate(member.getMemberNo(), "ACCESS"),
                 jwtUtil.generate(member.getMemberNo(), "REFRESH"));
+    }
+
+    private void validateMember(Member member) {
+        if (member == null) {
+            throw new UserNotFoundException();
+        }
     }
 }

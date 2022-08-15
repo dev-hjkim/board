@@ -3,9 +3,7 @@ package com.example.auth.controller.v1;
 import com.example.auth.dto.User;
 import com.example.auth.dto.UserWithToken;
 import com.example.auth.model.Member;
-import com.example.auth.repository.AuthRepository;
 import com.example.auth.service.AuthService;
-import com.example.common.exception.UserNotFoundException;
 import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +18,6 @@ public class AuthController {
     final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthService authService;
-    private final AuthRepository authRepository;
-
 
     /**
      * 회원가입
@@ -53,11 +49,7 @@ public class AuthController {
     public UserWithToken login(@Valid @RequestBody User user) {
         logger.info("login ::: {}", user);
 
-        Member member = authRepository.findUserById(user.getId());
-
-        validateMember(member);
-
-        return authService.login(user, member);
+        return authService.login(user);
     }
 
    /**
@@ -85,16 +77,6 @@ public class AuthController {
     public UserWithToken refreshToken(@RequestAttribute long userSeq) {
         logger.info("refreshToken ::: {}", userSeq);
 
-        Member member = authRepository.findUserByUserSeq(userSeq);
-
-        validateMember(member);
-
-        return authService.generateToken(member);
-    }
-
-    private void validateMember(Member member) {
-        if (member == null) {
-            throw new UserNotFoundException();
-        }
+        return authService.refreshToken(userSeq);
     }
 }
