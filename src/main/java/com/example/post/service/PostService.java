@@ -10,9 +10,13 @@ public interface PostService {
 
     Post getPost(long postSeq);
 
+    Post getPostAndIncreaseViewCount(long postSeq);
+
     Result deletePost(Post post);
 
     Post createPost(Post post);
 
     Post modifyPost(Post post);
+
+    void validateBoardSeq(long boardSeq);
 }

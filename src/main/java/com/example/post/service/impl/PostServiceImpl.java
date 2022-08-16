@@ -1,10 +1,12 @@
 package com.example.post.service.impl;
 
+import com.example.board.repository.BoardRepository;
 import com.example.comment.repository.CommentRepository;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
+import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.NotAllowedOperationException;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
+    private final BoardRepository boardRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
@@ -30,10 +33,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @Transactional
     public Post getPost(long postSeq) {
+        Post post = postRepository.getPost(postSeq);
+
+        if (post == null) {
+            throw new DataNotFoundException();
+        }
+
+        return post;
+    }
+
+    @Override
+    @Transactional
+    public Post getPostAndIncreaseViewCount(long postSeq) {
         postRepository.updateViewCount(postSeq);
-        return postRepository.getPost(postSeq);
+        return getPost(postSeq);
     }
 
     @Override
@@ -59,5 +73,12 @@ public class PostServiceImpl implements PostService {
     public Post modifyPost(Post post) {
         postRepository.updatePost(post);
         return post;
+    }
+
+    @Override
+    public void validateBoardSeq(long boardSeq) {
+        if (!boardRepository.isExist(boardSeq)) {
+            throw new DataNotFoundException();
+        }
     }
 }

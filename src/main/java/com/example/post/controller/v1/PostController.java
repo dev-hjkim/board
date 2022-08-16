@@ -1,13 +1,11 @@
 package com.example.post.controller.v1;
 
-import com.example.board.repository.BoardRepository;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
 import com.example.post.dto.PostRequest;
 import com.example.post.model.Post;
-import com.example.post.repository.PostRepository;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,8 +19,6 @@ public class PostController {
     final Logger logger = LoggerFactory.getLogger(PostController.class);
 
     private final PostService postService;
-    private final PostRepository postRepository;
-    private final BoardRepository boardRepository;
 
     /**
      * 포스트 목록 조회
@@ -37,7 +33,7 @@ public class PostController {
                                       PageRequest pageRequest) {
         logger.info("getPostList ::: {} {} {}", userSeq, boardSeq, pageRequest);
 
-        validateBoardSeq(boardSeq);
+        postService.validateBoardSeq(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
@@ -45,7 +41,6 @@ public class PostController {
                 .build();
         return postService.getPostList(pageRequest, post);
     }
-
 
 
     /**
@@ -61,13 +56,12 @@ public class PostController {
                         @PathVariable long postSeq) {
         logger.info("getPost ::: {} {} {}", userSeq, boardSeq, postSeq);
 
-        Post post = getPost(postSeq);
+        Post post = postService.getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
 
-        return postService.getPost(postSeq);
+        return postService.getPostAndIncreaseViewCount(postSeq);
     }
-
 
 
     /**
@@ -83,12 +77,13 @@ public class PostController {
                              @PathVariable long postSeq) {
         logger.info("deletePost ::: {} {} {}", userSeq, boardSeq, postSeq);
 
-        Post post = getPost(postSeq);
+        Post post = postService.getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
 
         return postService.deletePost(post);
     }
+
 
     /**
      * 포스트 등록
@@ -103,7 +98,7 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("createPost ::: {} {} {}", userSeq, boardSeq, body);
 
-        validateBoardSeq(boardSeq);
+        postService.validateBoardSeq(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
@@ -115,6 +110,7 @@ public class PostController {
 
         return postService.createPost(post);
     }
+
 
     /**
      * 포스트 수정
@@ -130,7 +126,7 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("modifyPost ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
 
-        Post post = getPost(postSeq);
+        Post post = postService.getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
 
@@ -140,15 +136,6 @@ public class PostController {
         return postService.modifyPost(post);
     }
 
-    private Post getPost(long postSeq) {
-        Post post = postRepository.getPost(postSeq);
-
-        if (post == null) {
-            throw new DataNotFoundException();
-        }
-
-        return post;
-    }
 
     private void validatePost(Post post, long userSeq, long boardSeq) {
         if (post.getBoardNo() != boardSeq) {
@@ -156,12 +143,6 @@ public class PostController {
         }
 
         if (post.getMemberNo() != userSeq) {
-            throw new DataNotFoundException();
-        }
-    }
-
-    private void validateBoardSeq(long boardSeq) {
-        if (!boardRepository.isExist(boardSeq)) {
             throw new DataNotFoundException();
         }
     }

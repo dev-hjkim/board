@@ -3,6 +3,7 @@ package com.example.post.service.impl;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
+import com.example.common.exception.DataNotFoundException;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
@@ -42,10 +45,18 @@ class PostServiceImplTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("getPost :: 정상 케이스")
     void getPost() {
         Post result = postService.getPost(13);
+
+        assertThat(result.getTitle(), is("test13"));
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("getPostAndIncreaseViewCount :: 정상 케이스")
+    void getPostAndIncreaseViewCount() {
+        Post result = postService.getPostAndIncreaseViewCount(13);
 
         assertThat(result.getTitle(), is("test13"));
         assertThat(result.getViewCnt(), is(1));
@@ -81,8 +92,8 @@ class PostServiceImplTest {
 
     @Test
     @Transactional
-    @DisplayName("updatePost :: 정상 케이스")
-    void updatePost() {
+    @DisplayName("modifyPost :: 정상 케이스")
+    void modifyPost() {
         Post postRequest = postService.getPost(13);
 
         postRequest.setTitle("test13");
@@ -91,5 +102,13 @@ class PostServiceImplTest {
         Post result = postService.modifyPost(postRequest);
 
         assertThat(result.getContent(), is(postRequest.getContent()));
+    }
+
+    @Test
+    @DisplayName("validateBoardSeq :: 예외 케이스")
+    void validateBoardSeq() {
+        DataNotFoundException thrown = assertThrows(DataNotFoundException.class,
+                () -> postService.validateBoardSeq(14));
+        assertEquals("Data not found", thrown.getMessage());
     }
 }
