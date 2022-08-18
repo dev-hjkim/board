@@ -2,13 +2,11 @@ package com.example.comment.controller.v1;
 
 import com.example.comment.dto.CommentRequest;
 import com.example.comment.model.Comment;
-import com.example.comment.repository.CommentRepository;
 import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
-import com.example.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +19,6 @@ public class CommentController {
     final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
     private final CommentService commentService;
-    private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
 
     /**
      * 댓글 목록 조회
@@ -39,7 +35,7 @@ public class CommentController {
         logger.info("getCommentList ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, pageRequest);
 
-        validatePostSeq(postSeq);
+        commentService.validatePostSeq(postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -63,13 +59,12 @@ public class CommentController {
                                 @PathVariable long commentSeq) {
         logger.info("deleteComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq);
 
-        Comment comment = getComment(commentSeq);
+        Comment comment = commentService.getComment(commentSeq);
 
         validateComment(comment, userSeq, postSeq);
 
         return commentService.deleteComment(comment);
     }
-
 
 
     /**
@@ -86,7 +81,7 @@ public class CommentController {
                                  @RequestBody CommentRequest body) {
         logger.info("createComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
 
-        validatePostSeq(postSeq);
+        commentService.validatePostSeq(postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -97,6 +92,7 @@ public class CommentController {
 
         return commentService.createComment(comment);
     }
+
 
     /**
      * 댓글 수정
@@ -113,7 +109,7 @@ public class CommentController {
                                  @RequestBody CommentRequest body) {
         logger.info("modifyComment ::: {} {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq, body);
 
-        Comment comment = getComment(commentSeq);
+        Comment comment = commentService.getComment(commentSeq);
 
         validateComment(comment, userSeq, postSeq);
 
@@ -122,15 +118,6 @@ public class CommentController {
         return commentService.modifyComment(comment);
     }
 
-    private Comment getComment(long commentSeq) {
-        Comment comment = commentRepository.getComment(commentSeq);
-
-        if (comment == null) {
-            throw new DataNotFoundException();
-        }
-
-        return comment;
-    }
 
     private void validateComment(Comment comment, long userSeq, long postSeq) {
 
@@ -139,12 +126,6 @@ public class CommentController {
         }
 
         if (comment.getPostNo() != postSeq) {
-            throw new DataNotFoundException();
-        }
-    }
-
-    private void validatePostSeq(long postSeq) {
-        if (!postRepository.isExist(postSeq)) {
             throw new DataNotFoundException();
         }
     }
