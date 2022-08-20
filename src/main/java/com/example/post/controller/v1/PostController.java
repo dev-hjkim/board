@@ -51,11 +51,9 @@ public class PostController {
                         @PathVariable long postSeq) {
         logger.info("getPost ::: {} {} {}", userSeq, boardSeq, postSeq);
 
-        Post post = postService.getPost(postSeq);
+        Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
-        validatePost(post, userSeq, boardSeq);
-
-        return postService.getPostAndIncreaseViewCount(postSeq);
+        return postService.getPostAndIncreaseViewCount(post.getPostNo());
     }
 
 
@@ -72,12 +70,12 @@ public class PostController {
                              @PathVariable long postSeq) {
         logger.info("deletePost ::: {} {} {}", userSeq, boardSeq, postSeq);
 
-        Post post = postService.getPost(postSeq);
-
-        validatePost(post, userSeq, boardSeq);
+        Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
         return postService.deletePost(post);
     }
+
+
 
 
     /**
@@ -121,14 +119,19 @@ public class PostController {
                            @RequestBody PostRequest body) {
         logger.info("modifyPost ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
 
-        Post post = postService.getPost(postSeq);
-
-        validatePost(post, userSeq, boardSeq);
+        Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
         post.setTitle(body.getTitle());
         post.setContent(body.getContent());
 
         return postService.modifyPost(post);
+    }
+
+    private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
+        Post post = postService.getPost(postSeq);
+
+        validatePost(post, userSeq, boardSeq);
+        return post;
     }
 
 

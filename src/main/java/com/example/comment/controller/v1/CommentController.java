@@ -54,9 +54,7 @@ public class CommentController {
                                 @PathVariable long commentSeq) {
         logger.info("deleteComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq);
 
-        Comment comment = commentService.getComment(commentSeq);
-
-        validateComment(comment, userSeq, postSeq);
+        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
         return commentService.deleteComment(comment);
     }
@@ -104,9 +102,7 @@ public class CommentController {
                                  @RequestBody CommentRequest body) {
         logger.info("modifyComment ::: {} {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq, body);
 
-        Comment comment = commentService.getComment(commentSeq);
-
-        validateComment(comment, userSeq, postSeq);
+        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
         comment.setContent(body.getContent());
 
@@ -114,8 +110,15 @@ public class CommentController {
     }
 
 
-    private void validateComment(Comment comment, long userSeq, long postSeq) {
+    private Comment getValidatedComment(long userSeq, long postSeq, long commentSeq) {
+        Comment comment = commentService.getComment(commentSeq);
 
+        validateComment(comment, userSeq, postSeq);
+        return comment;
+    }
+
+
+    private void validateComment(Comment comment, long userSeq, long postSeq) {
         if (comment.getMemberNo() != userSeq) {
             throw new DataNotFoundException();
         }
