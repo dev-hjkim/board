@@ -28,20 +28,15 @@ public class CommentController {
      * @return CommentList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public PageList<Comment> getCommentList(@RequestAttribute long userSeq,
-                                            @PathVariable long boardSeq,
+    public PageList<Comment> getCommentList(@PathVariable long boardSeq,
                                             @PathVariable long postSeq,
                                             PageRequest pageRequest) {
-        logger.info("getCommentList ::: {} {} {} {}",
-                userSeq, boardSeq, postSeq, pageRequest);
+        logger.info("getCommentList ::: {} {} {}",
+                boardSeq, postSeq, pageRequest);
 
         commentService.validatePostSeq(postSeq);
 
-        Comment comment = Comment.builder()
-                .memberNo(userSeq)
-                .postNo(postSeq)
-                .build();
-        return commentService.getCommentList(pageRequest, comment);
+        return commentService.getCommentList(pageRequest, postSeq);
     }
 
 

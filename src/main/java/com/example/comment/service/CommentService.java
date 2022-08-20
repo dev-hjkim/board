@@ -6,7 +6,7 @@ import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 
 public interface CommentService {
-    PageList<Comment> getCommentList(PageRequest pageRequest, Comment comment);
+    PageList<Comment> getCommentList(PageRequest pageRequest, long postSeq);
 
     Comment getComment(long commentSeq);
 

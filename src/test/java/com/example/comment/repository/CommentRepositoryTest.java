@@ -45,12 +45,8 @@ class CommentRepositoryTest {
         pageRequest.setPageIndex(1);
         pageRequest.setPageSize(10);
 
-        Comment comment = Comment.builder()
-                .postNo(1)
-                .build();
-
-        List<Comment> commentList = commentRepository.getCommentList(pageRequest, comment);
-        assertThat(commentList.get(0).getPostNo(), is(comment.getPostNo()));
+        List<Comment> commentList = commentRepository.getCommentList(pageRequest, 1);
+        assertThat(commentList.get(0).getPostNo(), is(1l));
         assertThat(commentList.size(), is(2));
     }
 

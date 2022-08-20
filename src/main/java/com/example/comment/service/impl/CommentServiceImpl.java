@@ -23,9 +23,9 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public PageList<Comment> getCommentList(PageRequest pageRequest, Comment comment) {
-        int totalCount = commentRepository.getTotalCount(comment.getPostNo());
-        List<Comment> commentList = commentRepository.getCommentList(pageRequest, comment);
+    public PageList<Comment> getCommentList(PageRequest pageRequest, long postSeq) {
+        int totalCount = commentRepository.getTotalCount(postSeq);
+        List<Comment> commentList = commentRepository.getCommentList(pageRequest, postSeq);
         return new PageList<>(pageRequest.getPageSize(), totalCount, commentList);
     }
 

@@ -21,7 +21,7 @@
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.post_no = #{comment.postNo}
+           AND comment.post_no = #{postNo}
          LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 

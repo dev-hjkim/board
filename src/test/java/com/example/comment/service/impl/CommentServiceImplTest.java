@@ -33,15 +33,11 @@ class CommentServiceImplTest {
         pageRequest.setPageIndex(1);
         pageRequest.setPageSize(10);
 
-        Comment comment = Comment.builder()
-                .postNo(1)
-                .build();
-
-        PageList<Comment> result = commentService.getCommentList(pageRequest, comment);
+        PageList<Comment> result = commentService.getCommentList(pageRequest, 1);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
-        assertThat(result.getList().get(0).getPostNo(), is(comment.getPostNo()));
+        assertThat(result.getList().get(0).getPostNo(), is(1l));
     }
 
     @Test

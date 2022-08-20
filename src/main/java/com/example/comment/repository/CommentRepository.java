@@ -10,7 +10,7 @@ import java.util.List;
 public interface CommentRepository {
     int getTotalCount(long postNo);
 
-    List<Comment> getCommentList(PageRequest pageRequest, Comment comment);
+    List<Comment> getCommentList(PageRequest pageRequest, long postNo);
 
     Comment getComment(long commentNo);
 
