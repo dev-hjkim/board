@@ -26,9 +26,9 @@ public class PostServiceImpl implements PostService {
     private final CommentRepository commentRepository;
 
     @Override
-    public PageList<Post> getPostList(PageRequest pageRequest, Post post) {
-        int totalCount = postRepository.getTotalCount(post.getBoardNo());
-        List<Post> postList = postRepository.getPostList(pageRequest, post);
+    public PageList<Post> getPostList(PageRequest pageRequest, long boardSeq) {
+        int totalCount = postRepository.getTotalCount(boardSeq);
+        List<Post> postList = postRepository.getPostList(pageRequest, boardSeq);
         return new PageList<>(pageRequest.getPageSize(), totalCount, postList);
     }
 

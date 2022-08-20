@@ -32,5 +32,7 @@ public class Post {
     public Post(long boardNo, long memberNo) {
         this.boardNo = boardNo;
         this.memberNo = memberNo;
+        this.viewCnt = 0;
+        this.replyCnt = 0;
     }
 }

@@ -41,11 +41,7 @@ class PostRepositoryTest {
         pageRequest.setPageIndex(1);
         pageRequest.setPageSize(10);
 
-        Post post = Post.builder()
-                .boardNo(1)
-                .build();
-
-        List<Post> postList = postRepository.getPostList(pageRequest, post);
+        List<Post> postList = postRepository.getPostList(pageRequest, 1);
         assertThat(postList.get(0).getTitle(), is("test1"));
         assertThat(postList.size(), is(2));
     }

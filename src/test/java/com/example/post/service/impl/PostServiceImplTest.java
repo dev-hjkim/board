@@ -33,15 +33,11 @@ class PostServiceImplTest {
         pageRequest.setPageIndex(1);
         pageRequest.setPageSize(10);
 
-        Post post = Post.builder()
-                .boardNo(1)
-                .build();
-
-        PageList<Post> result = postService.getPostList(pageRequest, post);
+        PageList<Post> result = postService.getPostList(pageRequest, 1);
 
         assertThat(result.getTotalCount(), is(2));
         assertThat(result.getTotalPage(), is(1));
-        assertThat(result.getList().get(0).getBoardNo(), is(post.getBoardNo()));
+        assertThat(result.getList().get(0).getBoardNo(), is(1l));
     }
 
     @Test

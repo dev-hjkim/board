@@ -10,7 +10,7 @@ import java.util.List;
 public interface PostRepository {
     int getTotalCount(long boardNo);
 
-    List<Post> getPostList(PageRequest pageRequest, Post post);
+    List<Post> getPostList(PageRequest pageRequest, long boardNo);
 
     Post getPost(long postNo);
 

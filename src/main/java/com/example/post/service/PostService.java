@@ -6,7 +6,7 @@ import com.example.common.dto.Result;
 import com.example.post.model.Post;
 
 public interface PostService {
-    PageList<Post> getPostList(PageRequest pageRequest, Post post);
+    PageList<Post> getPostList(PageRequest pageRequest, long boardSeq);
 
     Post getPost(long postSeq);
 

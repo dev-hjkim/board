@@ -24,7 +24,7 @@
                 JOIN tb_board board
                   ON post.board_no = board.board_no
          WHERE 1=1
-           AND post.board_no = #{post.boardNo}
+           AND post.board_no = #{boardNo}
          LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 
