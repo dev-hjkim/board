@@ -50,4 +50,13 @@ class AuthServiceImplTest {
         assertThat(result.getId(), is("hjkim"));
         assertThat(result, instanceOf(UserWithToken.class));
     }
+
+    @Test
+    @DisplayName("refreshToken :: 정상 케이스")
+    void refreshToken() {
+        UserWithToken result = authService.refreshToken(5);
+
+        assertThat(result.getId(), is("hjkim"));
+        assertThat(result, instanceOf(UserWithToken.class));
+    }
 }
