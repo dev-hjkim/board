@@ -33,6 +33,7 @@ public class JwtUtil {
         // 1. token 내부에 저장할 정보
         Map<String, Object> claims = new HashMap<>();
         claims.put("userSeq", userSeq);
+        claims.put("type", type);
         
         // 2. token 생성일
         final Date createdDate = new Date();
@@ -72,6 +73,10 @@ public class JwtUtil {
         } catch (ExpiredJwtException ex) {
             return true;
         }
+    }
+
+    public String getTypeFromToken(String token) {
+        return getClaimsFromToken(token).get("type", String.class);
     }
 
 

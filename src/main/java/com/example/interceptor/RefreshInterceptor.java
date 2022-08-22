@@ -12,6 +12,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Component
 public class RefreshInterceptor extends AuthInterceptor {
 
+    private static final String REFRESH_TOKEN_TYPE = "REFRESH";
     private static final String REFRESH_TOKEN_HEADER_NAME = "R-Authorization";
 
     public RefreshInterceptor(JwtUtil jwtUtil) {
