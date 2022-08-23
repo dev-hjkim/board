@@ -31,7 +31,7 @@ public class AccessInterceptor extends AuthInterceptor {
 
     @Override
     protected void checkTokenExist() {
-        if (isEmpty(this.token)) {
+        if (isEmpty(this.token) || !this.isValidType(ACCESS_TOKEN_TYPE)) {
             throw new AccessTokenRequiredException(this.uri);
         }
     }

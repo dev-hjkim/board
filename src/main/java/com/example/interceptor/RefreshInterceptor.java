@@ -31,7 +31,7 @@ public class RefreshInterceptor extends AuthInterceptor {
 
     @Override
     protected void checkTokenExist() {
-        if (isEmpty(this.token)) {
+        if (isEmpty(this.token) || !this.isValidType(REFRESH_TOKEN_TYPE)) {
             throw new RefreshTokenRequiredException(this.uri);
         }
     }
