@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentRequest {
+public class CommentBody {
     private String content;
 }

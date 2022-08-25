@@ -1,6 +1,6 @@
 package com.example.comment.controller.v1;
 
-import com.example.comment.dto.CommentRequest;
+import com.example.comment.dto.CommentBody;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
@@ -52,7 +52,8 @@ public class CommentController {
                                 @PathVariable long boardSeq,
                                 @PathVariable long postSeq,
                                 @PathVariable long commentSeq) {
-        logger.info("deleteComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq);
+        logger.info("deleteComment ::: {} {} {} {}",
+                userSeq, boardSeq, postSeq, commentSeq);
 
         Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
@@ -71,8 +72,9 @@ public class CommentController {
     public Comment createComment(@RequestAttribute long userSeq,
                                  @PathVariable long boardSeq,
                                  @PathVariable long postSeq,
-                                 @RequestBody CommentRequest body) {
-        logger.info("createComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
+                                 @RequestBody CommentBody body) {
+        logger.info("createComment ::: {} {} {} {}",
+                userSeq, boardSeq, postSeq, body);
 
         commentService.validatePostSeq(postSeq);
 
@@ -99,8 +101,9 @@ public class CommentController {
                                  @PathVariable long boardSeq,
                                  @PathVariable long postSeq,
                                  @PathVariable long commentSeq,
-                                 @RequestBody CommentRequest body) {
-        logger.info("modifyComment ::: {} {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq, body);
+                                 @RequestBody CommentBody body) {
+        logger.info("modifyComment ::: {} {} {} {} {}",
+                userSeq, boardSeq, postSeq, commentSeq, body);
 
         Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 

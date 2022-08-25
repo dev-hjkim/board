@@ -4,7 +4,7 @@ import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
-import com.example.post.dto.PostRequest;
+import com.example.post.dto.PostBody;
 import com.example.post.model.Post;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +49,8 @@ public class PostController {
     public Post getPost(@RequestAttribute long userSeq,
                         @PathVariable long boardSeq,
                         @PathVariable long postSeq) {
-        logger.info("getPost ::: {} {} {}", userSeq, boardSeq, postSeq);
+        logger.info("getPost ::: {} {} {}",
+                userSeq, boardSeq, postSeq);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
@@ -68,7 +69,8 @@ public class PostController {
     public Result deletePost(@RequestAttribute long userSeq,
                              @PathVariable long boardSeq,
                              @PathVariable long postSeq) {
-        logger.info("deletePost ::: {} {} {}", userSeq, boardSeq, postSeq);
+        logger.info("deletePost ::: {} {} {}",
+                userSeq, boardSeq, postSeq);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
@@ -88,8 +90,9 @@ public class PostController {
     @PostMapping(value="")
     public Post createPost(@RequestAttribute long userSeq,
                            @PathVariable long boardSeq,
-                           @RequestBody PostRequest body) {
-        logger.info("createPost ::: {} {} {}", userSeq, boardSeq, body);
+                           @RequestBody PostBody body) {
+        logger.info("createPost ::: {} {} {}",
+                userSeq, boardSeq, body);
 
         postService.validateBoardSeq(boardSeq);
 
@@ -116,8 +119,9 @@ public class PostController {
     public Post modifyPost(@RequestAttribute long userSeq,
                            @PathVariable long boardSeq,
                            @PathVariable long postSeq,
-                           @RequestBody PostRequest body) {
-        logger.info("modifyPost ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
+                           @RequestBody PostBody body) {
+        logger.info("modifyPost ::: {} {} {} {}",
+                userSeq, boardSeq, postSeq, body);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 

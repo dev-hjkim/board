@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostRequest {
+public class PostBody {
     private String title;
     private String content;
 }
