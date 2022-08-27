@@ -49,13 +49,6 @@
           AND post.post_no = #{postNo}
     </select>
 
-    <update id="updateViewCount" parameterType="long">
-        UPDATE tb_post
-           SET view_cnt = view_cnt+1
-         WHERE 1=1
-           AND post_no = #{postNo}
-    </update>
-
     <delete id="deletePost" parameterType="long">
         DELETE FROM tb_post
          WHERE 1=1
@@ -87,6 +80,8 @@
         UPDATE tb_post
            SET title = #{title}
              , content = #{content}
+             , view_cnt = #{viewCnt}
+             , reply_cnt = #{replyCnt}
              , upd_dt = now()
          WHERE 1=1
            AND post_no = #{postNo}

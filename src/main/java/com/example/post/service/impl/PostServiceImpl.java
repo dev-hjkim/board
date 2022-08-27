@@ -46,8 +46,23 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post getPostAndIncreaseViewCount(long postSeq) {
-        postRepository.updateViewCount(postSeq);
-        return getPost(postSeq);
+        Post post = getPost(postSeq);
+
+        post.setViewCnt(post.getViewCnt()+1);
+        postRepository.updatePost(post);
+
+        return post;
+    }
+
+    @Override
+    @Transactional
+    public Post updateReplyCount(long postSeq) {
+        Post post = getPost(postSeq);
+
+        post.setReplyCnt(post.getReplyCnt()+1);
+        postRepository.updatePost(post);
+
+        return post;
     }
 
     @Override

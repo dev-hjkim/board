@@ -60,6 +60,16 @@ class PostServiceImplTest {
 
     @Test
     @Transactional
+    @DisplayName("updateReplyCount :: 정상 케이스")
+    void updateReplyCount() {
+        Post result = postService.updateReplyCount(13);
+
+        assertThat(result.getTitle(), is("test13"));
+        assertThat(result.getReplyCnt(), is(1));
+    }
+
+    @Test
+    @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
         Post postRequest = postService.getPost(13);

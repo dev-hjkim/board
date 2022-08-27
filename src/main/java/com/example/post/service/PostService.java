@@ -12,6 +12,8 @@ public interface PostService {
 
     Post getPostAndIncreaseViewCount(long postSeq);
 
+    Post updateReplyCount(long postSeq);
+
     Result deletePost(Post post);
 
     Post createPost(Post post);

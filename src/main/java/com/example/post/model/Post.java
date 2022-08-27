@@ -22,7 +22,9 @@ public class Post {
     @Setter
     private String content;
 
+    @Setter
     private int viewCnt;
+    @Setter
     private int replyCnt;
 
     private Date regDt;

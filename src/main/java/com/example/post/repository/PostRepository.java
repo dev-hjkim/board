@@ -14,8 +14,6 @@ public interface PostRepository {
 
     Post getPost(long postNo);
 
-    void updateViewCount(long postNo);
-
     void deletePost(long postNo);
 
     void insertPost(Post post);

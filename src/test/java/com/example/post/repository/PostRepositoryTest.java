@@ -55,17 +55,6 @@ class PostRepositoryTest {
 
     @Test
     @Transactional
-    @DisplayName("updateViewCount :: 정상 케이스")
-    void updateViewCount() {
-        postRepository.updateViewCount(13);
-
-        Post post = postRepository.getPost(13);
-        assertThat(post.getViewCnt(), is(1));
-        assertThat(post.getBoardNo(), is(1L));
-    }
-
-    @Test
-    @Transactional
     @DisplayName("deletePost :: 정상 케이스")
     void deletePost() {
         postRepository.deletePost(5);

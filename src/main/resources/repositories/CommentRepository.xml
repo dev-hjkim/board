@@ -65,13 +65,6 @@
         </selectKey>
     </insert>
 
-    <update id="updateReplyCount" parameterType="long">
-        UPDATE tb_post
-           SET reply_cnt = reply_cnt+1
-         WHERE 1=1
-           AND post_no = #{postNo}
-    </update>
-
     <update id="updateComment" parameterType="Comment">
         UPDATE tb_comment
            SET content = #{content}

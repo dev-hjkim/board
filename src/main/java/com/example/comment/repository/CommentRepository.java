@@ -18,8 +18,6 @@ public interface CommentRepository {
 
     void insertComment(Comment comment);
 
-    void updateReplyCount(long postNo);
-
     void updateComment(Comment comment);
 
 }

@@ -7,6 +7,7 @@ import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
+import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
+    private final PostService postService;
     private final CommentService commentService;
 
     /**
@@ -85,6 +87,7 @@ public class CommentController {
 
         comment.setContent(body.getContent());
 
+        postService.updateReplyCount(postSeq);
         return commentService.createComment(comment);
     }
 
