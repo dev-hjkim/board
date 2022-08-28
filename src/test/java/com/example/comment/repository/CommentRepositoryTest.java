@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -75,7 +74,7 @@ class CommentRepositoryTest {
         commentRequest.setContent("test1's new comment");
 
         commentRepository.insertComment(commentRequest);
-        assertThat(commentRequest.getContent(), is("test1's new comment"));
+        assertThat(commentRequest.getCommentNo(), instanceOf(Long.TYPE));
     }
 
     @Test
@@ -86,6 +85,6 @@ class CommentRepositoryTest {
         commentRequest.setContent("test1's modified comment");
 
         commentRepository.updateComment(commentRequest);
-        assertThat(commentRequest.getContent(), is("test1's modified comment"));
+        assertThat(commentRequest.getCommentNo(), is(1l));
     }
 }

@@ -56,12 +56,9 @@
                                 , #{memberNo}
                                 , #{content}
                                 )
-        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
-                   resultType="Comment" order="AFTER">
-            SELECT *
-              FROM tb_comment
-             WHERE 1=1
-               AND comment_no = LAST_INSERT_ID()
+        <selectKey keyProperty="commentNo"
+                   resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
@@ -71,12 +68,9 @@
              , upd_dt = now()
          WHERE 1=1
            AND comment_no = #{commentNo}
-        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
-                   resultType="Comment" order="AFTER">
-            SELECT *
-              FROM tb_comment
-             WHERE 1=1
-               AND comment_no = #{commentNo}
+        <selectKey keyProperty="commentNo"
+                   resultType="long" order="AFTER">
+            SELECT #{commentNo}
         </selectKey>
     </update>
 

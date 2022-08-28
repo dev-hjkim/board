@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -76,7 +75,7 @@ class PostRepositoryTest {
         postRequest.setContent("test14's content");
 
         postRepository.insertPost(postRequest);
-        assertThat(postRequest.getTitle(), is("test14"));
+        assertThat(postRequest.getPostNo(), instanceOf(Long.TYPE));
     }
 
     @Test
@@ -88,7 +87,6 @@ class PostRepositoryTest {
         postRequest.setContent("test13's modified content");
 
         postRepository.updatePost(postRequest);
-        assertThat(postRequest.getTitle(), is("test13"));
-        assertThat(postRequest.getContent(), is("test13's modified content"));
+        assertThat(postRequest.getPostNo(), is(13l));
     }
 }

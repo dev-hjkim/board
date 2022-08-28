@@ -80,14 +80,14 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Post createPost(Post post) {
         postRepository.insertPost(post);
-        return post;
+        return getPost(post.getPostNo());
     }
 
     @Override
     @Transactional
     public Post modifyPost(Post post) {
         postRepository.updatePost(post);
-        return post;
+        return getPost(post.getPostNo());
     }
 
     @Override
