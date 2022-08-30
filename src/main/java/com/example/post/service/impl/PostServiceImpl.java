@@ -1,6 +1,5 @@
 package com.example.post.service.impl;
 
-import com.example.board.repository.BoardRepository;
 import com.example.comment.repository.CommentRepository;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
@@ -21,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    private final BoardRepository boardRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
@@ -88,12 +86,5 @@ public class PostServiceImpl implements PostService {
     public Post modifyPost(Post post) {
         postRepository.updatePost(post);
         return getPost(post.getPostNo());
-    }
-
-    @Override
-    public void validateBoardSeq(long boardSeq) {
-        if (!boardRepository.isExist(boardSeq)) {
-            throw new DataNotFoundException();
-        }
     }
 }

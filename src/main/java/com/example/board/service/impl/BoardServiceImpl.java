@@ -5,6 +5,7 @@ import com.example.board.repository.BoardRepository;
 import com.example.board.service.BoardService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
+import com.example.common.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,12 @@ public class BoardServiceImpl implements BoardService {
         int totalCount = boardRepository.getTotalList();
         List<Board> boardList = boardRepository.getBoardList(pageRequest);
         return new PageList<>(pageRequest.getPageSize(), totalCount, boardList);
+    }
+
+    @Override
+    public void validateBoardSeq(long boardSeq) {
+        if (!boardRepository.isExist(boardSeq)) {
+            throw new DataNotFoundException();
+        }
     }
 }

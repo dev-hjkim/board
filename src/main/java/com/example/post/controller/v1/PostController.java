@@ -1,5 +1,6 @@
 package com.example.post.controller.v1;
 
+import com.example.board.service.BoardService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     final Logger logger = LoggerFactory.getLogger(PostController.class);
 
+    private final BoardService boardService;
     private final PostService postService;
 
     /**
@@ -32,7 +34,7 @@ public class PostController {
                                       PageRequest pageRequest) {
         logger.info("getPostList ::: {} {}", boardSeq, pageRequest);
 
-        postService.validateBoardSeq(boardSeq);
+        boardService.validateBoardSeq(boardSeq);
 
         return postService.getPostList(pageRequest, boardSeq);
     }
@@ -94,7 +96,7 @@ public class PostController {
         logger.info("createPost ::: {} {} {}",
                 userSeq, boardSeq, body);
 
-        postService.validateBoardSeq(boardSeq);
+        boardService.validateBoardSeq(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
