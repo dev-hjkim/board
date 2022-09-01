@@ -3,6 +3,7 @@ package com.example.post.service.impl;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
+import com.example.common.exception.DataNotFoundException;
 import com.example.post.model.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
@@ -105,5 +108,13 @@ class PostServiceImplTest {
         Post result = postService.modifyPost(postRequest);
 
         assertThat(result.getContent(), is(postRequest.getContent()));
+    }
+
+    @Test
+    @DisplayName("validatePostSeq :: 예외 케이스")
+    void validatePostSeq() {
+        DataNotFoundException thrown = assertThrows(DataNotFoundException.class,
+                () -> postService.validatePostSeq(14));
+        assertEquals("Data not found", thrown.getMessage());
     }
 }

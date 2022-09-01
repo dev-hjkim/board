@@ -87,4 +87,11 @@ public class PostServiceImpl implements PostService {
         postRepository.updatePost(post);
         return getPost(post.getPostNo());
     }
+
+    @Override
+    public void validatePostSeq(long postSeq) {
+        if (!postRepository.isExist(postSeq)) {
+            throw new DataNotFoundException();
+        }
+    }
 }

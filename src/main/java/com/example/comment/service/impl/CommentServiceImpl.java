@@ -8,7 +8,6 @@ import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
-import com.example.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
     @Override
@@ -58,12 +56,5 @@ public class CommentServiceImpl implements CommentService {
     public Comment modifyComment(Comment comment) {
         commentRepository.updateComment(comment);
         return comment;
-    }
-
-    @Override
-    public void validatePostSeq(long postSeq) {
-        if (!postRepository.isExist(postSeq)) {
-            throw new DataNotFoundException();
-        }
     }
 }

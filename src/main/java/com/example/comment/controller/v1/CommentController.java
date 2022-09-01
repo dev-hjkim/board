@@ -1,5 +1,6 @@
 package com.example.comment.controller.v1;
 
+import com.example.board.service.BoardService;
 import com.example.comment.dto.CommentBody;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
+    private final BoardService boardService;
     private final PostService postService;
     private final CommentService commentService;
 
@@ -36,7 +38,8 @@ public class CommentController {
         logger.info("getCommentList ::: {} {} {}",
                 boardSeq, postSeq, pageRequest);
 
-        commentService.validatePostSeq(postSeq);
+        boardService.validateBoardSeq(boardSeq);
+        postService.validatePostSeq(postSeq);
 
         return commentService.getCommentList(pageRequest, postSeq);
     }
@@ -78,7 +81,8 @@ public class CommentController {
         logger.info("createComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, body);
 
-        commentService.validatePostSeq(postSeq);
+        boardService.validateBoardSeq(boardSeq);
+        postService.validatePostSeq(postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
