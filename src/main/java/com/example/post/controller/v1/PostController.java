@@ -134,6 +134,8 @@ public class PostController {
     }
 
     private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
+        boardService.validateBoardSeq(boardSeq);
+
         Post post = postService.getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
