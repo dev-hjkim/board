@@ -89,8 +89,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void validatePostSeq(long postSeq) {
-        if (!postRepository.isExist(postSeq)) {
+    public void validatePostSeq(long boardSeq, long postSeq) {
+        if (!postRepository.isExist(boardSeq, postSeq)) {
             throw new DataNotFoundException();
         }
     }

@@ -88,10 +88,11 @@
         </selectKey>
     </update>
 
-    <select id="isExist" parameterType="long" resultType="boolean">
+    <select id="isExist" resultType="boolean">
         SELECT EXISTS(SELECT post_no
                       FROM tb_post
                       WHERE 1=1
+                        AND board_no=#{boardNo}
                         AND post_no=#{postNo})
     </select>
 </mapper>

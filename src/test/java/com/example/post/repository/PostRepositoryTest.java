@@ -89,4 +89,11 @@ class PostRepositoryTest {
         postRepository.updatePost(postRequest);
         assertThat(postRequest.getPostNo(), is(13l));
     }
+
+    @Test
+    @DisplayName("isExist :: 정상 케이스")
+    void isExist() {
+        boolean isExist = postRepository.isExist(1, 14);
+        assertThat(isExist, is(false));
+    }
 }
