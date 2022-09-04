@@ -24,13 +24,6 @@ class BoardListRepositoryTest {
     }
 
     @Test
-    @DisplayName("getTotalList :: 정상 케이스")
-    void getTotalList() {
-        int totalCount = boardRepository.getTotalList();
-        assertThat(totalCount, is(12));
-    }
-
-    @Test
     @DisplayName("getBoardList :: 정상 케이스")
     void getBoardList() {
         PageRequest pageRequest = new PageRequest();
@@ -39,5 +32,19 @@ class BoardListRepositoryTest {
 
         List<Board> boardList = boardRepository.getBoardList(pageRequest);
         assertThat(boardList.get(0).getName(), is("KKK"));
+    }
+
+    @Test
+    @DisplayName("getTotalList :: 정상 케이스")
+    void getTotalList() {
+        int totalCount = boardRepository.getTotalList();
+        assertThat(totalCount, is(12));
+    }
+
+    @Test
+    @DisplayName("isExist :: 정상 케이스")
+    void isExist() {
+        boolean isExist = boardRepository.isExist(1);
+        assertThat(isExist, is(true));
     }
 }
