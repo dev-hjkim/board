@@ -8,7 +8,7 @@
                          AND user_id=#{userId})
     </select>
 
-    <insert id="signin" parameterType="JoinedUser">
+    <insert id="signin" parameterType="Member">
         INSERT INTO tb_member (
                                 user_id
                               , password
@@ -18,7 +18,7 @@
                                , #{password}
                                )
         <selectKey keyProperty="memberNo,userId,password,regDt,updDt"
-                   resultType="JoinedUser" order="AFTER">
+                   resultType="Member" order="AFTER">
             SELECT *
               FROM tb_member
              WHERE 1=1
@@ -26,14 +26,21 @@
         </selectKey>
     </insert>
 
-    <select id="findUser" parameterType="JoinedUser" resultType="JoinedUser">
+    <select id="findUserById" parameterType="String" resultType="Member">
+        SELECT member_no
+               , user_id
+               , password
+          FROM tb_member
+         WHERE 1=1
+           AND user_id = #{userId}
+    </select>
+
+    <select id="findUserByUserSeq" parameterType="long" resultType="Member">
         SELECT member_no
              , user_id
-          FROM tb_member
-        <where>
-            <if test="userId != null">AND user_id = #{userId} </if>
-            <if test="password != null">AND password = #{password} </if>
-            <if test="memberNo != null">AND member_no = #{memberNo} </if>
-        </where>
+             , password
+        FROM tb_member
+        WHERE 1=1
+          AND member_no = #{memberNo}
     </select>
 </mapper>

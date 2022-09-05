@@ -1,7 +1,8 @@
 package com.example.auth.service.impl;
 
+import com.example.auth.dto.User;
 import com.example.auth.dto.UserWithToken;
-import com.example.auth.model.JoinedUser;
+import com.example.auth.model.Member;
 import com.example.auth.repository.AuthRepository;
 import com.example.auth.service.AuthService;
 import com.example.common.exception.UserNotFoundException;
@@ -20,27 +21,49 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public JoinedUser signin(JoinedUser joinedUser) {
-        boolean isDuplicated = authRepository.isDuplicated(joinedUser.getUserId());
+    public Member signin(Member member) {
+        boolean isDuplicated = authRepository.isDuplicated(member.getUserId());
 
         if (isDuplicated) {
             throw new DuplicateKeyException("userId");
         }
 
-        authRepository.signin(joinedUser);
-        return joinedUser;
+        authRepository.signin(member);
+        return member;
     }
 
     @Override
-    public UserWithToken findUser(JoinedUser joinedUser) {
-        JoinedUser registered = authRepository.findUser(joinedUser);
+    public UserWithToken login(User user) {
+        Member member = authRepository.findUserById(user.getId());
 
-        if (registered == null) {
+        validateMember(member);
+
+        if (!user.getPassword().equals(member.getPassword())) {
             throw new UserNotFoundException();
         }
 
-        return new UserWithToken(registered.getUserId(),
-                jwtUtil.generate(registered.getMemberNo(),"ACCESS"),
-                jwtUtil.generate(registered.getMemberNo(), "REFRESH"));
+        return generateToken(member);
+    }
+
+    @Override
+    public UserWithToken refreshToken(long userSeq) {
+        Member member = authRepository.findUserByUserSeq(userSeq);
+
+        validateMember(member);
+
+        return generateToken(member);
+
+    }
+
+    private UserWithToken generateToken(Member member) {
+        return new UserWithToken(member.getUserId(),
+                jwtUtil.generate(member.getMemberNo(), "ACCESS"),
+                jwtUtil.generate(member.getMemberNo(), "REFRESH"));
+    }
+
+    private void validateMember(Member member) {
+        if (member == null) {
+            throw new UserNotFoundException();
+        }
     }
 }

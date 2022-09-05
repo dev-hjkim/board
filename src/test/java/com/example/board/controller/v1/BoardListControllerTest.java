@@ -23,7 +23,7 @@ class BoardListControllerTest {
     @Autowired
     public void setBoardControllerTest(MockMvc mvc, JwtUtil jwtUtil) {
         this.mvc = mvc;
-        this.accessToken = jwtUtil.generate("5", "ACCESS");
+        this.accessToken = jwtUtil.generate(5, "ACCESS");
     }
 
     @Test

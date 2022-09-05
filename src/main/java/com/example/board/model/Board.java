@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.Date;
 
 @Getter
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Board {
     private String boardNo;

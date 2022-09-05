@@ -12,6 +12,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Component
 public class AccessInterceptor extends AuthInterceptor {
 
+    private static final String ACCESS_TOKEN_TYPE = "ACCESS";
     private static final String ACCESS_TOKEN_HEADER_NAME = "Authorization";
 
     public AccessInterceptor(JwtUtil jwtUtil) {
@@ -30,7 +31,7 @@ public class AccessInterceptor extends AuthInterceptor {
 
     @Override
     protected void checkTokenExist() {
-        if (isEmpty(this.token)) {
+        if (isEmpty(this.token) || !this.isValidType(ACCESS_TOKEN_TYPE)) {
             throw new AccessTokenRequiredException(this.uri);
         }
     }

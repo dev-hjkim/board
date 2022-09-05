@@ -28,11 +28,12 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generate(String userSeq, String type) {
+    public String generate(long userSeq, String type) {
 
         // 1. token 내부에 저장할 정보
         Map<String, Object> claims = new HashMap<>();
         claims.put("userSeq", userSeq);
+        claims.put("type", type);
         
         // 2. token 생성일
         final Date createdDate = new Date();
@@ -74,9 +75,13 @@ public class JwtUtil {
         }
     }
 
+    public String getTypeFromToken(String token) {
+        return getClaimsFromToken(token).get("type", String.class);
+    }
 
-    public String getUserSeqFromToken(String token) {
-        return getClaimsFromToken(token).get("userSeq", String.class);
+
+    public Long getUserSeqFromToken(String token) {
+        return getClaimsFromToken(token).get("userSeq", Long.class);
     }
 
     private JwtUtil() { }

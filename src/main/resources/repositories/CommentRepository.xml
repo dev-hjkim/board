@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.comment.repository.CommentRepository">
 
-    <select id="getTotalCount" parameterType="String" resultType="int">
+    <select id="getTotalCount" parameterType="long" resultType="int">
         SELECT COUNT(*)
           FROM tb_comment
          WHERE 1=1
@@ -21,11 +21,11 @@
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.post_no = #{comment.postNo}
+           AND comment.post_no = #{postNo}
          LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 
-    <select id="getComment" parameterType="Comment" resultType="Comment">
+    <select id="getComment" parameterType="long" resultType="Comment">
         SELECT comment.comment_no
              , comment.post_no
              , comment.member_no
@@ -37,14 +37,12 @@
                 JOIN tb_member member
                   ON comment.member_no = member.member_no
          WHERE 1=1
-           AND comment.post_no = #{postNo}
            AND comment.comment_no = #{commentNo}
     </select>
 
-    <delete id="deleteComment" parameterType="Comment">
+    <delete id="deleteComment" parameterType="long">
         DELETE FROM tb_comment
          WHERE 1=1
-           AND post_no = #{postNo}
            AND comment_no = #{commentNo}
     </delete>
 
@@ -58,35 +56,21 @@
                                 , #{memberNo}
                                 , #{content}
                                 )
-        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
-                   resultType="Comment" order="AFTER">
-            SELECT *
-              FROM tb_comment
-             WHERE 1=1
-               AND comment_no = LAST_INSERT_ID()
+        <selectKey keyProperty="commentNo"
+                   resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
-
-    <update id="updateReplyCount" parameterType="String">
-        UPDATE tb_post
-           SET reply_cnt = reply_cnt+1
-         WHERE 1=1
-           AND post_no = #{postNo}
-    </update>
 
     <update id="updateComment" parameterType="Comment">
         UPDATE tb_comment
            SET content = #{content}
              , upd_dt = now()
          WHERE 1=1
-           AND post_no = #{postNo}
            AND comment_no = #{commentNo}
-        <selectKey keyProperty="commentNo,postNo,memberNo,content,regDt,updDt"
-                   resultType="Comment" order="AFTER">
-            SELECT *
-              FROM tb_comment
-             WHERE 1=1
-               AND comment_no = #{commentNo}
+        <selectKey keyProperty="commentNo"
+                   resultType="long" order="AFTER">
+            SELECT #{commentNo}
         </selectKey>
     </update>
 

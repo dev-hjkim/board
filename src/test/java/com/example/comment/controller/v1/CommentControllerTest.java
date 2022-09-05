@@ -1,6 +1,6 @@
 package com.example.comment.controller.v1;
 
-import com.example.comment.dto.CommentRequest;
+import com.example.comment.dto.CommentBody;
 import com.example.common.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +29,7 @@ class CommentControllerTest {
     public void setPostControllerTest(MockMvc mvc, ObjectMapper objectMapper, JwtUtil jwtUtil) {
         this.mvc = mvc;
         this.objectMapper = objectMapper;
-        this.accessToken = jwtUtil.generate("7", "ACCESS");
+        this.accessToken = jwtUtil.generate(7, "ACCESS");
     }
 
     @Test
@@ -59,9 +59,9 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("createComment :: 정상 케이스")
     void createComment() throws Exception {
-        CommentRequest commentRequest = new CommentRequest("test1's new comment");
+        CommentBody commentBody = new CommentBody("test1's new comment");
 
-        String content = objectMapper.writeValueAsString(commentRequest);
+        String content = objectMapper.writeValueAsString(commentBody);
 
         mvc.perform(post("/v1/boards/1/posts/1/comments")
                         .header("Authorization", accessToken)
@@ -76,9 +76,9 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("modifyComment :: 정상 케이스")
     void modifyComment() throws Exception {
-        CommentRequest commentRequest = new CommentRequest("test1's modified comment");
+        CommentBody commentBody = new CommentBody("test1's modified comment");
 
-        String content = objectMapper.writeValueAsString(commentRequest);
+        String content = objectMapper.writeValueAsString(commentBody);
 
         mvc.perform(put("/v1/boards/1/posts/1/comments/1")
                         .header("Authorization", accessToken)

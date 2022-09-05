@@ -25,6 +25,10 @@ public enum ResultType {
 
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "405001", "Http method is not allowed"),
 
+    NOT_ACCEPTABLE(HttpStatus.NOT_ACCEPTABLE, "406001", "Not acceptable"),
+
+    UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "415001", "Unsupported media type"),
+
     DATA_ALREADY_EXIST(HttpStatus.INTERNAL_SERVER_ERROR, "500001", "Data already exist"),
     NOT_ALLOWED_OPERATION(HttpStatus.INTERNAL_SERVER_ERROR, "500002", "Not allowed operation");
 

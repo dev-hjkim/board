@@ -8,11 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 
 @RestControllerAdvice
@@ -65,6 +68,30 @@ public class ExceptionControllerAdvice {
         log.error("handleMalformedToken ex :::", ex);
 
         return processException(ResultType.INVALID_TOKEN);
+    }
+
+    // 매핑되는 핸들러가 없는 경우
+    @ExceptionHandler({NoHandlerFoundException.class})
+    public ExceptionResult handleNoHandler(NoHandlerFoundException ex) {
+        log.error("handleNoHandler ex :::", ex);
+
+        return processException(ResultType.PAGE_NOT_FOUND);
+    }
+
+    // media type이 일치하지 않는 경우
+    @ExceptionHandler({HttpMediaTypeNotSupportedException.class})
+    public ExceptionResult handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex) {
+        log.error("handleMediaTypeNotSupported ex :::", ex);
+
+        return processException(ResultType.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    // accept에 명시된 media type과 일치하지 않는 경우
+    @ExceptionHandler({HttpMediaTypeNotAcceptableException.class})
+    public ExceptionResult handleNotAcceptable(HttpMediaTypeNotAcceptableException ex) {
+        log.error("handleNotAcceptable ex :::", ex);
+
+        return processException(ResultType.NOT_ACCEPTABLE);
     }
 
     // customException 발생한 경우

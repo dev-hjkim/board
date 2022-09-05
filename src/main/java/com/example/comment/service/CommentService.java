@@ -6,13 +6,15 @@ import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 
 public interface CommentService {
-    PageList<Comment> getCommentList(PageRequest pageRequest, Comment comment);
+    PageList<Comment> getCommentList(PageRequest pageRequest, long postSeq);
 
-    Comment getComment(Comment comment);
+    Comment getComment(long commentSeq);
 
     Result deleteComment(Comment comment);
 
     Comment createComment(Comment comment);
 
     Comment modifyComment(Comment comment);
+
+    void validatePostSeq(long postSeq);
 }

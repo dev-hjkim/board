@@ -8,17 +8,17 @@ import java.util.List;
 
 @Mapper
 public interface PostRepository {
-    int getTotalCount(String boardNo);
+    int getTotalCount(long boardNo);
 
-    List<Post> getPostList(PageRequest pageRequest, Post post);
+    List<Post> getPostList(PageRequest pageRequest, long boardNo);
 
-    Post getPost(Post post);
+    Post getPost(long postNo);
 
-    void updateViewCount(Post post);
-
-    void deletePost(Post post);
+    void deletePost(long postNo);
 
     void insertPost(Post post);
 
     void updatePost(Post post);
+
+    boolean isExist(long postNo);
 }

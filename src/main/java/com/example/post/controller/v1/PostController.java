@@ -3,7 +3,8 @@ package com.example.post.controller.v1;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
-import com.example.post.dto.PostRequest;
+import com.example.common.exception.DataNotFoundException;
+import com.example.post.dto.PostBody;
 import com.example.post.model.Post;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +28,15 @@ public class PostController {
      * @return PostList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public PageList<Post> getPostList(@PathVariable String boardSeq,
+    public PageList<Post> getPostList(@PathVariable long boardSeq,
                                       PageRequest pageRequest) {
         logger.info("getPostList ::: {} {}", boardSeq, pageRequest);
 
-        Post post = Post.builder()
-                .boardNo(boardSeq)
-                .build();
-        return postService.getPostList(pageRequest, post);
+        postService.validateBoardSeq(boardSeq);
+
+        return postService.getPostList(pageRequest, boardSeq);
     }
+
 
     /**
      * 포스트 조회
@@ -45,16 +46,17 @@ public class PostController {
      * @return Post
      */
     @GetMapping(value="/{postSeq}")
-    public Post getPost(@PathVariable String boardSeq,
-                        @PathVariable String postSeq) {
-        logger.info("getPost ::: {} {}", boardSeq, postSeq);
+    public Post getPost(@RequestAttribute long userSeq,
+                        @PathVariable long boardSeq,
+                        @PathVariable long postSeq) {
+        logger.info("getPost ::: {} {} {}",
+                userSeq, boardSeq, postSeq);
 
-        Post post = Post.builder()
-                .boardNo(boardSeq)
-                .postNo(postSeq)
-                .build();
-        return postService.getPost(post);
+        Post post = getValidatedPost(userSeq, boardSeq, postSeq);
+
+        return postService.getPostAndIncreaseViewCount(post.getPostNo());
     }
+
 
     /**
      * 포스트 삭제
@@ -64,18 +66,19 @@ public class PostController {
      * @return ResultType
      */
     @DeleteMapping(value="/{postSeq}")
-    public Result deletePost(@RequestAttribute String userSeq,
-                             @PathVariable String boardSeq,
-                             @PathVariable String postSeq) {
-        logger.info("deletePost ::: {} {} {}", userSeq, boardSeq, postSeq);
+    public Result deletePost(@RequestAttribute long userSeq,
+                             @PathVariable long boardSeq,
+                             @PathVariable long postSeq) {
+        logger.info("deletePost ::: {} {} {}",
+                userSeq, boardSeq, postSeq);
 
-        Post post = Post.builder()
-                .memberNo(userSeq)
-                .boardNo(boardSeq)
-                .postNo(postSeq)
-                .build();
+        Post post = getValidatedPost(userSeq, boardSeq, postSeq);
+
         return postService.deletePost(post);
     }
+
+
+
 
     /**
      * 포스트 등록
@@ -85,19 +88,25 @@ public class PostController {
      * @return Post
      */
     @PostMapping(value="")
-    public Post createPost(@RequestAttribute String userSeq,
-                           @PathVariable String boardSeq,
-                           @RequestBody PostRequest body) {
-        logger.info("createPost ::: {} {} {}", userSeq, boardSeq, body);
+    public Post createPost(@RequestAttribute long userSeq,
+                           @PathVariable long boardSeq,
+                           @RequestBody PostBody body) {
+        logger.info("createPost ::: {} {} {}",
+                userSeq, boardSeq, body);
+
+        postService.validateBoardSeq(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
                 .boardNo(boardSeq)
-                .title(body.getTitle())
-                .content(body.getContent())
                 .build();
+
+        post.setTitle(body.getTitle());
+        post.setContent(body.getContent());
+
         return postService.createPost(post);
     }
+
 
     /**
      * 포스트 수정
@@ -107,19 +116,36 @@ public class PostController {
      * @return Post
      */
     @PutMapping(value="/{postSeq}")
-    public Post modifyPost(@RequestAttribute String userSeq,
-                           @PathVariable String boardSeq,
-                           @PathVariable String postSeq,
-                           @RequestBody PostRequest body) {
-        logger.info("modifyPost ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
+    public Post modifyPost(@RequestAttribute long userSeq,
+                           @PathVariable long boardSeq,
+                           @PathVariable long postSeq,
+                           @RequestBody PostBody body) {
+        logger.info("modifyPost ::: {} {} {} {}",
+                userSeq, boardSeq, postSeq, body);
 
-        Post post = Post.builder()
-                .memberNo(userSeq)
-                .boardNo(boardSeq)
-                .postNo(postSeq)
-                .title(body.getTitle())
-                .content(body.getContent())
-                .build();
+        Post post = getValidatedPost(userSeq, boardSeq, postSeq);
+
+        post.setTitle(body.getTitle());
+        post.setContent(body.getContent());
+
         return postService.modifyPost(post);
+    }
+
+    private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
+        Post post = postService.getPost(postSeq);
+
+        validatePost(post, userSeq, boardSeq);
+        return post;
+    }
+
+
+    private void validatePost(Post post, long userSeq, long boardSeq) {
+        if (post.getBoardNo() != boardSeq) {
+            throw new DataNotFoundException();
+        }
+
+        if (post.getMemberNo() != userSeq) {
+            throw new DataNotFoundException();
+        }
     }
 }

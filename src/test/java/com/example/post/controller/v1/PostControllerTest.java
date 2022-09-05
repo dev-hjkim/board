@@ -1,7 +1,7 @@
 package com.example.post.controller.v1;
 
 import com.example.common.util.JwtUtil;
-import com.example.post.dto.PostRequest;
+import com.example.post.dto.PostBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class PostControllerTest {
     public void setPostControllerTest(MockMvc mvc, ObjectMapper objectMapper, JwtUtil jwtUtil) {
         this.mvc = mvc;
         this.objectMapper = objectMapper;
-        this.accessToken = jwtUtil.generate("5", "ACCESS");
+        this.accessToken = jwtUtil.generate(5, "ACCESS");
     }
 
     @Test
@@ -70,9 +70,9 @@ class PostControllerTest {
     @Transactional
     @DisplayName("createPost :: 정상 케이스")
     void createPost() throws Exception {
-        PostRequest postRequest = new PostRequest("test14", "test14's content");
+        PostBody postBody = new PostBody("test14", "test14's content");
 
-        String content = objectMapper.writeValueAsString(postRequest);
+        String content = objectMapper.writeValueAsString(postBody);
 
         mvc.perform(post("/v1/boards/1/posts")
                         .header("Authorization", accessToken)
@@ -87,9 +87,9 @@ class PostControllerTest {
     @Transactional
     @DisplayName("updatePost :: 정상 케이스")
     void updatePost() throws Exception {
-        PostRequest postRequest = new PostRequest("test13", "test13's modified content");
+        PostBody postBody = new PostBody("test13", "test13's modified content");
 
-        String content = objectMapper.writeValueAsString(postRequest);
+        String content = objectMapper.writeValueAsString(postBody);
 
         mvc.perform(put("/v1/boards/1/posts/13")
                         .header("Authorization", accessToken)

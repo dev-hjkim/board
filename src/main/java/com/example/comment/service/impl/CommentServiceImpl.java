@@ -8,7 +8,7 @@ import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
-import com.example.common.exception.NoAuthorityException;
+import com.example.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,26 +19,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
+    private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
     @Override
-    public PageList<Comment> getCommentList(PageRequest pageRequest, Comment comment) {
-        int totalCount = commentRepository.getTotalCount(comment.getPostNo());
-        List<Comment> commentList = commentRepository.getCommentList(pageRequest, comment);
+    public PageList<Comment> getCommentList(PageRequest pageRequest, long postSeq) {
+        int totalCount = commentRepository.getTotalCount(postSeq);
+        List<Comment> commentList = commentRepository.getCommentList(pageRequest, postSeq);
         return new PageList<>(pageRequest.getPageSize(), totalCount, commentList);
     }
 
-    @Override
-    public Comment getComment(Comment comment) {
-        return commentRepository.getComment(comment);
+    public Comment getComment(long commentSeq) {
+        Comment comment = commentRepository.getComment(commentSeq);
+
+        if (comment == null) {
+            throw new DataNotFoundException();
+        }
+
+        return comment;
     }
 
     @Override
     @Transactional
     public Result deleteComment(Comment comment) {
-        checkEditable(comment);
-
-        commentRepository.deleteComment(comment);
+        commentRepository.deleteComment(comment.getCommentNo());
         return new Result(ResultType.OK);
     }
 
@@ -46,29 +50,20 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public Comment createComment(Comment comment) {
         commentRepository.insertComment(comment);
-        commentRepository.updateReplyCount(comment.getPostNo());
         return comment;
     }
 
     @Override
     @Transactional
     public Comment modifyComment(Comment comment) {
-        checkEditable(comment);
-
         commentRepository.updateComment(comment);
         return comment;
     }
 
-
-    private void checkEditable(Comment comment) {
-        Comment selectedComment = commentRepository.getComment(comment);
-
-        if (selectedComment == null) {
+    @Override
+    public void validatePostSeq(long postSeq) {
+        if (!postRepository.isExist(postSeq)) {
             throw new DataNotFoundException();
-        }
-
-        if (!selectedComment.getMemberNo().equals(comment.getMemberNo())) {
-            throw new NoAuthorityException();
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.post.repository.PostRepository">
-    <select id="getTotalCount" parameterType="String" resultType="int">
+    <select id="getTotalCount" parameterType="long" resultType="int">
         SELECT COUNT(post_no)
           FROM tb_post
          WHERE 1=1
@@ -24,12 +24,13 @@
                 JOIN tb_board board
                   ON post.board_no = board.board_no
          WHERE 1=1
-           AND post.board_no = #{post.boardNo}
+           AND post.board_no = #{boardNo}
          LIMIT #{pageRequest.startPage}, #{pageRequest.pageSize}
     </select>
 
-    <select id="getPost" parameterType="Post" resultType="Post">
-        SELECT post.board_no
+    <select id="getPost" parameterType="long" resultType="Post">
+        SELECT post.post_no
+             , post.board_no
              , board.name
              , post.member_no
              , member.user_id
@@ -45,22 +46,12 @@
                 JOIN tb_board board
                   ON post.board_no = board.board_no
         WHERE 1=1
-          AND post.board_no = #{boardNo}
           AND post.post_no = #{postNo}
     </select>
 
-    <update id="updateViewCount" parameterType="Post">
-        UPDATE tb_post
-           SET view_cnt = #{viewCnt}
-         WHERE 1=1
-           AND board_no = #{boardNo}
-           AND post_no = #{postNo}
-    </update>
-
-    <delete id="deletePost" parameterType="Post">
+    <delete id="deletePost" parameterType="long">
         DELETE FROM tb_post
          WHERE 1=1
-           AND board_no = #{boardNo}
            AND post_no = #{postNo}
     </delete>
 
@@ -76,12 +67,9 @@
                               , #{title}
                               , #{content}
                              )
-        <selectKey keyProperty="postNo,boardNo,memberNo,title,content,viewCnt,replyCnt,regDt,updDt"
-                   resultType="Post" order="AFTER">
-            SELECT *
-              FROM tb_post
-             WHERE 1=1
-               AND post_no = LAST_INSERT_ID()
+        <selectKey keyProperty="postNo"
+                   resultType="long" order="AFTER">
+            SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
@@ -89,17 +77,21 @@
         UPDATE tb_post
            SET title = #{title}
              , content = #{content}
+             , view_cnt = #{viewCnt}
+             , reply_cnt = #{replyCnt}
              , upd_dt = now()
          WHERE 1=1
-           AND board_no = #{boardNo}
            AND post_no = #{postNo}
-        <selectKey keyProperty="postNo,boardNo,memberNo,title,content,viewCnt,replyCnt,regDt,updDt"
-                   resultType="Post" order="AFTER">
-            SELECT *
-              FROM tb_post
-             WHERE 1=1
-               AND board_no = #{boardNo}
-               AND post_no = #{postNo}
+        <selectKey keyProperty="postNo"
+                   resultType="long" order="AFTER">
+            SELECT #{postNo}
         </selectKey>
     </update>
+
+    <select id="isExist" parameterType="long" resultType="boolean">
+        SELECT EXISTS(SELECT post_no
+                      FROM tb_post
+                      WHERE 1=1
+                        AND post_no=#{postNo})
+    </select>
 </mapper>

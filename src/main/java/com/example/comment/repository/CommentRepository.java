@@ -8,17 +8,15 @@ import java.util.List;
 
 @Mapper
 public interface CommentRepository {
-    int getTotalCount(String postNo);
+    int getTotalCount(long postNo);
 
-    List<Comment> getCommentList(PageRequest pageRequest, Comment comment);
+    List<Comment> getCommentList(PageRequest pageRequest, long postNo);
 
-    Comment getComment(Comment comment);
+    Comment getComment(long commentNo);
 
-    void deleteComment(Comment comment);
+    void deleteComment(long commentNo);
 
     void insertComment(Comment comment);
-
-    void updateReplyCount(String postNo);
 
     void updateComment(Comment comment);
 

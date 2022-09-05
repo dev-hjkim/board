@@ -14,4 +14,11 @@
         SELECT COUNT(board_no)
           FROM tb_board
     </select>
+
+    <select id="isExist" parameterType="long" resultType="boolean">
+        SELECT EXISTS(SELECT board_no
+                      FROM tb_board
+                      WHERE 1=1
+                        AND board_no=#{boardNo})
+    </select>
 </mapper>

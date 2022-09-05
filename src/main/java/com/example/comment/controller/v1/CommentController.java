@@ -1,11 +1,13 @@
 package com.example.comment.controller.v1;
 
-import com.example.comment.dto.CommentRequest;
+import com.example.comment.dto.CommentBody;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
+import com.example.common.exception.DataNotFoundException;
+import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
+    private final PostService postService;
     private final CommentService commentService;
 
     /**
@@ -27,17 +30,17 @@ public class CommentController {
      * @return CommentList-totalCount, totalPage, list
      */
     @GetMapping(value="")
-    public PageList<Comment> getCommentList(@PathVariable String boardSeq,
-                                            @PathVariable String postSeq,
+    public PageList<Comment> getCommentList(@PathVariable long boardSeq,
+                                            @PathVariable long postSeq,
                                             PageRequest pageRequest) {
-        logger.info("getCommentList ::: {} {} {}", boardSeq, postSeq, pageRequest);
+        logger.info("getCommentList ::: {} {} {}",
+                boardSeq, postSeq, pageRequest);
 
-        Comment comment = Comment.builder()
-                .boardNo(boardSeq)
-                .postNo(postSeq)
-                .build();
-        return commentService.getCommentList(pageRequest, comment);
+        commentService.validatePostSeq(postSeq);
+
+        return commentService.getCommentList(pageRequest, postSeq);
     }
+
 
     /**
      * 댓글 삭제
@@ -47,20 +50,18 @@ public class CommentController {
      * @return ResultType
      */
     @DeleteMapping(value="/{commentSeq}")
-    public Result deleteComment(@RequestAttribute String userSeq,
-                                @PathVariable String boardSeq,
-                                @PathVariable String postSeq,
-                                @PathVariable String commentSeq) {
-        logger.info("deleteComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq);
+    public Result deleteComment(@RequestAttribute long userSeq,
+                                @PathVariable long boardSeq,
+                                @PathVariable long postSeq,
+                                @PathVariable long commentSeq) {
+        logger.info("deleteComment ::: {} {} {} {}",
+                userSeq, boardSeq, postSeq, commentSeq);
 
-        Comment comment = Comment.builder()
-                .memberNo(userSeq)
-                .boardNo(boardSeq)
-                .postNo(postSeq)
-                .commentNo(commentSeq)
-                .build();
+        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
+
         return commentService.deleteComment(comment);
     }
+
 
     /**
      * 댓글 등록
@@ -70,20 +71,26 @@ public class CommentController {
      * @return Post
      */
     @PostMapping(value="")
-    public Comment createComment(@RequestAttribute String userSeq,
-                                 @PathVariable String boardSeq,
-                                 @PathVariable String postSeq,
-                                 @RequestBody CommentRequest body) {
-        logger.info("createComment ::: {} {} {} {}", userSeq, boardSeq, postSeq, body);
+    public Comment createComment(@RequestAttribute long userSeq,
+                                 @PathVariable long boardSeq,
+                                 @PathVariable long postSeq,
+                                 @RequestBody CommentBody body) {
+        logger.info("createComment ::: {} {} {} {}",
+                userSeq, boardSeq, postSeq, body);
+
+        commentService.validatePostSeq(postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
-                .boardNo(boardSeq)
                 .postNo(postSeq)
-                .content(body.getContent())
                 .build();
+
+        comment.setContent(body.getContent());
+
+        postService.updateReplyCount(postSeq);
         return commentService.createComment(comment);
     }
+
 
     /**
      * 댓글 수정
@@ -93,20 +100,37 @@ public class CommentController {
      * @return Post
      */
     @PutMapping(value="/{commentSeq}")
-    public Comment modifyComment(@RequestAttribute String userSeq,
-                                 @PathVariable String boardSeq,
-                                 @PathVariable String postSeq,
-                                 @PathVariable String commentSeq,
-                                 @RequestBody CommentRequest body) {
-        logger.info("modifyComment ::: {} {} {} {} {}", userSeq, boardSeq, postSeq, commentSeq, body);
+    public Comment modifyComment(@RequestAttribute long userSeq,
+                                 @PathVariable long boardSeq,
+                                 @PathVariable long postSeq,
+                                 @PathVariable long commentSeq,
+                                 @RequestBody CommentBody body) {
+        logger.info("modifyComment ::: {} {} {} {} {}",
+                userSeq, boardSeq, postSeq, commentSeq, body);
 
-        Comment comment = Comment.builder()
-                .memberNo(userSeq)
-                .boardNo(boardSeq)
-                .postNo(postSeq)
-                .commentNo(commentSeq)
-                .content(body.getContent())
-                .build();
+        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
+
+        comment.setContent(body.getContent());
+
         return commentService.modifyComment(comment);
+    }
+
+
+    private Comment getValidatedComment(long userSeq, long postSeq, long commentSeq) {
+        Comment comment = commentService.getComment(commentSeq);
+
+        validateComment(comment, userSeq, postSeq);
+        return comment;
+    }
+
+
+    private void validateComment(Comment comment, long userSeq, long postSeq) {
+        if (comment.getMemberNo() != userSeq) {
+            throw new DataNotFoundException();
+        }
+
+        if (comment.getPostNo() != postSeq) {
+            throw new DataNotFoundException();
+        }
     }
 }

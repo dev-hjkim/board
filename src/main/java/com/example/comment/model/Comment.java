@@ -1,29 +1,30 @@
 package com.example.comment.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
-@Builder
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Comment {
-    private String commentNo;
+    private long commentNo;
 
-    private String boardNo;
-    private String postNo;
+    private long postNo;
 
-    private String memberNo;
+    private long memberNo;
     private String userId;
 
+    @Setter
     private String content;
 
     private Date regDt;
     private Date updDt;
+
+    @Builder
+    public Comment(long postNo, long memberNo) {
+        this.postNo = postNo;
+        this.memberNo = memberNo;
+    }
 }
