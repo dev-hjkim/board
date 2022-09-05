@@ -91,7 +91,7 @@ class CommentServiceImplTest {
     @DisplayName("validateCommentSeq :: 예외 케이스")
     void validateCommentSeq() {
         DataNotFoundException thrown = assertThrows(DataNotFoundException.class,
-                () -> commentService.validateCommentSeq(1, 14, 5));
+                () -> commentService.validateCommentSeq(5));
         assertEquals("Data not found", thrown.getMessage());
     }
 }

@@ -7,7 +7,7 @@ import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
-import com.example.common.exception.DataNotFoundException;
+import com.example.common.exception.InvalidParameterException;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class CommentController {
         logger.info("getCommentList ::: {} {} {}",
                 boardSeq, postSeq, pageRequest);
 
-        validate(boardSeq, postSeq);
+        checkExistence(boardSeq, postSeq);
 
         return commentService.getCommentList(pageRequest, postSeq);
     }
@@ -59,7 +59,7 @@ public class CommentController {
         logger.info("deleteComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq);
 
-        validate(boardSeq, postSeq, commentSeq);
+        checkExistence(boardSeq, postSeq);
 
         Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
@@ -82,7 +82,7 @@ public class CommentController {
         logger.info("createComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, body);
 
-        validate(boardSeq, postSeq);
+        checkExistence(boardSeq, postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -112,7 +112,7 @@ public class CommentController {
         logger.info("modifyComment ::: {} {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq, body);
 
-        validate(boardSeq, postSeq, commentSeq);
+        checkExistence(boardSeq, postSeq);
 
         Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
@@ -122,19 +122,15 @@ public class CommentController {
     }
 
 
-    private void validate(long boardSeq, long postSeq) {
+    private void checkExistence(long boardSeq, long postSeq) {
         boardService.validateBoardSeq(boardSeq);
-        postService.validatePostSeq(boardSeq, postSeq);
-    }
-
-    private void validate(long boardSeq, long postSeq, long commentSeq) {
-        boardService.validateBoardSeq(boardSeq);
-        postService.validatePostSeq(boardSeq, postSeq);
-        commentService.validateCommentSeq(boardSeq, postSeq, commentSeq);
+        postService.validatePostSeq(postSeq);
     }
 
 
     private Comment getValidatedComment(long userSeq, long postSeq, long commentSeq) {
+        commentService.validateCommentSeq(commentSeq);
+
         Comment comment = commentService.getComment(commentSeq);
 
         validateComment(comment, userSeq, postSeq);
@@ -144,11 +140,11 @@ public class CommentController {
 
     private void validateComment(Comment comment, long userSeq, long postSeq) {
         if (comment.getMemberNo() != userSeq) {
-            throw new DataNotFoundException();
+            throw new InvalidParameterException();
         }
 
         if (comment.getPostNo() != postSeq) {
-            throw new DataNotFoundException();
+            throw new InvalidParameterException();
         }
     }
 }

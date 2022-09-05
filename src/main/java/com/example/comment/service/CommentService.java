@@ -16,5 +16,5 @@ public interface CommentService {
 
     Comment modifyComment(Comment comment);
 
-    void validateCommentSeq(long boardSeq, long postSeq, long commentSeq);
+    void validateCommentSeq(long commentSeq);
 }

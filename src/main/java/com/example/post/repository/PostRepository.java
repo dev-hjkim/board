@@ -20,5 +20,5 @@ public interface PostRepository {
 
     void updatePost(Post post);
 
-    boolean isExist(long boardNo, long postNo);
+    boolean isExist(long postNo);
 }

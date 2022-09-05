@@ -59,8 +59,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void validateCommentSeq(long boardSeq, long postSeq, long commentSeq) {
-        if (!commentRepository.isExist(boardSeq, postSeq, commentSeq)) {
+    public void validateCommentSeq(long commentSeq) {
+        if (!commentRepository.isExist(commentSeq)) {
             throw new DataNotFoundException();
         }
     }

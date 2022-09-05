@@ -4,7 +4,7 @@ import com.example.board.service.BoardService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
-import com.example.common.exception.DataNotFoundException;
+import com.example.common.exception.InvalidParameterException;
 import com.example.post.dto.PostBody;
 import com.example.post.model.Post;
 import com.example.post.service.PostService;
@@ -34,7 +34,7 @@ public class PostController {
                                       PageRequest pageRequest) {
         logger.info("getPostList ::: {} {}", boardSeq, pageRequest);
 
-        validate(boardSeq);
+        checkExistence(boardSeq);
 
         return postService.getPostList(pageRequest, boardSeq);
     }
@@ -54,7 +54,7 @@ public class PostController {
         logger.info("getPost ::: {} {} {}",
                 userSeq, boardSeq, postSeq);
 
-        validate(boardSeq, postSeq);
+        checkExistence(boardSeq);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
@@ -76,7 +76,7 @@ public class PostController {
         logger.info("deletePost ::: {} {} {}",
                 userSeq, boardSeq, postSeq);
 
-        validate(boardSeq, postSeq);
+        checkExistence(boardSeq);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
@@ -98,7 +98,7 @@ public class PostController {
         logger.info("createPost ::: {} {} {}",
                 userSeq, boardSeq, body);
 
-        validate(boardSeq);
+        checkExistence(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
@@ -127,7 +127,7 @@ public class PostController {
         logger.info("modifyPost ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, body);
 
-        validate(boardSeq, postSeq);
+        checkExistence(boardSeq);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
@@ -138,18 +138,14 @@ public class PostController {
     }
 
 
-    private void validate(long boardSeq) {
+    private void checkExistence(long boardSeq) {
         boardService.validateBoardSeq(boardSeq);
-    }
-
-
-    private void validate(long boardSeq, long postSeq) {
-        boardService.validateBoardSeq(boardSeq);
-        postService.validatePostSeq(boardSeq, postSeq);
     }
 
 
     private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
+        postService.validatePostSeq(postSeq);
+
         Post post = postService.getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
@@ -159,11 +155,11 @@ public class PostController {
 
     private void validatePost(Post post, long userSeq, long boardSeq) {
         if (post.getBoardNo() != boardSeq) {
-            throw new DataNotFoundException();
+            throw new InvalidParameterException();
         }
 
         if (post.getMemberNo() != userSeq) {
-            throw new DataNotFoundException();
+            throw new InvalidParameterException();
         }
     }
 }

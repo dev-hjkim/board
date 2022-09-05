@@ -76,12 +76,8 @@
 
     <select id="isExist" resultType="boolean">
         SELECT EXISTS(SELECT comment_no
-                      FROM tb_post post
-                        JOIN tb_comment comment
-                          ON post.post_no = comment.post_no
+                      FROM tb_comment
                       WHERE 1=1
-                        AND post.board_no=#{boardNo}
-                        AND post.post_no=#{postNo}
-                        AND comment.comment_no=#{commentNo})
+                        AND comment_no=#{commentNo})
     </select>
 </mapper>

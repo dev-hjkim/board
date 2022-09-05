@@ -91,7 +91,7 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("isExist :: 정상 케이스")
     void isExist() {
-        boolean isExist = commentRepository.isExist(1, 14, 5);
+        boolean isExist = commentRepository.isExist(5);
         assertThat(isExist, is(false));
     }
 }

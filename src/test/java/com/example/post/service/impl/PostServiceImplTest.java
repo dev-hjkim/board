@@ -114,7 +114,7 @@ class PostServiceImplTest {
     @DisplayName("validatePostSeq :: 예외 케이스")
     void validatePostSeq() {
         DataNotFoundException thrown = assertThrows(DataNotFoundException.class,
-                () -> postService.validatePostSeq(1, 14));
+                () -> postService.validatePostSeq(14));
         assertEquals("Data not found", thrown.getMessage());
     }
 }

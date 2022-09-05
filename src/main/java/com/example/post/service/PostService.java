@@ -20,5 +20,5 @@ public interface PostService {
 
     Post modifyPost(Post post);
 
-    void validatePostSeq(long boardSeq, long postSeq);
+    void validatePostSeq(long postSeq);
 }
