@@ -87,4 +87,11 @@ class CommentRepositoryTest {
         commentRepository.updateComment(commentRequest);
         assertThat(commentRequest.getCommentNo(), is(1l));
     }
+
+    @Test
+    @DisplayName("isExist :: 정상 케이스")
+    void isExist() {
+        boolean isExist = commentRepository.isExist(1, 14, 5);
+        assertThat(isExist, is(false));
+    }
 }

@@ -4,6 +4,7 @@ import com.example.comment.model.Comment;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
+import com.example.common.exception.DataNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class CommentServiceImplTest {
@@ -82,5 +85,13 @@ class CommentServiceImplTest {
         Comment result = commentService.modifyComment(commentRequest);
 
         assertThat(result.getContent(), is(commentRequest.getContent()));
+    }
+
+    @Test
+    @DisplayName("validateCommentSeq :: 예외 케이스")
+    void validateCommentSeq() {
+        DataNotFoundException thrown = assertThrows(DataNotFoundException.class,
+                () -> commentService.validateCommentSeq(1, 14, 5));
+        assertEquals("Data not found", thrown.getMessage());
     }
 }

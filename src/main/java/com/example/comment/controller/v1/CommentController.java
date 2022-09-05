@@ -38,8 +38,7 @@ public class CommentController {
         logger.info("getCommentList ::: {} {} {}",
                 boardSeq, postSeq, pageRequest);
 
-        boardService.validateBoardSeq(boardSeq);
-        postService.validatePostSeq(boardSeq, postSeq);
+        validate(boardSeq, postSeq);
 
         return commentService.getCommentList(pageRequest, postSeq);
     }
@@ -60,7 +59,9 @@ public class CommentController {
         logger.info("deleteComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq);
 
-        Comment comment = getValidatedComment(userSeq, boardSeq, postSeq, commentSeq);
+        validate(boardSeq, postSeq, commentSeq);
+
+        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
         return commentService.deleteComment(comment);
     }
@@ -81,8 +82,7 @@ public class CommentController {
         logger.info("createComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, body);
 
-        boardService.validateBoardSeq(boardSeq);
-        postService.validatePostSeq(boardSeq, postSeq);
+        validate(boardSeq, postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -112,7 +112,9 @@ public class CommentController {
         logger.info("modifyComment ::: {} {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq, body);
 
-        Comment comment = getValidatedComment(userSeq, boardSeq, postSeq, commentSeq);
+        validate(boardSeq, postSeq, commentSeq);
+
+        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
         comment.setContent(body.getContent());
 
@@ -120,10 +122,19 @@ public class CommentController {
     }
 
 
-    private Comment getValidatedComment(long userSeq, long boardSeq, long postSeq, long commentSeq) {
+    private void validate(long boardSeq, long postSeq) {
         boardService.validateBoardSeq(boardSeq);
         postService.validatePostSeq(boardSeq, postSeq);
+    }
 
+    private void validate(long boardSeq, long postSeq, long commentSeq) {
+        boardService.validateBoardSeq(boardSeq);
+        postService.validatePostSeq(boardSeq, postSeq);
+        commentService.validateCommentSeq(boardSeq, postSeq, commentSeq);
+    }
+
+
+    private Comment getValidatedComment(long userSeq, long postSeq, long commentSeq) {
         Comment comment = commentService.getComment(commentSeq);
 
         validateComment(comment, userSeq, postSeq);

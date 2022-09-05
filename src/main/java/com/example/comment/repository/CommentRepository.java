@@ -20,4 +20,6 @@ public interface CommentRepository {
 
     void updateComment(Comment comment);
 
+    boolean isExist(long boardNo, long postNo, long commentNo);
+
 }

@@ -34,7 +34,7 @@ public class PostController {
                                       PageRequest pageRequest) {
         logger.info("getPostList ::: {} {}", boardSeq, pageRequest);
 
-        boardService.validateBoardSeq(boardSeq);
+        validate(boardSeq);
 
         return postService.getPostList(pageRequest, boardSeq);
     }
@@ -53,6 +53,8 @@ public class PostController {
                         @PathVariable long postSeq) {
         logger.info("getPost ::: {} {} {}",
                 userSeq, boardSeq, postSeq);
+
+        validate(boardSeq, postSeq);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
@@ -74,12 +76,12 @@ public class PostController {
         logger.info("deletePost ::: {} {} {}",
                 userSeq, boardSeq, postSeq);
 
+        validate(boardSeq, postSeq);
+
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
         return postService.deletePost(post);
     }
-
-
 
 
     /**
@@ -96,7 +98,7 @@ public class PostController {
         logger.info("createPost ::: {} {} {}",
                 userSeq, boardSeq, body);
 
-        boardService.validateBoardSeq(boardSeq);
+        validate(boardSeq);
 
         Post post = Post.builder()
                 .memberNo(userSeq)
@@ -125,6 +127,8 @@ public class PostController {
         logger.info("modifyPost ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, body);
 
+        validate(boardSeq, postSeq);
+
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
 
         post.setTitle(body.getTitle());
@@ -133,10 +137,19 @@ public class PostController {
         return postService.modifyPost(post);
     }
 
-    private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
+
+    private void validate(long boardSeq) {
+        boardService.validateBoardSeq(boardSeq);
+    }
+
+
+    private void validate(long boardSeq, long postSeq) {
         boardService.validateBoardSeq(boardSeq);
         postService.validatePostSeq(boardSeq, postSeq);
+    }
 
+
+    private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
         Post post = postService.getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
