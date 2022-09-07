@@ -4,6 +4,7 @@ import com.example.board.service.BoardService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
+import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.InvalidParameterException;
 import com.example.post.dto.PostBody;
 import com.example.post.model.Post;
@@ -144,8 +145,6 @@ public class PostController {
 
 
     private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
-        postService.validatePostSeq(postSeq);
-
         Post post = postService.getPost(postSeq);
 
         validatePost(post, userSeq, boardSeq);
@@ -154,6 +153,10 @@ public class PostController {
 
 
     private void validatePost(Post post, long userSeq, long boardSeq) {
+        if (post == null) {
+            throw new DataNotFoundException();
+        }
+
         if (post.getBoardNo() != boardSeq) {
             throw new InvalidParameterException();
         }

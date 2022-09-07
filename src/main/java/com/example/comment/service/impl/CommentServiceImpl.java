@@ -28,13 +28,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     public Comment getComment(long commentSeq) {
-        Comment comment = commentRepository.getComment(commentSeq);
-
-        if (comment == null) {
-            throw new DataNotFoundException();
-        }
-
-        return comment;
+        return commentRepository.getComment(commentSeq);
     }
 
     @Override

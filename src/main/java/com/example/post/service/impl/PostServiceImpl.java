@@ -32,13 +32,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPost(long postSeq) {
-        Post post = postRepository.getPost(postSeq);
-
-        if (post == null) {
-            throw new DataNotFoundException();
-        }
-
-        return post;
+        return postRepository.getPost(postSeq);
     }
 
     @Override

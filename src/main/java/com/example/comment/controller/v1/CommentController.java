@@ -7,6 +7,7 @@ import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
+import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.InvalidParameterException;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -129,8 +130,6 @@ public class CommentController {
 
 
     private Comment getValidatedComment(long userSeq, long postSeq, long commentSeq) {
-        commentService.validateCommentSeq(commentSeq);
-
         Comment comment = commentService.getComment(commentSeq);
 
         validateComment(comment, userSeq, postSeq);
@@ -139,6 +138,10 @@ public class CommentController {
 
 
     private void validateComment(Comment comment, long userSeq, long postSeq) {
+        if (comment == null) {
+            throw new DataNotFoundException();
+        }
+
         if (comment.getMemberNo() != userSeq) {
             throw new InvalidParameterException();
         }
