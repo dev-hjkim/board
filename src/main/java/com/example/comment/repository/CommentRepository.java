@@ -19,7 +19,4 @@ public interface CommentRepository {
     void insertComment(Comment comment);
 
     void updateComment(Comment comment);
-
-    boolean isExist(long commentNo);
-
 }

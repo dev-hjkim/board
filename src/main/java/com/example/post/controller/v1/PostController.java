@@ -147,16 +147,16 @@ public class PostController {
     private Post getValidatedPost(long userSeq, long boardSeq, long postSeq) {
         Post post = postService.getPost(postSeq);
 
-        validatePost(post, userSeq, boardSeq);
-        return post;
-    }
-
-
-    private void validatePost(Post post, long userSeq, long boardSeq) {
         if (post == null) {
             throw new DataNotFoundException();
         }
 
+        checkEquality(post, userSeq, boardSeq);
+        return post;
+    }
+
+
+    private void checkEquality(Post post, long userSeq, long boardSeq) {
         if (post.getBoardNo() != boardSeq) {
             throw new InvalidParameterException();
         }

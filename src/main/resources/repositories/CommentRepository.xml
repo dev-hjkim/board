@@ -73,11 +73,4 @@
             SELECT #{commentNo}
         </selectKey>
     </update>
-
-    <select id="isExist" resultType="boolean">
-        SELECT EXISTS(SELECT comment_no
-                      FROM tb_comment
-                      WHERE 1=1
-                        AND comment_no=#{commentNo})
-    </select>
 </mapper>

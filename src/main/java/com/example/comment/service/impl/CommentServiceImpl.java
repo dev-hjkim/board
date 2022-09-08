@@ -51,11 +51,4 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.updateComment(comment);
         return comment;
     }
-
-    @Override
-    public void validateCommentSeq(long commentSeq) {
-        if (!commentRepository.isExist(commentSeq)) {
-            throw new DataNotFoundException();
-        }
-    }
 }

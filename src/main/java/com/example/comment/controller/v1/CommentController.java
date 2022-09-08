@@ -132,16 +132,16 @@ public class CommentController {
     private Comment getValidatedComment(long userSeq, long postSeq, long commentSeq) {
         Comment comment = commentService.getComment(commentSeq);
 
-        validateComment(comment, userSeq, postSeq);
-        return comment;
-    }
-
-
-    private void validateComment(Comment comment, long userSeq, long postSeq) {
         if (comment == null) {
             throw new DataNotFoundException();
         }
 
+        checkEquality(comment, userSeq, postSeq);
+        return comment;
+    }
+
+
+    private void checkEquality(Comment comment, long userSeq, long postSeq) {
         if (comment.getMemberNo() != userSeq) {
             throw new InvalidParameterException();
         }
