@@ -1,11 +1,13 @@
 package com.example.post.controller.v1;
 
 import com.example.board.service.BoardService;
+import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.InvalidParameterException;
+import com.example.common.exception.NotAllowedOperationException;
 import com.example.post.dto.PostBody;
 import com.example.post.model.Post;
 import com.example.post.service.PostService;
@@ -22,6 +24,7 @@ public class PostController {
 
     private final BoardService boardService;
     private final PostService postService;
+    private final CommentService commentService;
 
     /**
      * 포스트 목록 조회
@@ -80,6 +83,10 @@ public class PostController {
         checkExistence(boardSeq);
 
         Post post = getValidatedPost(userSeq, boardSeq, postSeq);
+
+        if (commentService.isCommentExist(postSeq)) {
+            throw new NotAllowedOperationException();
+        }
 
         return postService.deletePost(post);
     }

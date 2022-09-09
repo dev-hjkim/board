@@ -7,7 +7,6 @@ import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
-import com.example.common.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,5 +49,10 @@ public class CommentServiceImpl implements CommentService {
     public Comment modifyComment(Comment comment) {
         commentRepository.updateComment(comment);
         return comment;
+    }
+
+    @Override
+    public boolean isCommentExist(long postSeq) {
+        return commentRepository.getTotalCount(postSeq) > 0;
     }
 }

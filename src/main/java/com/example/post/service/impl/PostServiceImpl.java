@@ -6,7 +6,6 @@ import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.dto.ResultType;
 import com.example.common.exception.DataNotFoundException;
-import com.example.common.exception.NotAllowedOperationException;
 import com.example.post.model.Post;
 import com.example.post.repository.PostRepository;
 import com.example.post.service.PostService;
@@ -21,7 +20,6 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
 
     @Override
     public PageList<Post> getPostList(PageRequest pageRequest, long boardSeq) {
@@ -60,10 +58,6 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Result deletePost(Post post) {
-        if (commentRepository.getTotalCount(post.getPostNo()) > 0) {
-            throw new NotAllowedOperationException();
-        }
-
         postRepository.deletePost(post.getPostNo());
         return new Result(ResultType.OK);
     }
