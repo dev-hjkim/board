@@ -1,6 +1,5 @@
 package com.example.post.service.impl;
 
-import com.example.comment.repository.CommentRepository;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
