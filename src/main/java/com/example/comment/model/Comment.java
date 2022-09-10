@@ -1,14 +1,13 @@
 package com.example.comment.model;
 
+import com.example.common.model.Timestamp;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Comment {
+public class Comment extends Timestamp {
     private long commentNo;
 
     private long postNo;
@@ -18,9 +17,6 @@ public class Comment {
 
     @Setter
     private String content;
-
-    private Date regDt;
-    private Date updDt;
 
     @Builder
     public Comment(long postNo, long memberNo) {

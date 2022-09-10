@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value="/v1/boards/{boardSeq}/posts/{postSeq}/comments")
 @RequiredArgsConstructor
@@ -79,7 +81,7 @@ public class CommentController {
     public Comment createComment(@RequestAttribute long userSeq,
                                  @PathVariable long boardSeq,
                                  @PathVariable long postSeq,
-                                 @RequestBody CommentBody body) {
+                                 @RequestBody @Valid CommentBody body) {
         logger.info("createComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, body);
 
@@ -109,7 +111,7 @@ public class CommentController {
                                  @PathVariable long boardSeq,
                                  @PathVariable long postSeq,
                                  @PathVariable long commentSeq,
-                                 @RequestBody CommentBody body) {
+                                 @RequestBody @Valid CommentBody body) {
         logger.info("modifyComment ::: {} {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq, body);
 

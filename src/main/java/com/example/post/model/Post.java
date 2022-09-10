@@ -1,14 +1,13 @@
 package com.example.post.model;
 
+import com.example.common.model.Timestamp;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Post {
+public class Post extends Timestamp {
     private long postNo;
 
     private long memberNo;
@@ -26,9 +25,6 @@ public class Post {
     private int viewCnt;
     @Setter
     private int replyCnt;
-
-    private Date regDt;
-    private Date updDt;
 
     @Builder
     public Post(long boardNo, long memberNo) {
