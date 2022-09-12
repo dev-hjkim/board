@@ -10,6 +10,8 @@ import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.InvalidParameterException;
 import com.example.post.service.PostService;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,9 +117,16 @@ public class CommentController {
         logger.info("modifyComment ::: {} {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq, body);
 
-        checkExistence(boardSeq, postSeq);
+        SequenceDto sequenceDto = SequenceDto.builder()
+                .userSeq(userSeq)
+                .boardSeq(boardSeq)
+                .postSeq(postSeq)
+                .commentSeq(commentSeq)
+                .build();
 
-        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
+        checkExistence(sequenceDto);
+
+        Comment comment = getValidatedComment(sequenceDto);
 
         comment.setContent(body.getContent());
 
@@ -128,6 +137,11 @@ public class CommentController {
     private void checkExistence(long boardSeq, long postSeq) {
         boardService.validateBoardSeq(boardSeq);
         postService.validatePostSeq(postSeq);
+    }
+
+    private void checkExistence(SequenceDto sequenceDto) {
+        boardService.validateBoardSeq(sequenceDto.getBoardSeq());
+        postService.validatePostSeq(sequenceDto.getPostSeq());
     }
 
 
@@ -142,6 +156,17 @@ public class CommentController {
         return comment;
     }
 
+    private Comment getValidatedComment(SequenceDto sequenceDto) {
+        Comment comment = commentService.getComment(sequenceDto.getCommentSeq());
+
+        if (comment == null) {
+            throw new DataNotFoundException();
+        }
+
+        checkEquality(comment, sequenceDto);
+        return comment;
+    }
+
 
     private void checkEquality(Comment comment, long userSeq, long postSeq) {
         if (comment.getMemberNo() != userSeq) {
@@ -150,6 +175,32 @@ public class CommentController {
 
         if (comment.getPostNo() != postSeq) {
             throw new InvalidParameterException();
+        }
+    }
+
+    private void checkEquality(Comment comment, SequenceDto sequenceDto) {
+        if (comment.getMemberNo() != sequenceDto.getUserSeq()) {
+            throw new InvalidParameterException();
+        }
+
+        if (comment.getPostNo() != sequenceDto.getPostSeq()) {
+            throw new InvalidParameterException();
+        }
+    }
+
+    @Getter
+    public class SequenceDto {
+        private long userSeq;
+        private long boardSeq;
+        private long postSeq;
+        private long commentSeq;
+
+        @Builder
+        public SequenceDto(long userSeq, long boardSeq, long postSeq, long commentSeq) {
+            this.userSeq = userSeq;
+            this.boardSeq = boardSeq;
+            this.postSeq = postSeq;
+            this.commentSeq = commentSeq;
         }
     }
 }
