@@ -117,16 +117,16 @@ public class CommentController {
         logger.info("modifyComment ::: {} {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq, body);
 
-        SequenceDto sequenceDto = SequenceDto.builder()
+        PathVariableSequenceDto pathVariableSequenceDto = PathVariableSequenceDto.builder()
                 .userSeq(userSeq)
                 .boardSeq(boardSeq)
                 .postSeq(postSeq)
                 .commentSeq(commentSeq)
                 .build();
 
-        checkExistence(sequenceDto);
+        checkExistence(pathVariableSequenceDto);
 
-        Comment comment = getValidatedComment(sequenceDto);
+        Comment comment = getValidatedComment(pathVariableSequenceDto);
 
         comment.setContent(body.getContent());
 
@@ -139,9 +139,9 @@ public class CommentController {
         postService.validatePostSeq(postSeq);
     }
 
-    private void checkExistence(SequenceDto sequenceDto) {
-        boardService.validateBoardSeq(sequenceDto.getBoardSeq());
-        postService.validatePostSeq(sequenceDto.getPostSeq());
+    private void checkExistence(PathVariableSequenceDto pathVariableSequenceDto) {
+        boardService.validateBoardSeq(pathVariableSequenceDto.getBoardSeq());
+        postService.validatePostSeq(pathVariableSequenceDto.getPostSeq());
     }
 
 
@@ -156,14 +156,14 @@ public class CommentController {
         return comment;
     }
 
-    private Comment getValidatedComment(SequenceDto sequenceDto) {
-        Comment comment = commentService.getComment(sequenceDto.getCommentSeq());
+    private Comment getValidatedComment(PathVariableSequenceDto pathVariableSequenceDto) {
+        Comment comment = commentService.getComment(pathVariableSequenceDto.getCommentSeq());
 
         if (comment == null) {
             throw new DataNotFoundException();
         }
 
-        checkEquality(comment, sequenceDto);
+        checkEquality(comment, pathVariableSequenceDto);
         return comment;
     }
 
@@ -178,25 +178,25 @@ public class CommentController {
         }
     }
 
-    private void checkEquality(Comment comment, SequenceDto sequenceDto) {
-        if (comment.getMemberNo() != sequenceDto.getUserSeq()) {
+    private void checkEquality(Comment comment, PathVariableSequenceDto pathVariableSequenceDto) {
+        if (comment.getMemberNo() != pathVariableSequenceDto.getUserSeq()) {
             throw new InvalidParameterException();
         }
 
-        if (comment.getPostNo() != sequenceDto.getPostSeq()) {
+        if (comment.getPostNo() != pathVariableSequenceDto.getPostSeq()) {
             throw new InvalidParameterException();
         }
     }
 
     @Getter
-    public class SequenceDto {
+    public class PathVariableSequenceDto {
         private long userSeq;
         private long boardSeq;
         private long postSeq;
         private long commentSeq;
 
         @Builder
-        public SequenceDto(long userSeq, long boardSeq, long postSeq, long commentSeq) {
+        public PathVariableSequenceDto(long userSeq, long boardSeq, long postSeq, long commentSeq) {
             this.userSeq = userSeq;
             this.boardSeq = boardSeq;
             this.postSeq = postSeq;
