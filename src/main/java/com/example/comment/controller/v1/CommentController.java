@@ -2,6 +2,7 @@ package com.example.comment.controller.v1;
 
 import com.example.board.service.BoardService;
 import com.example.comment.dto.CommentBody;
+import com.example.comment.dto.PathVariableSequenceDto;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
@@ -10,8 +11,6 @@ import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
 import com.example.common.exception.InvalidParameterException;
 import com.example.post.service.PostService;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,22 +184,6 @@ public class CommentController {
 
         if (comment.getPostNo() != pathVariableSequenceDto.getPostSeq()) {
             throw new InvalidParameterException();
-        }
-    }
-
-    @Getter
-    public class PathVariableSequenceDto {
-        private long userSeq;
-        private long boardSeq;
-        private long postSeq;
-        private long commentSeq;
-
-        @Builder
-        public PathVariableSequenceDto(long userSeq, long boardSeq, long postSeq, long commentSeq) {
-            this.userSeq = userSeq;
-            this.boardSeq = boardSeq;
-            this.postSeq = postSeq;
-            this.commentSeq = commentSeq;
         }
     }
 }
