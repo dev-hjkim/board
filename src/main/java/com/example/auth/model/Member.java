@@ -1,15 +1,14 @@
 package com.example.auth.model;
 
+import com.example.common.model.Timestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-import java.util.Date;
-
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Member {
+public class Member extends Timestamp {
     @JsonIgnore
     private long memberNo;
 
@@ -17,9 +16,6 @@ public class Member {
 
     @JsonIgnore
     private String password;
-
-    private Date regDt;
-    private Date updDt;
 
     @Builder
     public Member(String userId, String password) {

@@ -6,4 +6,6 @@ import com.example.common.dto.PageRequest;
 
 public interface BoardService {
     PageList<Board> getBoardList(PageRequest pageRequest);
+
+    void validateBoardSeq(long boardSeq);
 }

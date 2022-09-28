@@ -1,17 +1,22 @@
 package com.example.comment.controller.v1;
 
+import com.example.board.service.BoardService;
 import com.example.comment.dto.CommentBody;
+import com.example.comment.dto.PathVariableSequenceDto;
 import com.example.comment.model.Comment;
 import com.example.comment.service.CommentService;
 import com.example.common.dto.PageList;
 import com.example.common.dto.PageRequest;
 import com.example.common.dto.Result;
 import com.example.common.exception.DataNotFoundException;
+import com.example.common.exception.InvalidParameterException;
 import com.example.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value="/v1/boards/{boardSeq}/posts/{postSeq}/comments")
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
+    private final BoardService boardService;
     private final PostService postService;
     private final CommentService commentService;
 
@@ -36,7 +42,7 @@ public class CommentController {
         logger.info("getCommentList ::: {} {} {}",
                 boardSeq, postSeq, pageRequest);
 
-        commentService.validatePostSeq(postSeq);
+        checkExistence(boardSeq, postSeq);
 
         return commentService.getCommentList(pageRequest, postSeq);
     }
@@ -57,6 +63,8 @@ public class CommentController {
         logger.info("deleteComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq);
 
+        checkExistence(boardSeq, postSeq);
+
         Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
 
         return commentService.deleteComment(comment);
@@ -74,11 +82,11 @@ public class CommentController {
     public Comment createComment(@RequestAttribute long userSeq,
                                  @PathVariable long boardSeq,
                                  @PathVariable long postSeq,
-                                 @RequestBody CommentBody body) {
+                                 @RequestBody @Valid CommentBody body) {
         logger.info("createComment ::: {} {} {} {}",
                 userSeq, boardSeq, postSeq, body);
 
-        commentService.validatePostSeq(postSeq);
+        checkExistence(boardSeq, postSeq);
 
         Comment comment = Comment.builder()
                 .memberNo(userSeq)
@@ -104,11 +112,20 @@ public class CommentController {
                                  @PathVariable long boardSeq,
                                  @PathVariable long postSeq,
                                  @PathVariable long commentSeq,
-                                 @RequestBody CommentBody body) {
+                                 @RequestBody @Valid CommentBody body) {
         logger.info("modifyComment ::: {} {} {} {} {}",
                 userSeq, boardSeq, postSeq, commentSeq, body);
 
-        Comment comment = getValidatedComment(userSeq, postSeq, commentSeq);
+        PathVariableSequenceDto pathVariableSequenceDto = PathVariableSequenceDto.builder()
+                .userSeq(userSeq)
+                .boardSeq(boardSeq)
+                .postSeq(postSeq)
+                .commentSeq(commentSeq)
+                .build();
+
+        checkExistence(pathVariableSequenceDto);
+
+        Comment comment = getValidatedComment(pathVariableSequenceDto);
 
         comment.setContent(body.getContent());
 
@@ -116,21 +133,57 @@ public class CommentController {
     }
 
 
+    private void checkExistence(long boardSeq, long postSeq) {
+        boardService.validateBoardSeq(boardSeq);
+        postService.validatePostSeq(postSeq);
+    }
+
+    private void checkExistence(PathVariableSequenceDto pathVariableSequenceDto) {
+        boardService.validateBoardSeq(pathVariableSequenceDto.getBoardSeq());
+        postService.validatePostSeq(pathVariableSequenceDto.getPostSeq());
+    }
+
+
     private Comment getValidatedComment(long userSeq, long postSeq, long commentSeq) {
         Comment comment = commentService.getComment(commentSeq);
 
-        validateComment(comment, userSeq, postSeq);
+        if (comment == null) {
+            throw new DataNotFoundException();
+        }
+
+        checkEquality(comment, userSeq, postSeq);
+        return comment;
+    }
+
+    private Comment getValidatedComment(PathVariableSequenceDto pathVariableSequenceDto) {
+        Comment comment = commentService.getComment(pathVariableSequenceDto.getCommentSeq());
+
+        if (comment == null) {
+            throw new DataNotFoundException();
+        }
+
+        checkEquality(comment, pathVariableSequenceDto);
         return comment;
     }
 
 
-    private void validateComment(Comment comment, long userSeq, long postSeq) {
+    private void checkEquality(Comment comment, long userSeq, long postSeq) {
         if (comment.getMemberNo() != userSeq) {
-            throw new DataNotFoundException();
+            throw new InvalidParameterException();
         }
 
         if (comment.getPostNo() != postSeq) {
-            throw new DataNotFoundException();
+            throw new InvalidParameterException();
+        }
+    }
+
+    private void checkEquality(Comment comment, PathVariableSequenceDto pathVariableSequenceDto) {
+        if (comment.getMemberNo() != pathVariableSequenceDto.getUserSeq()) {
+            throw new InvalidParameterException();
+        }
+
+        if (comment.getPostNo() != pathVariableSequenceDto.getPostSeq()) {
+            throw new InvalidParameterException();
         }
     }
 }

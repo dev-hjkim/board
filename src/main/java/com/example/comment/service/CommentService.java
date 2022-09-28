@@ -16,5 +16,5 @@ public interface CommentService {
 
     Comment modifyComment(Comment comment);
 
-    void validatePostSeq(long postSeq);
+    boolean isCommentExist(long postSeq);
 }

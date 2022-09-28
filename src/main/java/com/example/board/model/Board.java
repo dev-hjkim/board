@@ -1,17 +1,13 @@
 package com.example.board.model;
 
+import com.example.common.model.Timestamp;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Board {
+public class Board extends Timestamp {
     private String boardNo;
     private String name;
-
-    private Date regDt;
-    private Date updDt;
 }

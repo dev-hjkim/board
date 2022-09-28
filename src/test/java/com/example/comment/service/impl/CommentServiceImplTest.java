@@ -83,4 +83,12 @@ class CommentServiceImplTest {
 
         assertThat(result.getContent(), is(commentRequest.getContent()));
     }
+
+    @Test
+    @DisplayName("isCommentExist :: 정상 케이스")
+    void isCommentExist() {
+        boolean result = commentService.isCommentExist(14);
+
+        assertThat(result, is(false));
+    }
 }

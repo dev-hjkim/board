@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
     public UserWithToken login(User user) {
         Member member = authRepository.findUserById(user.getId());
 
-        validateMember(member);
+        checkExistence(member);
 
         if (!user.getPassword().equals(member.getPassword())) {
             throw new UserNotFoundException();
@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
     public UserWithToken refreshToken(long userSeq) {
         Member member = authRepository.findUserByUserSeq(userSeq);
 
-        validateMember(member);
+        checkExistence(member);
 
         return generateToken(member);
 
@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
                 jwtUtil.generate(member.getMemberNo(), "REFRESH"));
     }
 
-    private void validateMember(Member member) {
+    private void checkExistence(Member member) {
         if (member == null) {
             throw new UserNotFoundException();
         }
